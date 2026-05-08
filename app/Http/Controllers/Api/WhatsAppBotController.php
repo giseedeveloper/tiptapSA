@@ -347,6 +347,7 @@ class WhatsAppBotController extends Controller
             ->get(['id', 'name', 'price', 'description', 'image'])
             ->map(function ($item) {
                 $item->imageUrl = $item->imageUrl();
+
                 return $item;
             });
 
@@ -388,8 +389,10 @@ class WhatsAppBotController extends Controller
             $category->imageUrl = $category->imageUrl();
             $category->menuItems->map(function ($item) {
                 $item->imageUrl = $item->imageUrl();
+
                 return $item;
             });
+
             return $category;
         });
 
@@ -497,6 +500,11 @@ class WhatsAppBotController extends Controller
 
         $payment = $order->payments()->where('method', 'ussd')->latest()->first();
 
+        $billData = [
+            'is_bill_ready' => $order->isBillStage(),
+            'bill_image_url' => $order->isBillStage() ? $order->billImageUrl() : null,
+        ];
+
         // If already completed or failed, return immediately
         if ($payment && in_array($payment->status, ['paid', 'failed', 'cancelled'])) {
             return response()->json([
@@ -508,6 +516,7 @@ class WhatsAppBotController extends Controller
                 'is_failed' => in_array($payment->status, ['failed', 'cancelled']),
                 'total' => $order->total_amount,
                 'items' => $order->items,
+                ...$billData,
             ]);
         }
 
@@ -565,6 +574,7 @@ class WhatsAppBotController extends Controller
             'total' => $order->total_amount,
             'items' => $order->items,
             'transaction_reference' => $payment?->transaction_reference,
+            ...$billData,
         ]);
     }
 
@@ -1114,10 +1124,10 @@ class WhatsAppBotController extends Controller
         $order = Order::withoutGlobalScopes()
             ->where('restaurant_id', $request->restaurant_id)
             ->where('table_number', $request->table_number)
-            ->whereIn('status', ['pending', 'preparing', 'ready'])
+            ->whereIn('status', ['pending', 'preparing', 'ready', 'served'])
             ->with(['items.menuItem' => function ($query) {
                 $query->withoutGlobalScopes();
-            }])
+            }, 'payments'])
             ->latest()
             ->first();
 
@@ -1128,12 +1138,17 @@ class WhatsAppBotController extends Controller
             ], 404);
         }
 
+        $latestPayment = $order->payments()->latest()->first();
+
         return response()->json([
             'success' => true,
-            'data' => [
-                'order_id' => $order->id,
+            'order' => [
+                'id' => $order->id,
                 'total' => $order->total_amount,
                 'status' => $order->status,
+                'payment_status' => $latestPayment?->status ?? 'unpaid',
+                'bill_image_url' => $order->isBillStage() ? $order->billImageUrl() : null,
+                'is_bill_ready' => $order->isBillStage(),
                 'items' => $order->items->map(function ($item) {
                     return [
                         'name' => $item->name ?? ($item->menuItem ? $item->menuItem->name : 'Custom Order'),

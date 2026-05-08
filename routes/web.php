@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\BillImageController;
 use App\Http\Controllers\Manager\DashboardController as ManagerDashboard;
 use App\Http\Controllers\RestaurantRegistrationController;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ Route::get('/fix-storage', function () {
 
 // Serve profile & menu_images from storage (works when storage:link missing on host)
 Route::get('/serve-storage/{path}', \App\Http\Controllers\ServeStorageController::class)->where('path', '.*')->name('storage.serve');
+Route::get('/bill-image/{orderId}', BillImageController::class)->name('bill.image');
 
 // DEBUG: Test Selcom Authentication - DELETE AFTER TESTING!
 Route::get('/test-selcom', function () {
@@ -213,7 +215,7 @@ Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')
 
     Route::resource('tables', \App\Http\Controllers\Manager\TableController::class);
     Route::get('/help', [\App\Http\Controllers\Manager\HelpController::class, 'index'])->name('help.index');
-    
+
     Route::get('/reports/performance', [\App\Http\Controllers\Manager\ReportController::class, 'performance'])->name('reports.performance');
     Route::get('/reports/export-performance', [\App\Http\Controllers\Manager\ReportController::class, 'exportPerformance'])->name('reports.export-performance');
 });

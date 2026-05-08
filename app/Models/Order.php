@@ -37,8 +37,33 @@ class Order extends Model
     {
         return $this->hasOne(Tip::class);
     }
+
     public function waiter()
     {
         return $this->belongsTo(User::class, 'waiter_id');
+    }
+
+    public function isBillStage(): bool
+    {
+        return in_array($this->status, ['served'], true);
+    }
+
+    public function billImageSignature(): string
+    {
+        $seed = implode('|', [
+            $this->id,
+            $this->restaurant_id,
+            (string) $this->updated_at,
+        ]);
+
+        return hash_hmac('sha256', $seed, (string) config('app.key'));
+    }
+
+    public function billImageUrl(): string
+    {
+        return route('bill.image', [
+            'orderId' => $this->id,
+            'signature' => $this->billImageSignature(),
+        ]);
     }
 }
