@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['restaurant_id', 'waiter_id', 'table_number', 'customer_phone', 'customer_name', 'status', 'payment_reference', 'total_amount', 'notes', 'is_vip'];
+    protected $fillable = ['restaurant_id', 'waiter_id', 'table_number', 'customer_phone', 'customer_name', 'whatsapp_jid', 'status', 'payment_reference', 'total_amount', 'notes', 'is_vip', 'bill_image_pushed_at'];
+
+    protected function casts(): array
+    {
+        return [
+            'bill_image_pushed_at' => 'datetime',
+            'is_vip' => 'boolean',
+        ];
+    }
 
     protected static function booted()
     {
@@ -65,5 +73,17 @@ class Order extends Model
             'orderId' => $this->id,
             'signature' => $this->billImageSignature(),
         ]);
+    }
+
+    public function shouldPushBillImage(): bool
+    {
+        return $this->isBillStage()
+            && ! empty($this->whatsapp_jid)
+            && is_null($this->bill_image_pushed_at);
+    }
+
+    public function markBillImagePushed(): void
+    {
+        $this->forceFill(['bill_image_pushed_at' => now()])->saveQuietly();
     }
 }

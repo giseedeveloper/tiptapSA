@@ -414,6 +414,7 @@ class WhatsAppBotController extends Controller
             'waiter_id' => 'nullable|exists:users,id',
             'customer_phone' => 'required',
             'customer_name' => 'nullable|string',
+            'whatsapp_jid' => 'nullable|string|max:191',
             'items' => 'required|array',
             'items.*.menu_item_id' => 'required|exists:menu_items,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -451,6 +452,7 @@ class WhatsAppBotController extends Controller
                     'table_number' => $tableNumber,
                     'customer_phone' => $request->customer_phone,
                     'customer_name' => $request->customer_name,
+                    'whatsapp_jid' => $request->whatsapp_jid,
                     'total_amount' => $totalAmount,
                     'status' => 'pending',
                 ]);
@@ -459,7 +461,6 @@ class WhatsAppBotController extends Controller
                     $order->items()->create($item);
                 }
 
-                // Log Activity
                 Activity::create([
                     'description' => "New WhatsApp order #{$order->id} from {$request->customer_phone}",
                     'type' => 'order_created',
@@ -470,6 +471,8 @@ class WhatsAppBotController extends Controller
                     ],
                 ]);
 
+                $order->load('items');
+
                 return response()->json([
                     'success' => true,
                     'order_id' => $order->id,
@@ -477,6 +480,7 @@ class WhatsAppBotController extends Controller
                     'waiter_id' => $request->waiter_id,
                     'table_number' => $tableNumber,
                     'message' => 'Order created successfully',
+                    'order' => $this->formatOrderForBot($order),
                 ]);
             });
         } catch (\Exception $e) {
@@ -1208,6 +1212,7 @@ class WhatsAppBotController extends Controller
             'waiter_id' => 'nullable|exists:users,id',
             'customer_phone' => 'required',
             'customer_name' => 'nullable|string',
+            'whatsapp_jid' => 'nullable|string|max:191',
             'order_text' => 'required|string',
         ]);
 
@@ -1274,7 +1279,8 @@ class WhatsAppBotController extends Controller
                         'table_number' => $tableNumber,
                         'customer_phone' => $request->customer_phone,
                         'customer_name' => $request->customer_name,
-                        'total_amount' => 0, // Unknown price
+                        'whatsapp_jid' => $request->whatsapp_jid,
+                        'total_amount' => 0,
                         'status' => 'pending',
                         'notes' => 'Order from text: '.$request->order_text,
                     ]);
@@ -1287,7 +1293,6 @@ class WhatsAppBotController extends Controller
                         'total' => 0,
                     ]);
 
-                    // Log Activity
                     Activity::create([
                         'description' => "New WhatsApp text order #{$order->id} from {$request->customer_phone}: \"{$request->order_text}\" (Unmatched)",
                         'type' => 'order_created',
@@ -1298,12 +1303,15 @@ class WhatsAppBotController extends Controller
                         ],
                     ]);
 
+                    $order->load('items');
+
                     return response()->json([
                         'success' => true,
                         'order_id' => $order->id,
                         'total' => 0,
                         'items' => [['name' => $request->order_text, 'quantity' => 1, 'price' => 0]],
                         'message' => 'Order created successfully. Waiter will confirm the price.',
+                        'order' => $this->formatOrderForBot($order),
                     ]);
                 });
             } catch (\Exception $e) {
@@ -1320,6 +1328,7 @@ class WhatsAppBotController extends Controller
                     'table_number' => $tableNumber,
                     'customer_phone' => $request->customer_phone,
                     'customer_name' => $request->customer_name,
+                    'whatsapp_jid' => $request->whatsapp_jid,
                     'total_amount' => $totalAmount,
                     'status' => 'pending',
                 ]);
@@ -1334,7 +1343,6 @@ class WhatsAppBotController extends Controller
                     ]);
                 }
 
-                // Log Activity
                 Activity::create([
                     'description' => "New WhatsApp text order #{$order->id} from {$request->customer_phone}: \"{$request->order_text}\"",
                     'type' => 'order_created',
@@ -1345,6 +1353,8 @@ class WhatsAppBotController extends Controller
                     ],
                 ]);
 
+                $order->load('items');
+
                 return response()->json([
                     'success' => true,
                     'order_id' => $order->id,
@@ -1353,10 +1363,32 @@ class WhatsAppBotController extends Controller
                     'waiter_id' => $request->waiter_id,
                     'table_number' => $tableNumber,
                     'message' => 'Order created successfully',
+                    'order' => $this->formatOrderForBot($order),
                 ]);
             });
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Build the nested `order` payload the WhatsApp bot expects.
+     *
+     * @return array{id:int, total:float, status:string, items:array<int,array{name:string,quantity:int,price:float,total:float}>}
+     */
+    protected function formatOrderForBot(Order $order): array
+    {
+        return [
+            'id' => $order->id,
+            'total' => (float) $order->total_amount,
+            'status' => $order->status,
+            'table_number' => $order->table_number,
+            'items' => $order->items->map(fn ($item) => [
+                'name' => $item->name,
+                'quantity' => (int) $item->quantity,
+                'price' => (float) $item->price,
+                'total' => (float) $item->total,
+            ])->values()->all(),
+        ];
     }
 }
