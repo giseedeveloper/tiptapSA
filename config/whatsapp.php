@@ -23,4 +23,22 @@ return [
 
     'bot_notify_timeout' => (int) env('WHATSAPP_BOT_NOTIFY_TIMEOUT', 8),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Public base URL for bill images (optional)
+    |--------------------------------------------------------------------------
+    |
+    | The WhatsApp bot downloads the PNG from this URL when sending the bill.
+    | It must be reachable from your bot VPS (curl/open HTTPS). If your Laravel
+    | app lives under /public on shared hosting, set this to that full base, e.g.
+    | https://tiptapafrica.co.tz/public — otherwise route() may generate
+    | https://tiptapafrica.co.tz/bill-image/... which returns 404 and Baileys
+    | reports "Failed to fetch stream".
+    |
+    | Leave empty to use APP_URL + route (default).
+    |
+    */
+
+    'bill_image_base_url' => env('WHATSAPP_BILL_IMAGE_BASE_URL', ''),
+
 ];

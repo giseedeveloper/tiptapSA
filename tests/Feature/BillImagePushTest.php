@@ -9,6 +9,28 @@ use Illuminate\Support\Facades\Http;
 beforeEach(function (): void {
     config()->set('whatsapp.bot_notify_url', 'http://bot.test/notify');
     config()->set('whatsapp.bot_notify_secret', 'test-secret');
+    config()->set('whatsapp.bill_image_base_url', '');
+});
+
+it('uses bill_image_base_url for signed bill link when configured', function () {
+    config()->set('whatsapp.bill_image_base_url', 'https://example.test/public');
+
+    $restaurant = Restaurant::create([
+        'name' => 'Base URL Cafe',
+        'is_active' => true,
+    ]);
+
+    $order = Order::withoutGlobalScopes()->create([
+        'restaurant_id' => $restaurant->id,
+        'table_number' => '1',
+        'customer_phone' => '255700000099',
+        'whatsapp_jid' => '255700000099@s.whatsapp.net',
+        'status' => 'served',
+        'total_amount' => 100,
+    ]);
+
+    $url = $order->billImageUrl();
+    expect($url)->toStartWith('https://example.test/public/bill-image/'.$order->id.'?signature=');
 });
 
 it('posts the bill image payload to the bot notify endpoint', function () {

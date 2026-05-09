@@ -69,9 +69,15 @@ class Order extends Model
 
     public function billImageUrl(): string
     {
+        $signature = $this->billImageSignature();
+        $base = rtrim((string) config('whatsapp.bill_image_base_url'), '/');
+        if ($base !== '') {
+            return $base.'/bill-image/'.$this->id.'?signature='.rawurlencode($signature);
+        }
+
         return route('bill.image', [
             'orderId' => $this->id,
-            'signature' => $this->billImageSignature(),
+            'signature' => $signature,
         ]);
     }
 
