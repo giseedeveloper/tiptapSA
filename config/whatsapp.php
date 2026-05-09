@@ -7,10 +7,13 @@ return [
     | WhatsApp Bot Notification Endpoint
     |--------------------------------------------------------------------------
     |
-    | The internal URL of the Node.js (Baileys) bot's notify HTTP server.
-    | When server-side events occur (e.g. an order reaches the "served"
-    | stage), Laravel pushes a notification here so the bot can deliver
-    | the message to the customer over WhatsApp without polling.
+    | The URL of the Node.js (Baileys) bot's notify HTTP server. When server-side
+    | events occur (e.g. an order reaches the "served" stage), Laravel POSTs here
+    | so the bot can deliver the bill image to the customer over WhatsApp.
+    |
+    | Production: many PHP hosts block outbound traffic to non-standard ports. If
+    | http://VPS_IP:3001 fails with a connection error, terminate TLS on the VPS
+    | (e.g. Nginx on 443) and proxy to 127.0.0.1:3001, then set this URL to https://...
     |
     */
 
