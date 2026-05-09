@@ -143,16 +143,59 @@ class LiveOrderController extends Controller
         } catch (Throwable $e) {
             report($e);
 
-            $suffix = '';
             if ($e instanceof RequestException) {
-                $suffix = ' Bot responded with HTTP '.$e->response->status().'.';
-            } elseif ($e instanceof ConnectionException) {
-                $suffix = ' Connection failed — the web host may be blocking outbound traffic to that URL or port.';
+                $response = $e->response;
+                $status = $response->status();
+                $json = $response->json();
+                $errorCode = is_array($json) ? ($json['error'] ?? null) : null;
+                $detail = is_array($json) ? ($json['detail'] ?? null) : null;
+                $hint = is_array($json) ? ($json['hint'] ?? null) : null;
+
+                if ($status === 503 || $errorCode === 'whatsapp_not_connected') {
+                    return redirect()->back()->with(
+                        'error',
+                        'WhatsApp is not connected on the bot (HTTP 503). Open the bot session on the VPS until it is online, then try Confirm order again.'
+                    );
+                }
+
+                if ($status === 502 || $errorCode === 'send_failed') {
+                    $tail = '';
+                    if (is_string($detail) && $detail !== '') {
+                        $tail = ' Technical: '.$detail;
+                    }
+                    if (is_string($hint) && $hint !== '') {
+                        $tail .= ' '.$hint;
+                    }
+
+                    return redirect()->back()->with(
+                        'error',
+                        'WhatsApp could not deliver the bill image (HTTP 502). The notify service ran, but sending the picture failed. Typical causes: wrong chat JID for this customer (compare order `whatsapp_jid` with the address shown in bot logs, e.g. …@lid), or the bill image URL cannot be downloaded from the VPS (SSL error, 403, or firewall). Check `docker compose logs bot` on the server.'.$tail
+                    );
+                }
+
+                if ($status === 401) {
+                    return redirect()->back()->with(
+                        'error',
+                        'Notify secret mismatch (HTTP 401). Set WHATSAPP_BOT_NOTIFY_SECRET on Laravel to match NOTIFY_SECRET on the bot `.env`, then run php artisan config:clear.'
+                    );
+                }
+
+                return redirect()->back()->with(
+                    'error',
+                    'WhatsApp notify request failed (HTTP '.$status.'). Check WHATSAPP_BOT_NOTIFY_URL, bot health, and Laravel logs.'.(is_string($detail) && $detail !== '' ? ' '.$detail : '')
+                );
+            }
+
+            if ($e instanceof ConnectionException) {
+                return redirect()->back()->with(
+                    'error',
+                    'Could not connect to the WhatsApp notify URL. The web host may be blocking outbound HTTPS, or the URL is wrong. Check WHATSAPP_BOT_NOTIFY_URL and try curl from the host.'
+                );
             }
 
             return redirect()->back()->with(
                 'error',
-                'Could not reach the WhatsApp bot. Ensure the bot is running, NOTIFY URL/secret match the bot `.env`, and the notify server is deployed on port 3001.'.$suffix
+                'Could not send the bill via WhatsApp. Check Laravel logs and bot logs for details.'
             );
         }
 

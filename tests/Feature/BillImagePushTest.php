@@ -125,6 +125,47 @@ it('manager can sync-send WhatsApp bill for a served WhatsApp order', function (
     expect($order->fresh()->bill_image_pushed_at)->not->toBeNull();
 });
 
+it('manager sees actionable message when bot returns 502 for bill push', function () {
+    $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
+
+    Http::fake([
+        'http://bot.test/notify' => Http::response([
+            'ok' => false,
+            'error' => 'send_failed',
+            'detail' => 'fetch failed for test',
+            'hint' => 'Check jid.',
+        ], 502),
+    ]);
+
+    $restaurant = Restaurant::create([
+        'name' => '502 Cafe',
+        'is_active' => true,
+    ]);
+
+    $manager = User::factory()->create(['restaurant_id' => $restaurant->id]);
+    $manager->assignRole('manager');
+
+    $order = Order::withoutGlobalScopes()->create([
+        'restaurant_id' => $restaurant->id,
+        'table_number' => '3',
+        'customer_phone' => '255700000001',
+        'whatsapp_jid' => '255700000001@s.whatsapp.net',
+        'status' => 'served',
+        'total_amount' => 1000,
+    ]);
+
+    $this->actingAs($manager)
+        ->post(route('manager.orders.whatsapp-bill', $order))
+        ->assertRedirect()
+        ->assertSessionHas('error', function (string $message): bool {
+            return str_contains($message, '502')
+                && str_contains($message, 'fetch failed for test')
+                && str_contains($message, 'Check jid.');
+        });
+
+    expect($order->fresh()->bill_image_pushed_at)->toBeNull();
+});
+
 it('manager send bill derives whatsapp jid from customer phone when missing', function () {
     $this->seed(\Database\Seeders\RolesAndPermissionsSeeder::class);
 
