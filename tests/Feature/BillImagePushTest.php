@@ -268,3 +268,79 @@ it('does not throw when not forced and whatsapp jid is missing', function () {
 
     Http::assertNothingSent();
 });
+
+it('pushes bill image when order becomes served with customer phone and no whatsapp_jid', function () {
+    Http::fake([
+        'http://bot.test/notify' => Http::response(['ok' => true], 200),
+    ]);
+
+    $restaurant = Restaurant::create([
+        'name' => 'Observer Cafe',
+        'is_active' => true,
+    ]);
+
+    $order = Order::withoutGlobalScopes()->create([
+        'restaurant_id' => $restaurant->id,
+        'table_number' => '5',
+        'customer_phone' => '255700000040',
+        'whatsapp_jid' => null,
+        'status' => 'preparing',
+        'total_amount' => 2000,
+    ]);
+
+    $order->update(['status' => 'served']);
+
+    Http::assertSent(function ($request) use ($order) {
+        return $request->url() === 'http://bot.test/notify'
+            && $request['event'] === 'bill_image'
+            && $request['order_id'] === $order->id
+            && $request['jid'] === '255700000040@s.whatsapp.net';
+    });
+
+    expect($order->fresh()->bill_image_pushed_at)->not->toBeNull();
+    expect($order->fresh()->whatsapp_jid)->toBe('255700000040@s.whatsapp.net');
+});
+
+it('does not push bill image when order becomes served if whatsapp_jid is already set', function () {
+    Http::fake();
+
+    $restaurant = Restaurant::create([
+        'name' => 'Bot Order Cafe',
+        'is_active' => true,
+    ]);
+
+    $order = Order::withoutGlobalScopes()->create([
+        'restaurant_id' => $restaurant->id,
+        'table_number' => '7',
+        'customer_phone' => '255700000041',
+        'whatsapp_jid' => '255700000041@s.whatsapp.net',
+        'status' => 'preparing',
+        'total_amount' => 1500,
+    ]);
+
+    $order->update(['status' => 'served']);
+
+    Http::assertNothingSent();
+});
+
+it('does not push bill image when order becomes served without a usable customer phone', function () {
+    Http::fake();
+
+    $restaurant = Restaurant::create([
+        'name' => 'No Phone Observer Cafe',
+        'is_active' => true,
+    ]);
+
+    $order = Order::withoutGlobalScopes()->create([
+        'restaurant_id' => $restaurant->id,
+        'table_number' => '8',
+        'customer_phone' => null,
+        'whatsapp_jid' => null,
+        'status' => 'preparing',
+        'total_amount' => 500,
+    ]);
+
+    $order->update(['status' => 'served']);
+
+    Http::assertNothingSent();
+});

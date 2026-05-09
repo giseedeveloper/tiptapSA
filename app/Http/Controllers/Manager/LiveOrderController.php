@@ -135,7 +135,7 @@ class LiveOrderController extends Controller
         }
 
         if (empty($order->whatsapp_jid)) {
-            return redirect()->back()->with('error', 'No WhatsApp link on this order (not from WhatsApp bot). Ask the customer via WhatsApp or use Process Payment.');
+            return redirect()->back()->with('error', 'Add a customer phone number on this order (or open the chat from the WhatsApp bot) so we can deliver the bill.');
         }
 
         try {
