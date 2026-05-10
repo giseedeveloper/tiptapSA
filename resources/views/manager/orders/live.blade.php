@@ -352,7 +352,7 @@
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Customer WhatsApp / phone</label>
                     <input type="text" name="customer_phone" placeholder="2557XXXXXXXX (recommended)" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
-                    <p class="mt-1.5 text-[10px] text-white/35 leading-relaxed">If you save a number here, when the order reaches <strong class="text-white/50">Served</strong> the bot sends the bill image to this chat automatically (same as WhatsApp bot setup).</p>
+                    <p class="mt-1.5 text-[10px] text-white/35 leading-relaxed">After the order is <strong class="text-white/50">Served</strong>, use <strong class="text-white/50">Confirm order</strong> on the board to send the bill image to this number (nothing is sent until you confirm).</p>
                 </div>
 
                 <div>
@@ -417,7 +417,7 @@
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Customer WhatsApp / phone</label>
                     <input type="text" name="customer_phone" id="edit_customer_phone" placeholder="2557XXXXXXXX" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 transition-all">
-                    <p class="mt-1.5 text-[10px] text-white/35">Used for automatic bill image when the order is marked Served (if not from the bot).</p>
+                    <p class="mt-1.5 text-[10px] text-white/35">Used when you tap <strong class="text-white/45">Confirm order</strong> on a Served order to WhatsApp the bill image.</p>
                 </div>
                 <div class="pt-4">
                     <button type="submit" class="w-full bg-violet-600 text-white py-3.5 rounded-xl font-bold hover:bg-violet-700 transition-all">
