@@ -157,7 +157,7 @@
             <!-- Logo -->
             <a href="/" class="flex items-center gap-2 sm:gap-3 group mb-6 sm:mb-8">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-xl shadow-violet-500/30 transform group-hover:rotate-12 transition-all duration-500 animate-pulse-glow overflow-hidden">
-                    <img src="{{ public_public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                    <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <div>
                     <span class="text-xl sm:text-2xl font-black text-white tracking-tight block leading-none hidden">TIP<span class="gradient-text">TAP</span></span>
