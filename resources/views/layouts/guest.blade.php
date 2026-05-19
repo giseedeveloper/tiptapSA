@@ -77,7 +77,7 @@
             <!-- Logo -->
             <a href="/" class="flex items-center gap-3 group mb-8">
                 <div class="w-14 h-14 flex items-center justify-center overflow-hidden rounded-full transform group-hover:rotate-12 transition-all duration-500 animate-pulse-glow">
-                    <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                    <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <div>
                     <span class="text-2xl font-black text-white tracking-tight block leading-none hidden">TIP<span class="gradient-text">TAP</span></span>

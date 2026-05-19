@@ -1,4 +1,49 @@
-# Ku-deploy Vite assets (CSS/JS) kwenye host
+# Ku-deploy assets (logo, favicon, CSS/JS) kwenye host
+
+## Logo, favicon, na bendera ya SA hazionekani
+
+### Sababu za kawaida
+
+1. **`APP_URL` bado ni `http://localhost`** kwenye `.env` ya server  
+   Browser inajaribu kupakia picha kutoka `http://localhost/images/logo.png` badala ya domain yako halisi → 404 / broken.
+
+2. **Document root si `public/`**  
+   Web server lazima i-point kwenye folder `public/` ya project, si root ya Laravel. Bila hiyo `/images/logo.png` haipatikani.
+
+3. **Faili hazijapaki kwenye server**  
+   Hakikisha zipo kwenye host: `public/images/logo.png`, `public/favicon.ico`, `public/images/flags/za.svg`, `public/images/login-bg.jpg` (zipo kwenye git — endesha `git pull`).
+
+4. **Hitilafu ya Vite (ukurasa wote haupaki)**  
+   Login inatumia `@vite(...)`. Ikiwa `public/build/manifest.json` haipo, ukurasa unaweza kuonyesha error na hakuna CSS/logo. Tazama sehemu ya Vite hapa chini.
+
+### Suluhu haraka kwenye host
+
+```bash
+# 1. Weka URL halisi kwenye .env
+APP_URL=https://your-actual-domain.co.za
+
+# 2. Cache config
+php artisan config:clear
+php artisan config:cache
+
+# 3. Build frontend
+npm ci
+npm run build
+```
+
+Kisha fungua moja kwa moja kwenye browser (badilisha domain):
+
+- `https://your-domain.co.za/images/logo.png`
+- `https://your-domain.co.za/favicon.ico`
+- `https://your-domain.co.za/images/flags/za.svg`
+
+Ikiwa hizi zinaonekana lakini login bado haina logo → tatizo ni Vite/CSS, si faili za picha.
+
+Code sasa inatumia `public_asset()` — inatoa path `/images/...` wakati `APP_URL` bado ni localhost, ili picha zifanye kazi hata kabla ya kusahihisha `.env`.
+
+---
+
+## Vite (CSS/JS) — ukurasa unaonekana vibaya
 
 ## Shida
 - **Local:** UI inaonekana vizuri (Tailwind, layout).

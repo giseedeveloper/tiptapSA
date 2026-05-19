@@ -34,7 +34,7 @@
             }
 
             .login-hero-bg {
-                background-image: url("{{ asset('images/login-bg.jpg') }}");
+                background-image: url("{{ public_asset('images/login-bg.jpg') }}");
                 background-size: cover;
                 background-position: center 42%;
                 background-repeat: no-repeat;
@@ -157,7 +157,7 @@
             <!-- Logo -->
             <a href="/" class="flex items-center gap-2 sm:gap-3 group mb-6 sm:mb-8">
                 <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-xl shadow-violet-500/30 transform group-hover:rotate-12 transition-all duration-500 animate-pulse-glow overflow-hidden">
-                    <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                    <img src="{{ public_public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <div>
                     <span class="text-xl sm:text-2xl font-black text-white tracking-tight block leading-none hidden">TIP<span class="gradient-text">TAP</span></span>
@@ -178,7 +178,7 @@
             <!-- Footer -->
             <p class="login-footer mt-6 sm:mt-8 text-white/50 text-xs font-medium text-center flex items-center justify-center gap-2">
                 <img
-                    src="{{ asset('images/flags/za.svg') }}"
+                    src="{{ public_asset('images/flags/za.svg') }}"
                     alt="South Africa flag"
                     width="24"
                     height="18"

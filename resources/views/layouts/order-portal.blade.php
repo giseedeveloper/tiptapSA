@@ -40,7 +40,7 @@
             <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                 <div class="flex items-center gap-2 shrink-0">
                     <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden flex items-center justify-center shadow-lg shadow-violet-500/20">
-                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                        <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
                     <span class="text-lg sm:text-xl font-black text-white tracking-tight">TIPTAP <span class="gradient-text">ORDER</span></span>
                 </div>

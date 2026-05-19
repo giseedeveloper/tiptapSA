@@ -170,7 +170,7 @@
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-3 group">
                     <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-full group-hover:rotate-12 transition-transform duration-500">
-                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                        <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
                     <span class="text-2xl font-display font-bold text-white tracking-tight">TIP<span class="text-primary">TAP</span></span>
                 </a>
@@ -223,7 +223,7 @@
         <div class="flex justify-between items-center mb-12">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-full">
-                    <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                    <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <span class="text-2xl font-display font-bold text-white">TIPTAP</span>
             </div>
@@ -294,7 +294,7 @@
                 <div class="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-primary rounded-[2rem] blur opacity-20 animate-pulse"></div>
                 <div class="relative bg-[#0B0F1A] rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden aspect-video group">
                     <!-- WhatsApp Chat Demo Image -->
-                    <img src="{{ asset('images/whatsapp_chat_demo.png') }}" alt="WhatsApp Chat Demo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
+                    <img src="{{ public_asset('images/whatsapp_chat_demo.png') }}" alt="WhatsApp Chat Demo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F1A]/40 via-transparent to-transparent"></div>
                 </div>
             </div>
@@ -515,7 +515,7 @@
                 <div class="col-span-2">
                     <a href="/" class="flex items-center gap-2 mb-6">
                         <div class="w-8 h-8 flex items-center justify-center overflow-hidden rounded-full">
-                            <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                            <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                         </div>
                         <span class="text-xl font-display font-bold text-white">TIPTAP</span>
                     </a>

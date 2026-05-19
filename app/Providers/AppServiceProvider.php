@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Notifications\SalaryPaymentConfirmed;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +17,18 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $appUrl = rtrim((string) config('app.url', ''), '/');
+
+        if ($appUrl !== ''
+            && ! str_contains($appUrl, 'localhost')
+            && ! str_contains($appUrl, '127.0.0.1')) {
+            URL::forceRootUrl($appUrl);
+
+            if (str_starts_with($appUrl, 'https://')) {
+                URL::forceScheme('https');
+            }
+        }
+
         View::composer('layouts.waiter', function ($view): void {
             if (Auth::check() && Auth::user()->hasRole('waiter')) {
                 $view->with('unreadSalaryCount', Auth::user()->unreadNotifications()

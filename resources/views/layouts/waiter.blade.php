@@ -170,7 +170,7 @@
             <div class="p-4 pb-3 flex justify-between items-center border-b border-white/5 shrink-0">
                 <div class="flex items-center gap-3 min-w-0">
                     <div class="w-8 h-8 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
-                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                        <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
                     <div class="sidebar-logo-text min-w-0">
                         <span class="text-base font-black text-white tracking-tight block leading-none hidden">TIP<span class="gradient-text">TAP</span></span>
@@ -362,7 +362,7 @@
                     <span class="font-bold text-white/90 text-lg tracking-tight">TIP<span class="gradient-text">TAP</span></span>
                 </div>
                     <div class="w-9 h-9 flex items-center justify-center overflow-hidden rounded-full">
-                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                        <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
             </div>
 

@@ -31,7 +31,7 @@
                     <div class="flex items-center justify-between mb-10 px-2">
                         <div class="flex items-center gap-3 overflow-hidden">
                             <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center overflow-hidden rounded-full">
-                                <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
+                                <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                             </div>
                             <span class="sidebar-text font-black text-2xl tracking-tighter whitespace-nowrap transition-opacity duration-300">TAP<span class="text-orange-red">TAP</span></span>
                         </div>
