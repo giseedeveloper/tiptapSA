@@ -188,16 +188,26 @@
     <script>
         // Auto-refresh stats every 30 seconds
         setInterval(function() {
-            fetch('{{ route("admin.dashboard.stats") }}')
-                .then(response => response.json())
+            fetch('{{ route("admin.dashboard.stats") }}', {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Stats request failed: ' + response.status);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('stat-total-restaurants').textContent = data.total_restaurants;
-                    if (document.getElementById('stat-total-waiters')) document.getElementById('stat-total-waiters').textContent = data.total_waiters ?? 0;
+                    if (document.getElementById('stat-total-waiters')) {
+                        document.getElementById('stat-total-waiters').textContent = data.total_waiters ?? 0;
+                    }
                     document.getElementById('stat-active-orders').textContent = data.active_orders;
-                    document.getElementById('stat-total-revenue').textContent = 'Tsh ' + (data.total_revenue / 1000).toFixed(1) + 'K';
+                    document.getElementById('stat-total-revenue').textContent = 'Tsh ' + (Number(data.total_revenue) / 1000).toFixed(1) + 'K';
                     document.getElementById('stat-pending-withdrawals').textContent = data.pending_withdrawals;
                 })
                 .catch(error => console.error('Error fetching stats:', error));
-        }, 30000); // 30 seconds
+        }, 30000);
     </script>
 </x-admin-layout>

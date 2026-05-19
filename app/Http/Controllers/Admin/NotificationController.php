@@ -28,14 +28,14 @@ class NotificationController extends Controller
             'target' => 'required|in:all,managers,waiters,specific_restaurant',
             'restaurant_id' => 'nullable|exists:restaurants,id',
         ], [
-            'title.required' => 'Kichwa cha tangazo ni lazima.',
-            'message.required' => 'Ujumbe ni lazima.',
+            'title.required' => 'Notification title is required.',
+            'message.required' => 'Message is required.',
         ]);
 
         if ($validated['target'] === 'specific_restaurant' && empty($validated['restaurant_id'])) {
             return back()
                 ->withInput()
-                ->withErrors(['restaurant_id' => 'Chagua restaurant unapotuma kwa restaurant maalum.']);
+                ->withErrors(['restaurant_id' => 'Select a restaurant when sending to a specific restaurant.']);
         }
 
         AdminSentNotification::create([
@@ -48,6 +48,6 @@ class NotificationController extends Controller
 
         // TODO: Integrate real push (FCM/OneSignal) here
 
-        return back()->with('success', 'Tangazo limepokelewa. Push notification litatumwa kwa watumiaji waliochaguliwa.');
+        return back()->with('success', 'Notification queued. A push notification will be sent to the selected users.');
     }
 }

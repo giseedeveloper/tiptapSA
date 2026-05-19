@@ -29,6 +29,8 @@
                         <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="preparing" {{ request('status') === 'preparing' ? 'selected' : '' }}>Preparing</option>
                         <option value="ready" {{ request('status') === 'ready' ? 'selected' : '' }}>Ready</option>
+                        <option value="served" {{ request('status') === 'served' ? 'selected' : '' }}>Served</option>
+                        <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Paid</option>
                         <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Completed</option>
                         <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
@@ -90,7 +92,8 @@
                                     'pending' => 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
                                     'preparing' => 'bg-blue-500/20 text-blue-400 border-blue-500/30',
                                     'ready' => 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-                                    'completed' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                                    'served' => 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+                                    'paid', 'completed' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
                                     'cancelled' => 'bg-rose-500/20 text-rose-400 border-rose-500/30',
                                     default => 'bg-white/10 text-white/60 border-white/20',
                                 };

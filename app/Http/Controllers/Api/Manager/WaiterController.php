@@ -58,7 +58,7 @@ class WaiterController extends Controller
         if (! $waiter) {
             return response()->json([
                 'success' => false,
-                'message' => 'Waiter hajapatikana. Angalia nambari ya pekee (TIPTAP-W-xxxxx).',
+                'message' => 'Waiter not found. Check the unique number (TIPTAP-W-xxxxx).',
             ], 404);
         }
 
@@ -107,7 +107,7 @@ class WaiterController extends Controller
         if ($waiter->restaurant_id !== null) {
             return response()->json([
                 'success' => false,
-                'message' => 'Waiter tayari ameunganishwa na restaurant nyingine. Manager wa restaurant ile anafaa kum-unlink kwanza.',
+                'message' => "Waiter is already linked to another restaurant. That restaurant's manager must unlink them first.",
             ], 422);
         }
 
@@ -115,7 +115,7 @@ class WaiterController extends Controller
         if (! $restaurant || ! $restaurant->tag_prefix) {
             return response()->json([
                 'success' => false,
-                'message' => 'Restaurant yako haijaweka tag prefix. Wasiliana na msaada.',
+                'message' => 'Your restaurant has no tag prefix configured. Contact support.',
             ], 422);
         }
 
@@ -135,9 +135,9 @@ class WaiterController extends Controller
             'linked_until' => $waiter->linked_until,
         ]);
 
-        $message = "Waiter {$waiter->name} ameunganishwa na restaurant yako. Code: {$waiter->waiter_code}";
+        $message = "Waiter {$waiter->name} has been linked to your restaurant. Code: {$waiter->waiter_code}";
         if ($waiter->employment_type === 'temporary' && $waiter->linked_until) {
-            $message .= ' (muda mpaka '.$waiter->linked_until->format('d/m/Y').')';
+            $message .= ' (until '.$waiter->linked_until->format('d/m/Y').')';
         }
 
         return response()->json([
@@ -191,7 +191,7 @@ class WaiterController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "{$name} ameondolewa kwenye restaurant yako. History yake (orders, ratings) imebaki. Anaweza kuungwa na restaurant nyingine.",
+            'message' => "{$name} has been unlinked from your restaurant. Their history (orders, ratings) is preserved. They can be linked to another restaurant.",
         ]);
     }
 

@@ -31,7 +31,7 @@ class SalaryPaymentConfirmed extends Notification
             'type' => 'salary_payment_confirmed',
             'period_month' => $this->payment->period_month,
             'period_label' => $this->payment->period_label,
-            'message' => 'Malipo yako ya '.$this->payment->period_label.' yamethibitishwa – angalia Salary Slip.',
+            'message' => 'Your payment for '.$this->payment->period_label.' has been confirmed – view your salary slip.',
             'url' => route('waiter.salary-slip.show', $this->payment->period_month),
         ];
     }

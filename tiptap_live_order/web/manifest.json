@@ -1,6 +1,6 @@
 {
-    "name": "tiptap_live_order",
-    "short_name": "tiptap_live_order",
+    "name": "TIPTAP Order",
+    "short_name": "TIPTAP",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0A0614",

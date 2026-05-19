@@ -12,9 +12,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         
-        <!-- Favicon -->
-        <link rel="icon" type="image/jpeg" href="{{ asset('logo.jpeg') }}">
-        <link rel="shortcut icon" href="{{ asset('logo.jpeg') }}">
+        @include('partials.brand-icons')
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -79,7 +77,7 @@
             <!-- Logo -->
             <a href="/" class="flex items-center gap-3 group mb-8">
                 <div class="w-14 h-14 flex items-center justify-center overflow-hidden rounded-full transform group-hover:rotate-12 transition-all duration-500 animate-pulse-glow">
-                    <img src="{{ asset('logo.jpeg') }}" alt="TIPTAP Logo" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <div>
                     <span class="text-2xl font-black text-white tracking-tight block leading-none hidden">TIP<span class="gradient-text">TAP</span></span>

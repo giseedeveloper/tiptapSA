@@ -7,7 +7,7 @@
         <form id="editItemsForm" method="POST" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 min-h-0">
             @csrf
             @method('PUT')
-            <p class="text-sm text-white/50">Chagua bidhaa na idadi. Ondoa bidhaa kwa kuweka 0.</p>
+            <p class="text-sm text-white/50">Select items and quantities. Remove an item by setting quantity to 0.</p>
             <div class="space-y-3 max-h-72 overflow-y-auto pr-2 custom-scrollbar" id="editItemsList">
                 @foreach($menuItems as $idx => $item)
                     <div class="flex items-center justify-between glass p-3 rounded-xl">

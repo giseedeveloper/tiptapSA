@@ -102,7 +102,7 @@ class PayrollController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Malipo yamethibitishwa kwa '.$waiter->name.'.',
+            'message' => 'Payment confirmed for '.$waiter->name.'.',
             'data' => [
                 'period_month' => $payment->period_month,
                 'net_pay' => (float) $payment->net_pay,

@@ -1,21 +1,21 @@
 <x-admin-layout>
     <x-slot name="header">Waiters & Unique Codes</x-slot>
 
-    <p class="text-white/50 text-sm mb-6 max-w-2xl">Ona waiters wote kwenye mfumo, nambari zao za pekee (TIPTAP-W-xxxxx), na restaurant walizounganishwa. Tafuta kwa jina, barua pepe, au nambari ya pekee.</p>
+    <p class="text-white/50 text-sm mb-6 max-w-2xl">View all waiters in the system, their unique numbers (TIPTAP-W-xxxxx), and linked restaurants. Search by name, email, or unique number.</p>
 
     {{-- Search by unique code --}}
     <div class="glass-card rounded-2xl p-6 mb-6 border border-white/10">
-        <h3 class="text-lg font-bold text-white mb-1">Tafuta kwa nambari ya pekee</h3>
-        <p class="text-sm text-white/50 mb-4">Ingiza nambari ya waiter (k.m. TIPTAP-W-00001) ili kuona maelezo yake.</p>
+        <h3 class="text-lg font-bold text-white mb-1">Search by unique number</h3>
+        <p class="text-sm text-white/50 mb-4">Enter a waiter number (e.g. TIPTAP-W-00001) to view their details.</p>
         <div class="flex flex-wrap gap-3 items-end">
             <div class="flex-1 min-w-[200px]">
-                <label for="searchCode" class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Nambari ya pekee</label>
+                <label for="searchCode" class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Unique number</label>
                 <input type="text" id="searchCode" placeholder="TIPTAP-W-00001"
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-mono text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent">
             </div>
             <button type="button" id="adminSearchBtn" onclick="adminSearchWaiter()" class="px-6 py-3 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <span class="search-label">Tafuta</span>
+                <span class="search-label">Search</span>
             </button>
         </div>
         <div id="searchResult" class="mt-4 hidden"></div>
@@ -26,18 +26,18 @@
     <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
         <div class="p-6 border-b border-white/5 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
             <div>
-                <h2 class="text-xl font-black text-white tracking-tight">Orodha ya Waiters</h2>
-                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Jina, barua pepe, unique code, restaurant</p>
+                <h2 class="text-xl font-black text-white tracking-tight">Waiter list</h2>
+                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Name, email, unique code, restaurant</p>
             </div>
             <form method="GET" action="{{ route('admin.waiters.index') }}" class="flex gap-3 w-full md:w-auto">
                 <div class="relative flex-1 md:w-64">
-                    <input type="text" name="q" value="{{ $search }}" placeholder="Jina, email, au TIPTAP-W-xxx"
+                    <input type="text" name="q" value="{{ $search }}" placeholder="Name, email, or TIPTAP-W-xxx"
                            class="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="absolute left-3 top-1/2 -translate-y-1/2 text-white/40">
                         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                     </svg>
                 </div>
-                <button type="submit" class="px-5 py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl font-semibold text-sm border border-white/10 transition-all">Tafuta</button>
+                <button type="submit" class="px-5 py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl font-semibold text-sm border border-white/10 transition-all">Search</button>
             </form>
         </div>
 
@@ -99,9 +99,9 @@
                         <tr>
                             <td colspan="7" class="px-6 py-12 text-center text-white/50">
                                 @if($search)
-                                    Hakuna waiter aliyepatikana kwa "{{ $search }}".
+                                    No waiter found for "{{ $search }}".
                                 @else
-                                    Hakuna waiters bado kwenye mfumo.
+                                    No waiters in the system yet.
                                 @endif
                             </td>
                         </tr>
@@ -131,7 +131,7 @@
             errorEl.textContent = '';
 
             if (!q) {
-                errorEl.textContent = 'Ingiza nambari ya pekee (TIPTAP-W-xxxxx).';
+                errorEl.textContent = 'Enter the unique number (TIPTAP-W-xxxxx).';
                 errorEl.classList.remove('hidden');
                 return;
             }
@@ -144,7 +144,7 @@
                 .then(r => r.json())
                 .then(data => {
                     if (!data.success) {
-                        errorEl.textContent = data.message || 'Waiter hajapatikana.';
+                        errorEl.textContent = data.message || 'Waiter not found.';
                         errorEl.classList.remove('hidden');
                         return;
                     }
@@ -172,11 +172,11 @@
                     resultEl.classList.remove('hidden');
                 })
                 .catch(function() {
-                    errorEl.textContent = 'Hitilafu wakati wa kutafuta. Jaribu tena.';
+                    errorEl.textContent = 'Error while searching. Please try again.';
                     errorEl.classList.remove('hidden');
                 })
                 .finally(function() {
-                    if (btn) { btn.disabled = false; if (labelEl) labelEl.textContent = 'Tafuta'; }
+                    if (btn) { btn.disabled = false; if (labelEl) labelEl.textContent = 'Search'; }
                 });
         }
     </script>

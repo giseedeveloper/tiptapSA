@@ -10,9 +10,9 @@
     @if (session('order_portal_password_generated'))
         <div class="mb-6 p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-sm">
             {{ session('success') }}
-            <p class="mt-2 font-semibold">Password ya Order Portal (onyesha waiter mara moja):</p>
+            <p class="mt-2 font-semibold">Order Portal password (show waiter once):</p>
             <p class="mt-1 font-mono text-lg tracking-wider bg-black/20 px-3 py-2 rounded-lg inline-block">{{ session('order_portal_password_generated') }}</p>
-            <p class="mt-2 text-white/70">Waiter: <strong>{{ session('order_portal_waiter_name') }}</strong> · Nambari: <code>{{ session('order_portal_waiter_number') }}</code></p>
+            <p class="mt-2 text-white/70">Waiter: <strong>{{ session('order_portal_waiter_name') }}</strong> · Number: <code>{{ session('order_portal_waiter_number') }}</code></p>
             <p class="mt-1 text-white/50 text-xs">Login: <a href="{{ $orderPortalLoginUrl ?? route('order-portal.login') }}" class="text-cyan-400 underline" target="_blank">{{ $orderPortalLoginUrl ?? url('/order-portal/login') }}</a></p>
         </div>
     @endif
@@ -20,17 +20,17 @@
     <!-- Link Waiter Card -->
     <div class="glass-card rounded-2xl p-6 mb-8 border border-white/10">
         <h3 class="text-lg font-bold text-white mb-1">Link Waiter</h3>
-        <p class="text-sm text-white/50 mb-2">Waiter anajisajili kwenye web, kisha anakupa nambari yake ya pekee (TIPTAP-W-xxxxx). Tafuta hapa na uunganishe na restaurant yako.</p>
-        <p class="text-xs text-white/40 mb-4">Chagua <strong class="text-white/60">Muda mrefu</strong> (permanent) au <strong class="text-white/60">Show-time</strong> (muda maalum – weka tarehe ya mwisho).</p>
+        <p class="text-sm text-white/50 mb-2">Waiters register on the web, then give you their unique number (TIPTAP-W-xxxxx). Search here and link them to your restaurant.</p>
+        <p class="text-xs text-white/40 mb-4">Choose <strong class="text-white/60">Long-term</strong> (permanent) or <strong class="text-white/60">Show-time</strong> (fixed period – set an end date).</p>
         <div class="flex flex-wrap gap-3 items-end">
             <div class="flex-1 min-w-[200px]">
-                <label for="searchCode" class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Nambari ya pekee ya waiter</label>
+                <label for="searchCode" class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Waiter unique number</label>
                 <input type="text" id="searchCode" placeholder="TIPTAP-W-00001"
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-mono text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent">
             </div>
             <button type="button" onclick="searchWaiter()" class="px-6 py-3 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                Tafuta
+                Search
             </button>
         </div>
         <div id="searchResult" class="mt-4 hidden"></div>
@@ -253,8 +253,8 @@
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Hakuna waiters waliounganishwa</h3>
-                <p class="text-white/40">Tumia "Link Waiter" hapo juu kwa nambari ya pekee ya waiter.</p>
+                <h3 class="text-xl font-bold text-white mb-2">No linked waiters</h3>
+                <p class="text-white/40">Use "Link Waiter" above with the waiter's unique number.</p>
             </div>
         @endforelse
     </div>
@@ -286,7 +286,7 @@
                             <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse mr-2"></span>
                             Active Staff
                         </div>
-                        <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mt-2 mb-0.5">Aina ya kuunga</p>
+                        <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mt-2 mb-0.5">Link type</p>
                         <p class="text-xs text-white/70" id="viewWaiterEmployment">—</p>
                     </div>
                 </div>
@@ -333,11 +333,11 @@
             resultEl.innerHTML = '';
             errorEl.classList.add('hidden');
             if (!q) {
-                errorEl.textContent = 'Ingiza nambari ya pekee (TIPTAP-W-xxxxx).';
+                errorEl.textContent = 'Enter the unique number (TIPTAP-W-xxxxx).';
                 errorEl.classList.remove('hidden');
                 return;
             }
-            resultEl.innerHTML = '<p class="text-white/50 text-sm py-3">Inatafuta…</p>';
+            resultEl.innerHTML = '<p class="text-white/50 text-sm py-3">Searching…</p>';
             resultEl.classList.remove('hidden');
             fetch('{{ route("manager.waiters.search") }}?q=' + encodeURIComponent(q), {
                 headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
@@ -347,7 +347,7 @@
                     if (!data.success) {
                         resultEl.classList.add('hidden');
                         resultEl.innerHTML = '';
-                        errorEl.textContent = data.message || 'Waiter hajapatikana.';
+                        errorEl.textContent = data.message || 'Waiter not found.';
                         errorEl.classList.remove('hidden');
                         return;
                     }
@@ -361,41 +361,41 @@
                     }
                     html += '<div class="min-w-0 flex-1"><p class="font-bold text-white text-lg">' + (w.name || '—') + '</p>';
                     html += '<p class="text-sm text-white/60">' + (w.email || '') + '</p>';
-                    html += '<p class="text-sm text-white/60">Simu: ' + (w.phone || '—') + '</p>';
-                    if (w.location) html += '<p class="text-sm text-white/60">Mahali: ' + w.location + '</p>';
+                    html += '<p class="text-sm text-white/60">Phone: ' + (w.phone || '—') + '</p>';
+                    if (w.location) html += '<p class="text-sm text-white/60">Location: ' + w.location + '</p>';
                     html += '<p class="text-sm font-mono text-cyan-400 mt-2">' + (w.global_waiter_number || '') + '</p>';
                     html += '<p class="text-xs text-white/40 mt-2">Orders: ' + (w.orders_count || 0) + ' · Ratings: ' + (w.feedback_count || 0) + '</p></div></div>';
 
                     if (w.work_history && w.work_history.length > 0) {
                         html += '<div class="pt-3 border-t border-white/10">';
-                        html += '<p class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2">Historia ya kazi (alishafanya kazi sehemu flani, muda flani)</p>';
+                        html += '<p class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2">Work history</p>';
                         html += '<ul class="space-y-2">';
                         w.work_history.forEach(function(h) {
                             const linkedDate = h.linked_at ? new Date(h.linked_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
                             const unlinkedDate = h.unlinked_at ? new Date(h.unlinked_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null;
-                            const typeLabel = h.employment_type === 'temporary' ? ' (Show-time)' : ' (Muda mrefu)';
+                            const typeLabel = h.employment_type === 'temporary' ? ' (Show-time)' : ' (Long-term)';
                             if (h.is_active) {
-                                html += '<li class="flex items-start gap-2 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0 animate-pulse"></span><span class="text-white/80"><strong class="text-white">' + (h.restaurant_name || '—') + '</strong>' + typeLabel + ' — Anafanya kazi tangu ' + linkedDate + ' <span class="text-emerald-400 font-medium">(Active)</span></span></li>';
+                                html += '<li class="flex items-start gap-2 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0 animate-pulse"></span><span class="text-white/80"><strong class="text-white">' + (h.restaurant_name || '—') + '</strong>' + typeLabel + ' — Working since ' + linkedDate + ' <span class="text-emerald-400 font-medium">(Active)</span></span></li>';
                             } else {
-                                html += '<li class="flex items-start gap-2 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-white/30 mt-1.5 shrink-0"></span><span class="text-white/70">Alifanya kazi <strong class="text-white/90">' + (h.restaurant_name || '—') + '</strong>' + typeLabel + ' — ' + linkedDate + ' hadi ' + (unlinkedDate || '—') + '</span></li>';
+                                html += '<li class="flex items-start gap-2 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-white/30 mt-1.5 shrink-0"></span><span class="text-white/70">Worked at <strong class="text-white/90">' + (h.restaurant_name || '—') + '</strong>' + typeLabel + ' — ' + linkedDate + ' to ' + (unlinkedDate || '—') + '</span></li>';
                             }
                         });
                         html += '</ul></div>';
                     }
 
                     if (w.is_linked && w.current_restaurant) {
-                        html += '<p class="text-amber-400 text-sm mt-2">Tayari ameunganishwa na: ' + w.current_restaurant + '. Manager wa restaurant ile anafaa kum-unlink kwanza.</p>';
+                        html += '<p class="text-amber-400 text-sm mt-2">Already linked to: ' + w.current_restaurant + '. That restaurant's manager must unlink them first.</p>';
                     } else {
                         var token = (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
                         var linkUrl = '{{ url("manager/waiters") }}/' + w.id + '/link';
                         html += '<form action="' + linkUrl + '" method="POST" class="mt-4 space-y-4">';
                         html += '<input type="hidden" name="_token" value="' + token + '">';
-                        html += '<p class="text-xs text-white/40 mb-2">Chagua aina ya kuunga: muda mrefu (anabaki mpaka um-unlink) au show-time (muda maalum – weka tarehe ya mwisho).</p>';
+                        html += '<p class="text-xs text-white/40 mb-2">Choose link type: long-term (stays until you unlink) or show-time (fixed period – set an end date).</p>';
                         html += '<div class="flex flex-wrap gap-4 items-end">';
-                        html += '<div><label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Aina ya kuunga</label>';
-                        html += '<label class="inline-flex items-center gap-2 mr-4"><input type="radio" name="employment_type" value="permanent" checked class="rounded border-white/20" onchange="toggleLinkUntil(this)"> <span class="text-white text-sm">Muda mrefu (Permanent)</span></label>';
-                        html += '<label class="inline-flex items-center gap-2"><input type="radio" name="employment_type" value="temporary" class="rounded border-white/20" onchange="toggleLinkUntil(this)"> <span class="text-white text-sm">Muda / Show-time</span></label></div>';
-                        html += '<div id="linkUntilWrap" class="hidden"><label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Mpaka tarehe</label>';
+                        html += '<div><label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Link type</label>';
+                        html += '<label class="inline-flex items-center gap-2 mr-4"><input type="radio" name="employment_type" value="permanent" checked class="rounded border-white/20" onchange="toggleLinkUntil(this)"> <span class="text-white text-sm">Long-term (Permanent)</span></label>';
+                        html += '<label class="inline-flex items-center gap-2"><input type="radio" name="employment_type" value="temporary" class="rounded border-white/20" onchange="toggleLinkUntil(this)"> <span class="text-white text-sm">Fixed / Show-time</span></label></div>';
+                        html += '<div id="linkUntilWrap" class="hidden"><label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">End date</label>';
                         html += '<input type="date" name="linked_until" id="linkUntilInput" class="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm" min="' + new Date().toISOString().slice(0,10) + '"></div>';
                         html += '</div>';
                         html += '<button type="submit" class="px-4 py-2 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">Link Waiter</button>';
@@ -408,7 +408,7 @@
                 .catch(() => {
                     resultEl.classList.add('hidden');
                     resultEl.innerHTML = '';
-                    errorEl.textContent = 'Hitilafu ya mtandao. Jaribu tena.';
+                    errorEl.textContent = 'Network error. Please try again.';
                     errorEl.classList.remove('hidden');
                 });
         }
@@ -436,8 +436,8 @@
             const date = waiter.created_at ? new Date(waiter.created_at) : null;
             document.getElementById('viewWaiterJoined').textContent = date ? date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
             var emp = (waiter.employment_type === 'temporary' && waiter.linked_until)
-                ? 'Show-time · mpaka ' + new Date(waiter.linked_until).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                : 'Muda mrefu (Permanent)';
+                ? 'Show-time · until ' + new Date(waiter.linked_until).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                : 'Long-term (Permanent)';
             document.getElementById('viewWaiterEmployment').textContent = emp;
             document.getElementById('viewWaiterModal').classList.remove('hidden');
             document.getElementById('viewWaiterModal').classList.add('flex');

@@ -21,7 +21,7 @@
                 <form action="{{ route('waiter.status.update') }}" method="POST" class="inline">
                     @csrf
                     <input type="hidden" name="is_online" value="0">
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-rose-500/20 text-white/80 hover:text-rose-300 border border-white/10 text-sm font-semibold transition-all">Nimekamilisha – Nenda Offline</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-rose-500/20 text-white/80 hover:text-rose-300 border border-white/10 text-sm font-semibold transition-all">Shift complete – Go offline</button>
                 </form>
             @else
                 <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/60 border border-white/10 text-sm font-semibold">
@@ -31,7 +31,7 @@
                 <form action="{{ route('waiter.status.update') }}" method="POST" class="inline">
                     @csrf
                     <input type="hidden" name="is_online" value="1">
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all">Niko Kazini – Nenda Online</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all">On duty – Go online</button>
                 </form>
             @endif
         </div>
@@ -44,9 +44,9 @@
         @foreach($salaryNotifications as $n)
             @php $data = $n->data; @endphp
             <a href="{{ $data['url'] ?? route('waiter.salary-slip.index') }}" class="block p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 hover:bg-amber-500/20 transition-colors">
-                <p class="font-semibold">Malipo yamethibitishwa – {{ $data['period_label'] ?? 'Salary Slip' }}</p>
-                <p class="text-sm text-amber-200/80 mt-0.5">{{ $data['message'] ?? 'Angalia Salary Slip.' }}</p>
-                <span class="text-xs text-amber-400 mt-2 inline-block">Angalia slip →</span>
+                <p class="font-semibold">Payment confirmed – {{ $data['period_label'] ?? 'Salary Slip' }}</p>
+                <p class="text-sm text-amber-200/80 mt-0.5">{{ $data['message'] ?? 'View your salary slip.' }}</p>
+                <span class="text-xs text-amber-400 mt-2 inline-block">View slip →</span>
             </a>
         @endforeach
     </div>
@@ -380,10 +380,10 @@
                     <h3 class="text-lg font-bold tracking-tight">TIPTAP ORDER (Live Orders)</h3>
                     <span class="rounded-lg bg-emerald-500/20 px-2 py-1 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase">Active</span>
                 </div>
-                <p class="text-sm text-white/70 mb-4">Una ufikiaji wa Live Orders portal. Ingia kwa <strong class="text-cyan-300">nambari yako ya waiter</strong> ({{ Auth::user()->global_waiter_number ?? Auth::user()->waiter_code ?? 'N/A' }}) na <strong class="text-cyan-300">password uliyopewa na manager</strong>.</p>
+                <p class="text-sm text-white/70 mb-4">You have access to the Live Orders portal. Sign in with your <strong class="text-cyan-300">waiter number</strong> ({{ Auth::user()->global_waiter_number ?? Auth::user()->waiter_code ?? 'N/A' }}) and <strong class="text-cyan-300">manager-assigned password</strong>.</p>
                 <a href="{{ $orderPortalLoginUrl }}" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-violet-600 hover:bg-violet-500 py-2.5 px-4 text-sm font-semibold transition-all shadow-lg shadow-violet-600/20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                    Fungua Live Orders Portal
+                    Open Live Orders Portal
                 </a>
             </div>
             @endif

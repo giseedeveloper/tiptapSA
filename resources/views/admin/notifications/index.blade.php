@@ -2,20 +2,20 @@
     <x-slot name="header">Push Notifications</x-slot>
 
     <div class="space-y-8">
-        <p class="text-white/50 text-sm max-w-2xl">Tuma tangazo la papo hapo kwa managers na waiters. Chagua hadhira na restaurant (hiari).</p>
+        <p class="text-white/50 text-sm max-w-2xl">Send an instant notification to managers and waiters. Choose audience and restaurant (optional).</p>
 
         {{-- Broadcast form --}}
         <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
             <div class="p-6 border-b border-white/5">
                 <h2 class="text-xl font-black text-white tracking-tight">Broadcast Message</h2>
-                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Tuma tangazo kwa staff wa restaurants</p>
+                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Send notification to restaurant staff</p>
             </div>
             <div class="p-6 md:p-8">
                 <form id="notificationForm" action="{{ route('admin.notifications.send') }}" method="POST" class="space-y-6 max-w-2xl">
                     @csrf
                     @if ($errors->any())
                         <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
-                            <p class="font-semibold mb-1">Tafadhali sahihisha makosa:</p>
+                            <p class="font-semibold mb-1">Please fix the following errors:</p>
                             <ul class="list-disc list-inside space-y-0.5">
                                 @foreach ($errors->all() as $e)
                                     <li>{{ $e }}</li>
@@ -24,31 +24,31 @@
                         </div>
                     @endif
                     <div class="space-y-2">
-                        <label for="title" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Kichwa (Title)</label>
+                        <label for="title" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Title</label>
                         <input type="text" id="title" name="title" value="{{ old('title') }}" required
                                class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                               placeholder="k.m. Matengenezo ya Mfumo">
+                               placeholder="e.g. System maintenance">
                     </div>
                     <div class="space-y-2">
-                        <label for="message" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Ujumbe</label>
+                        <label for="message" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Message</label>
                         <textarea id="message" name="message" rows="5" required
                                   class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                                  placeholder="Andika ujumbe hapa...">{{ old('message') }}</textarea>
+                                  placeholder="Write your message here...">{{ old('message') }}</textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label for="targetSelect" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Hadhira</label>
+                            <label for="targetSelect" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Audience</label>
                             <select id="targetSelect" name="target" class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white focus:ring-2 focus:ring-violet-500 [&>option]:bg-gray-900">
-                                <option value="all" {{ old('target', 'all') === 'all' ? 'selected' : '' }}>Watumiaji wote</option>
-                                <option value="managers" {{ old('target') === 'managers' ? 'selected' : '' }}>Managers wote</option>
-                                <option value="waiters" {{ old('target') === 'waiters' ? 'selected' : '' }}>Waiters wote</option>
+                                <option value="all" {{ old('target', 'all') === 'all' ? 'selected' : '' }}>All users</option>
+                                <option value="managers" {{ old('target') === 'managers' ? 'selected' : '' }}>All managers</option>
+                                <option value="waiters" {{ old('target') === 'waiters' ? 'selected' : '' }}>All waiters</option>
                                 <option value="specific_restaurant" {{ old('target') === 'specific_restaurant' ? 'selected' : '' }}>Restaurant maalum</option>
                             </select>
                         </div>
                         <div id="restaurantSelectContainer" class="space-y-2 {{ old('target') === 'specific_restaurant' ? '' : 'hidden' }}">
-                            <label for="restaurant_id" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Chagua Restaurant</label>
+                            <label for="restaurant_id" class="text-[10px] font-bold uppercase tracking-wider text-white/40 block">Select restaurant</label>
                             <select id="restaurant_id" name="restaurant_id" class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white focus:ring-2 focus:ring-violet-500 [&>option]:bg-gray-900">
-                                <option value="">-- Chagua --</option>
+                                <option value="">-- Select --</option>
                                 @foreach ($restaurants as $r)
                                     <option value="{{ $r->id }}" {{ old('restaurant_id') == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
                                 @endforeach
@@ -58,7 +58,7 @@
                     <div class="pt-2">
                         <button type="submit" id="sendBtn" class="notification-send-btn px-10 py-4 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl font-bold text-sm hover:shadow-lg hover:shadow-violet-500/25 transition-all flex items-center gap-3">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="send-icon"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-                            <span class="send-label">Tuma Tangazo</span>
+                            <span class="send-label">Send notification</span>
                         </button>
                     </div>
                 </form>
@@ -68,8 +68,8 @@
         {{-- Recent broadcasts --}}
         <div class="glass-card rounded-2xl overflow-hidden border border-white/10">
             <div class="p-6 border-b border-white/5">
-                <h2 class="text-xl font-black text-white tracking-tight">Tangazo Zilizotumwa Hivi Karibuni</h2>
-                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Orodha ya mabroadcast uliyotuma</p>
+                <h2 class="text-xl font-black text-white tracking-tight">Recently sent notifications</h2>
+                <p class="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">List of broadcasts you sent</p>
             </div>
             <div class="overflow-x-auto custom-scrollbar">
                 @if ($recent->isEmpty())
@@ -77,17 +77,17 @@
                         <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30 mx-auto mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                         </div>
-                        <p class="text-white font-bold">Bado hakuna tangazo lililotumwa</p>
-                        <p class="text-sm text-white/50 mt-1">Tangazo lako la kwanza litaonekana hapa.</p>
+                        <p class="text-white font-bold">No notifications sent yet</p>
+                        <p class="text-sm text-white/50 mt-1">Your first notification will appear here.</p>
                     </div>
                 @else
                     <table class="w-full min-w-[600px]">
                         <thead>
                             <tr class="bg-white/5">
-                                <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Tarehe</th>
+                                <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Date</th>
                                 <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Kichwa</th>
-                                <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Hadhira</th>
-                                <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Ujumbe (kifupi)</th>
+                                <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Audience</th>
+                                <th class="px-6 py-4 text-left text-[10px] font-black text-white/40 uppercase tracking-widest">Message (preview)</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-white/5">
@@ -114,11 +114,11 @@
                 <ul class="space-y-3">
                     <li class="flex gap-3">
                         <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg></span>
-                        <p class="text-xs text-white/60 font-medium">Tumia kichwa kifupi na wazi kwa ufanisi.</p>
+                        <p class="text-xs text-white/60 font-medium">Use a short, clear title.</p>
                     </li>
                     <li class="flex gap-3">
                         <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg></span>
-                        <p class="text-xs text-white/60 font-medium">Chagua hadhira maalum ili kuepuka spam.</p>
+                        <p class="text-xs text-white/60 font-medium">Choose a specific audience to avoid spam.</p>
                     </li>
                 </ul>
             </div>
@@ -134,8 +134,8 @@
                             <p class="text-xs text-white/70">Sasa hivi</p>
                         </div>
                     </div>
-                    <p class="text-sm font-bold text-white">Kichwa cha tangazo</p>
-                    <p class="text-xs text-white/60">Ujumbe utaonekana hivi kwenye simu ya mtumiaji.</p>
+                    <p class="text-sm font-bold text-white">Notification title</p>
+                    <p class="text-xs text-white/60">The message will appear like this on the user's phone.</p>
                 </div>
             </div>
         </div>

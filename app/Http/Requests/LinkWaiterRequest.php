@@ -28,10 +28,10 @@ class LinkWaiterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'employment_type.required' => 'Chagua aina: Muda mrefu (permanent) au Muda (show-time).',
-            'employment_type.in' => 'Aina ni permanent au temporary.',
-            'linked_until.required_if' => 'Tarehe ya mwisho inahitajika kwa waiter wa muda (show-time).',
-            'linked_until.after_or_equal' => 'Tarehe ya mwisho lazima iwe leo au baadaye.',
+            'employment_type.required' => 'Choose type: Long-term (permanent) or Fixed period (show-time).',
+            'employment_type.in' => 'Type must be permanent or temporary.',
+            'linked_until.required_if' => 'End date is required for temporary (show-time) waiters.',
+            'linked_until.after_or_equal' => 'End date must be today or later.',
         ];
     }
 }

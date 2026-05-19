@@ -100,19 +100,12 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
-    public function edit(string $id)
-    {
-        $order = \App\Models\Order::findOrFail($id);
-
-        return view('admin.orders.edit', compact('order'));
-    }
-
     public function update(Request $request, string $id)
     {
         $order = \App\Models\Order::findOrFail($id);
 
         $validated = $request->validate([
-            'status' => 'required|in:pending,preparing,ready,completed,cancelled',
+            'status' => 'required|in:pending,preparing,ready,served,paid,completed,cancelled',
         ]);
 
         $order->update($validated);

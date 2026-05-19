@@ -20,31 +20,9 @@ class DatabaseSeeder extends Seeder
         // Create Super Admin
         $admin = User::factory()->create([
             'name' => 'Super Admin',
-            'email' => 'admin@taptap.com',
+            'email' => 'Tadmin@tiptap.so.za',
+            'password' => 'Tiptapsoza@2026',
         ]);
         $admin->assignRole('super_admin');
-
-        // Create a Restaurant
-        $restaurant = \App\Models\Restaurant::create([
-            'name' => 'TAPTAP Demo Grill',
-            'location' => 'Dar es Salaam',
-            'phone' => '0700000000',
-        ]);
-
-        // Create Manager
-        $manager = User::factory()->create([
-            'name' => 'Manager One',
-            'email' => 'manager@taptap.com',
-            'restaurant_id' => $restaurant->id,
-        ]);
-        $manager->assignRole('manager');
-
-        // Create Waiter
-        $waiter = User::factory()->create([
-            'name' => 'Waiter One',
-            'email' => 'waiter@taptap.com',
-            'restaurant_id' => $restaurant->id,
-        ]);
-        $waiter->assignRole('waiter');
     }
 }

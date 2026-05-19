@@ -40,11 +40,11 @@ class LoginController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Password si sahihi au imekwisha tamaa. Omba mpya kwa manager wako.',
+                    'message' => 'Incorrect password or it has expired. Ask your manager for a new one.',
                 ], 422);
             }
 
-            return back()->with('error', 'Password si sahihi au imekwisha tamaa. Omba mpya kwa manager wako.');
+            return back()->with('error', 'Incorrect password or it has expired. Ask your manager for a new one.');
         }
 
         $user = $credential->user;
@@ -52,11 +52,11 @@ class LoginController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Huna ufikiaji wa Order Portal. Wasiliana na manager wako.',
+                    'message' => 'You do not have access to the Order Portal. Contact your manager.',
                 ], 403);
             }
 
-            return back()->with('error', 'Huna ufikiaji wa Order Portal. Wasiliana na manager wako.');
+            return back()->with('error', 'You do not have access to the Order Portal. Contact your manager.');
         }
 
         session([
@@ -73,7 +73,7 @@ class LoginController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Umefanikiwa kuingia.',
+                'message' => 'Signed in successfully.',
                 'data' => [
                     'token' => $token,
                     'restaurant_id' => $credential->restaurant_id,
@@ -84,7 +84,7 @@ class LoginController extends Controller
             ]);
         }
 
-        return redirect()->route('order-portal.orders')->with('success', 'Umefanikiwa kuingia.');
+        return redirect()->route('order-portal.orders')->with('success', 'Signed in successfully.');
     }
 
     public function destroy(Request $request): RedirectResponse|JsonResponse

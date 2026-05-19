@@ -35,7 +35,7 @@ class WaiterRegistrationController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Akaunti yako imefunguliwa. Nambari yako ya pekee: '.$user->global_waiter_number.'. Ongea na manager wa restaurant ili akuunge.',
+            'message' => 'Your account has been created. Your unique number: '.$user->global_waiter_number.'. Ask a restaurant manager to link you.',
             'token' => $token,
             'token_type' => 'Bearer',
             'user' => [
@@ -48,7 +48,7 @@ class WaiterRegistrationController extends Controller
                 'restaurant_id' => null,
                 'waiter_code' => null,
                 'roles' => $user->getRoleNames()->toArray(),
-            ]
+            ],
         ], 201);
     }
 }

@@ -1,4 +1,4 @@
-<x-guest-layout title="TIPTAP | Login">
+<x-guest-layout title="TIPTAP | Login" :hero-background="true">
     <div class="relative">
         <!-- Header -->
         <div class="text-center mb-6 sm:mb-8">

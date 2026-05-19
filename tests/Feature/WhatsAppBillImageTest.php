@@ -20,7 +20,7 @@ it('returns bill image for a valid signed order url', function () {
         'restaurant_id' => $restaurant->id,
         'table_number' => '7',
         'customer_phone' => '255700000001',
-        'customer_name' => 'Mteja',
+        'customer_name' => 'Customer',
         'status' => 'served',
         'total_amount' => 12000,
     ]);

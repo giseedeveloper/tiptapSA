@@ -246,8 +246,8 @@ class DashboardController extends Controller
         $waiter->save();
 
         $msg = $isOnline
-            ? 'Uko sasa Online. Utapokea maombi na maagizo.'
-            : 'Uko sasa Offline. Hutapokea maombi mapya au maagizo.';
+            ? 'You are now online. You will receive requests and orders.'
+            : 'You are now offline. You will not receive new requests or orders.';
 
         return back()->with('success', $msg);
     }

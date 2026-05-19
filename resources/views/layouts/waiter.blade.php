@@ -11,9 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="{{ asset('logo.jpeg') }}">
-    <link rel="shortcut icon" href="{{ asset('logo.jpeg') }}">
+    @include('partials.brand-icons')
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -172,7 +170,7 @@
             <div class="p-4 pb-3 flex justify-between items-center border-b border-white/5 shrink-0">
                 <div class="flex items-center gap-3 min-w-0">
                     <div class="w-8 h-8 flex shrink-0 items-center justify-center overflow-hidden rounded-full">
-                        <img src="{{ asset('logo.jpeg') }}" alt="TIPTAP Logo" class="w-full h-full object-cover">
+                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
                     <div class="sidebar-logo-text min-w-0">
                         <span class="text-base font-black text-white tracking-tight block leading-none hidden">TIP<span class="gradient-text">TAP</span></span>
@@ -364,7 +362,7 @@
                     <span class="font-bold text-white/90 text-lg tracking-tight">TIP<span class="gradient-text">TAP</span></span>
                 </div>
                     <div class="w-9 h-9 flex items-center justify-center overflow-hidden rounded-full">
-                        <img src="{{ asset('logo.jpeg') }}" alt="TIPTAP Logo" class="w-full h-full object-cover">
+                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
             </div>
 
@@ -484,21 +482,21 @@
                         <form action="{{ route('waiter.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                             @csrf
                             <div>
-                                <label for="profileName" class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Jina lako</label>
+                                <label for="profileName" class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Your name</label>
                                 <input type="text" name="name" id="profileName" value="{{ old('name', $layoutWaiter->name) }}" required maxlength="255" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent">
                                 @error('name')
                                     <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Picha ya wasifu</label>
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Profile photo</label>
                                 <input type="file" name="profile_photo" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" class="w-full text-sm text-white/70 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-violet-600 file:text-white file:font-semibold file:cursor-pointer hover:file:bg-violet-500">
-                                <p class="text-white/40 text-xs mt-1">JPG, PNG, GIF au WebP. Ukiweka mpya, ile ya zamani itabadilishwa.</p>
+                                <p class="text-white/40 text-xs mt-1">JPG, PNG, GIF or WebP. Uploading a new file replaces the previous one.</p>
                                 @error('profile_photo')
                                     <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all">Hifadhi mabadiliko</button>
+                            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all">Save changes</button>
                         </form>
                     </div>
                 </div>

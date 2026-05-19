@@ -130,17 +130,27 @@
                 <div class="space-y-4">
                     <div class="p-5 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
                         <p class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Total Earnings</p>
-                        <p class="text-3xl font-black text-emerald-400 tracking-tight">Tsh 1.2M</p>
+                        <p class="text-3xl font-black text-emerald-400 tracking-tight">
+                            @if($overview['total_earnings'] >= 1000000)
+                                Tsh {{ number_format($overview['total_earnings'] / 1000000, 1) }}M
+                            @elseif($overview['total_earnings'] >= 1000)
+                                Tsh {{ number_format($overview['total_earnings'] / 1000, 1) }}K
+                            @else
+                                Tsh {{ number_format($overview['total_earnings'], 0) }}
+                            @endif
+                        </p>
                     </div>
                     <div class="p-5 bg-blue-500/10 rounded-xl border border-blue-500/20">
                         <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Total Orders</p>
-                        <p class="text-3xl font-black text-blue-400 tracking-tight">156</p>
+                        <p class="text-3xl font-black text-blue-400 tracking-tight">{{ number_format($overview['total_orders']) }}</p>
                     </div>
                     <div class="p-5 bg-purple-500/10 rounded-xl border border-purple-500/20">
                         <p class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-1">Avg. Rating</p>
                         <div class="flex items-center gap-2">
-                            <p class="text-3xl font-black text-purple-400 tracking-tight">4.8</p>
-                            <i data-lucide="star" class="w-5 h-5 text-purple-400 fill-purple-400"></i>
+                            <p class="text-3xl font-black text-purple-400 tracking-tight">{{ $overview['avg_rating'] > 0 ? $overview['avg_rating'] : '—' }}</p>
+                            @if($overview['avg_rating'] > 0)
+                                <i data-lucide="star" class="w-5 h-5 text-purple-400 fill-purple-400"></i>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -149,24 +159,27 @@
             <div class="glass-card rounded-2xl p-6 border border-violet-500/20">
                 <h3 class="text-xl font-black text-white tracking-tight mb-6">Quick Actions</h3>
                 <div class="space-y-3">
-                    <button class="w-full flex items-center gap-4 p-4 glass rounded-xl hover:bg-white/10 transition-all group">
-                        <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all text-white/60">
-                            <i data-lucide="mail" class="w-5 h-5"></i>
-                        </div>
-                        <div class="text-left">
-                            <p class="font-bold text-sm text-white">Email Manager</p>
-                            <p class="text-[10px] text-white/40 font-medium">Send direct message</p>
-                        </div>
-                    </button>
-                    <button class="w-full flex items-center gap-4 p-4 glass rounded-xl hover:bg-white/10 transition-all group">
+                    @php $primaryManager = $managers->first(); @endphp
+                    @if($primaryManager)
+                        <a href="mailto:{{ $primaryManager->email }}" class="w-full flex items-center gap-4 p-4 glass rounded-xl hover:bg-white/10 transition-all group">
+                            <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all text-white/60">
+                                <i data-lucide="mail" class="w-5 h-5"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-bold text-sm text-white">Email Manager</p>
+                                <p class="text-[10px] text-white/40 font-medium">{{ $primaryManager->email }}</p>
+                            </div>
+                        </a>
+                    @endif
+                    <a href="{{ route('admin.orders.index', ['restaurant_id' => $restaurant->id]) }}" class="w-full flex items-center gap-4 p-4 glass rounded-xl hover:bg-white/10 transition-all group">
                         <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all text-white/60">
                             <i data-lucide="file-text" class="w-5 h-5"></i>
                         </div>
                         <div class="text-left">
-                            <p class="font-bold text-sm text-white">View Reports</p>
-                            <p class="text-[10px] text-white/40 font-medium">Download performance</p>
+                            <p class="font-bold text-sm text-white">View Orders</p>
+                            <p class="text-[10px] text-white/40 font-medium">All orders for this restaurant</p>
                         </div>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

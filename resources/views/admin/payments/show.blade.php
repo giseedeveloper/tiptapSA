@@ -8,13 +8,13 @@
             <div class="flex justify-between items-start mb-8">
                 <div>
                     <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Transaction Reference</p>
-                    <h2 class="text-2xl font-mono font-black text-white tracking-tight uppercase">{{ $payment->transaction_id ?? 'N/A' }}</h2>
+                    <h2 class="text-2xl font-mono font-black text-white tracking-tight uppercase">{{ $payment->transaction_reference ?? 'N/A' }}</h2>
                 </div>
                 @php
                     $statusColor = match($payment->status) {
-                        'completed' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                        'paid', 'completed' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
                         'pending' => 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-                        'failed' => 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+                        'failed', 'cancelled' => 'bg-rose-500/20 text-rose-400 border-rose-500/30',
                         default => 'bg-white/10 text-white/60 border-white/20',
                     };
                 @endphp
@@ -36,7 +36,7 @@
                             <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-white/60 border border-white/10">
                                 <i data-lucide="credit-card" class="w-5 h-5"></i>
                             </div>
-                            <p class="text-white font-bold">{{ strtoupper($payment->payment_method) }}</p>
+                            <p class="text-white font-bold">{{ strtoupper($payment->method ?? 'N/A') }}</p>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                                 <i data-lucide="external-link" class="w-3 h-3"></i>
                             </a>
                         @else
-                            <p class="text-white/60 font-medium">Order #{{ str_pad($payment->order_id, 6, '0', STR_PAD_LEFT) }} (imefutwa)</p>
+                            <p class="text-white/60 font-medium">Order #{{ str_pad($payment->order_id, 6, '0', STR_PAD_LEFT) }} (deleted)</p>
                         @endif
                     </div>
 

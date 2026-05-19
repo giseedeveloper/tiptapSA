@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
@@ -32,5 +33,15 @@ class Payment extends Model
     public function waiter()
     {
         return $this->belongsTo(User::class, 'waiter_id');
+    }
+
+    protected function transactionId(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->transaction_reference);
+    }
+
+    protected function paymentMethod(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->method);
     }
 }

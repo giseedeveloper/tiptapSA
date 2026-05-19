@@ -49,11 +49,11 @@ class PaymentController extends Controller
             fputcsv($out, ['Transaction ID', 'Order ID', 'Restaurant', 'Amount', 'Method', 'Status', 'Date']);
             foreach ($payments as $p) {
                 fputcsv($out, [
-                    $p->transaction_id ?? '',
+                    $p->transaction_reference ?? '',
                     $p->order_id,
                     $p->order?->restaurant?->name ?? '',
                     $p->amount,
-                    $p->payment_method ?? '',
+                    $p->method ?? '',
                     $p->status,
                     $p->created_at->format('Y-m-d H:i'),
                 ]);

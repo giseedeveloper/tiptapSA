@@ -3,7 +3,7 @@
 
     <div class="mb-8">
         <h2 class="text-3xl font-bold text-white tracking-tight">Salary History</h2>
-        <p class="text-white/50 font-medium mt-1">Orodha ya payslips kwa kila mwezi – view au download PDF.</p>
+        <p class="text-white/50 font-medium mt-1">List of payslips by month – view or download PDF.</p>
     </div>
 
     @if ($payments->isEmpty())
@@ -13,8 +13,8 @@
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">Hakuna salary slip bado</h3>
-            <p class="text-white/40">Manager atakapothibitisha malipo yako kwa mwezi fulani, slip itaonekana hapa.</p>
+            <h3 class="text-xl font-bold text-white mb-2">No salary slips yet</h3>
+            <p class="text-white/40">When your manager confirms payment for a month, the slip will appear here.</p>
         </div>
     @else
         <div class="space-y-4">

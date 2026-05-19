@@ -58,7 +58,7 @@ class WaiterController extends Controller
         if (! $waiter) {
             return response()->json([
                 'success' => false,
-                'message' => 'Waiter hajapatikana. Angalia nambari ya pekee (TIPTAP-W-xxxxx).',
+                'message' => 'Waiter not found. Check the unique number (TIPTAP-W-xxxxx).',
             ], 404);
         }
 

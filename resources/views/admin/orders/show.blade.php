@@ -18,7 +18,8 @@
                                 'pending' => 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
                                 'preparing' => 'bg-blue-500/20 text-blue-400 border-blue-500/30',
                                 'ready' => 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-                                'completed' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+                                'served' => 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+                                'paid', 'completed' => 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
                                 'cancelled' => 'bg-rose-500/20 text-rose-400 border-rose-500/30',
                                 default => 'bg-white/10 text-white/60 border-white/20',
                             };
@@ -102,16 +103,24 @@
                     <div class="space-y-6">
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10">
                             <p class="text-[10px] font-black text-white/50 uppercase tracking-widest mb-1">Transaction ID</p>
-                            <p class="font-mono text-xs text-white truncate">{{ $order->payment->transaction_id }}</p>
+                            <p class="font-mono text-xs text-white truncate">{{ $order->payment->transaction_reference ?? 'N/A' }}</p>
                         </div>
                         <div class="flex justify-between items-center">
                             <div>
                                 <p class="text-[10px] font-black text-white/50 uppercase tracking-widest">Method</p>
-                                <p class="font-bold text-white">{{ strtoupper($order->payment->payment_method) }}</p>
+                                <p class="font-bold text-white">{{ strtoupper($order->payment->method ?? 'N/A') }}</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-[10px] font-black text-white/50 uppercase tracking-widest">Status</p>
-                                <span class="px-3 py-1 bg-emerald-500 text-white text-[9px] font-black rounded-full uppercase tracking-widest">{{ $order->payment->status }}</span>
+                                @php
+                                    $paymentStatusColor = match($order->payment->status) {
+                                        'paid', 'completed' => 'bg-emerald-500 text-white',
+                                        'pending' => 'bg-yellow-500 text-black',
+                                        'failed', 'cancelled' => 'bg-rose-500 text-white',
+                                        default => 'bg-white/20 text-white',
+                                    };
+                                @endphp
+                                <span class="px-3 py-1 {{ $paymentStatusColor }} text-[9px] font-black rounded-full uppercase tracking-widest">{{ $order->payment->status }}</span>
                             </div>
                         </div>
                     </div>
@@ -134,13 +143,15 @@
                                 <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Mark as Pending</option>
                                 <option value="preparing" {{ $order->status == 'preparing' ? 'selected' : '' }}>Mark as Preparing</option>
                                 <option value="ready" {{ $order->status == 'ready' ? 'selected' : '' }}>Mark as Ready</option>
+                                <option value="served" {{ $order->status == 'served' ? 'selected' : '' }}>Mark as Served</option>
+                                <option value="paid" {{ $order->status == 'paid' ? 'selected' : '' }}>Mark as Paid</option>
                                 <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Mark as Completed</option>
                                 <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Mark as Cancelled</option>
                             </select>
                         </form>
-                        <button class="w-full py-4 glass text-white rounded-xl font-bold text-sm hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="printer" class="w-4 h-4"></i> Print Invoice
-                        </button>
+                        <a href="{{ $order->billImageUrl() }}" target="_blank" rel="noopener" class="w-full py-4 glass text-white rounded-xl font-bold text-sm hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="file-image" class="w-4 h-4"></i> View Bill
+                        </a>
                     </div>
                 </div>
             </div>

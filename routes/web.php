@@ -133,11 +133,13 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     Route::get('/dashboard/stats', [AdminDashboard::class, 'getStats'])->name('dashboard.stats');
 
     // Restaurants
-    Route::resource('restaurants', \App\Http\Controllers\Admin\RestaurantController::class);
+    Route::resource('restaurants', \App\Http\Controllers\Admin\RestaurantController::class)
+        ->except(['create', 'store']);
     Route::post('restaurants/{restaurant}/toggle-status', [\App\Http\Controllers\Admin\RestaurantController::class, 'toggleStatus'])->name('restaurants.toggle-status');
 
     // Users
-    Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)
+        ->except(['create', 'store']);
 
     // Waiters (all waiters + unique codes + search like manager)
     Route::get('waiters', [\App\Http\Controllers\Admin\WaiterController::class, 'index'])->name('waiters.index');
@@ -145,7 +147,8 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
 
     // Orders
     Route::get('orders/export', [\App\Http\Controllers\Admin\OrderController::class, 'export'])->name('orders.export');
-    Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class);
+    Route::resource('orders', \App\Http\Controllers\Admin\OrderController::class)
+        ->except(['create', 'store', 'edit']);
 
     // Payments
     Route::get('payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');

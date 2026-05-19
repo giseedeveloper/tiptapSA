@@ -36,6 +36,6 @@ class WaiterRegistrationController extends Controller
         Auth::login($user);
 
         return redirect()->route('waiter.dashboard')
-            ->with('success', 'Akaunti yako imefunguliwa. Nambari yako ya pekee: '.$user->global_waiter_number.'. Ongea na manager wa restaurant ili akuunge.');
+            ->with('success', 'Your account has been created. Your unique number: '.$user->global_waiter_number.'. Ask a restaurant manager to link you.');
     }
 }

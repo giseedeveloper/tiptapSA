@@ -2,8 +2,8 @@
     <x-slot name="header">History</x-slot>
 
     <div class="mb-8">
-        <h2 class="text-3xl font-bold text-white tracking-tight">Historia yangu ya Restaurants</h2>
-        <p class="text-white/50 font-medium mt-1">Restaurants ulizofanya kazi na muda uliounganishwa na kutolewa.</p>
+        <h2 class="text-3xl font-bold text-white tracking-tight">My restaurant history</h2>
+        <p class="text-white/50 font-medium mt-1">Restaurants you worked at and when you were linked and unlinked.</p>
     </div>
 
     @if($assignments->isEmpty())
@@ -13,8 +13,8 @@
                     <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0 11 18 0z"/>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">Bado hakuna historia</h3>
-            <p class="text-white/40">Utakapounganishwa na restaurant (na manager akikutolea), matukio yataonekana hapa.</p>
+            <h3 class="text-xl font-bold text-white mb-2">No history yet</h3>
+            <p class="text-white/40">When you are linked to a restaurant (and unlinked by a manager), events will appear here.</p>
         </div>
     @else
         <div class="space-y-4">
@@ -37,10 +37,10 @@
                             @if($a->employment_type === 'temporary')
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">Show-time</span>
                                 @if($a->linked_until)
-                                    <span class="text-white/40 text-xs">mpaka {{ $a->linked_until->format('d/m/Y') }}</span>
+                                    <span class="text-white/40 text-xs">until {{ $a->linked_until->format('d/m/Y') }}</span>
                                 @endif
                             @else
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/10 text-white/60 border border-white/10">Muda mrefu</span>
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/10 text-white/60 border border-white/10">Long-term</span>
                             @endif
                             @if($a->unlinked_at)
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/5 text-white/50 border border-white/10">Imetolewa</span>
@@ -55,11 +55,11 @@
 
                     <div class="mt-4 pt-4 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                         <div class="flex items-center gap-2">
-                            <span class="text-white/40 uppercase tracking-wider text-[10px] font-bold">Alilingwa</span>
+                            <span class="text-white/40 uppercase tracking-wider text-[10px] font-bold">Linked at</span>
                             <span class="text-white/80 font-medium">{{ $a->linked_at?->format('d/m/Y H:i') ?? '—' }}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-white/40 uppercase tracking-wider text-[10px] font-bold">Alitolewa</span>
+                            <span class="text-white/40 uppercase tracking-wider text-[10px] font-bold">Unlinked at</span>
                             @if($a->unlinked_at)
                                 <span class="text-white/80 font-medium">{{ $a->unlinked_at->format('d/m/Y H:i') }}</span>
                             @else

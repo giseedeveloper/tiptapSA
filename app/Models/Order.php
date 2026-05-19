@@ -36,6 +36,11 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function payment()
+    {
+        return $this->hasOne(Payment::class)->latestOfMany();
+    }
+
     public function feedback()
     {
         return $this->hasOne(Feedback::class);
@@ -106,7 +111,7 @@ class Order extends Model
             }
 
             if (ctype_digit($provided)) {
-                return $provided.'@s.whatsapp.net';
+                return self::whatsappJidFromDigits($provided);
             }
         }
 
@@ -115,6 +120,18 @@ class Order extends Model
             return null;
         }
 
-        return $digitsOnlyPhone.'@s.whatsapp.net';
+        return self::whatsappJidFromDigits($digitsOnlyPhone);
+    }
+
+    /**
+     * Build {msisdn}@s.whatsapp.net from digits. Maps common Tanzania local form (0 + 9 digits) to 255…
+     */
+    protected static function whatsappJidFromDigits(string $digits): string
+    {
+        if (preg_match('/^0(\d{9})$/', $digits, $matches) === 1) {
+            return '255'.$matches[1].'@s.whatsapp.net';
+        }
+
+        return $digits.'@s.whatsapp.net';
     }
 }

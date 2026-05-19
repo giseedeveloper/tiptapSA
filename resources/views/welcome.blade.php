@@ -11,9 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="{{ asset('logo.jpeg') }}">
-    <link rel="shortcut icon" href="{{ asset('logo.jpeg') }}">
+    @include('partials.brand-icons')
 
     <!-- Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -172,7 +170,7 @@
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-3 group">
                     <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-full group-hover:rotate-12 transition-transform duration-500">
-                        <img src="{{ asset('logo.jpeg') }}" alt="TIPTAP Logo" class="w-full h-full object-cover">
+                        <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                     </div>
                     <span class="text-2xl font-display font-bold text-white tracking-tight">TIP<span class="text-primary">TAP</span></span>
                 </a>
@@ -225,7 +223,7 @@
         <div class="flex justify-between items-center mb-12">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 flex items-center justify-center overflow-hidden rounded-full">
-                    <img src="{{ asset('logo.jpeg') }}" alt="TIPTAP Logo" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <span class="text-2xl font-display font-bold text-white">TIPTAP</span>
             </div>
@@ -280,7 +278,7 @@
                             </a>
                             <a href="{{ route('waiter.register') }}" class="flex items-center gap-3 px-4 py-3.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors rounded-b-xl">
                                 <i data-lucide="user" class="w-5 h-5 text-accent shrink-0"></i>
-                                <span><strong class="text-white">Waiter</strong><br><span class="text-xs">Sajili na upate code yako</span></span>
+                                <span><strong class="text-white">Waiter</strong><br><span class="text-xs">Register and get your code</span></span>
                             </a>
                         </div>
                     </div>
@@ -517,7 +515,7 @@
                 <div class="col-span-2">
                     <a href="/" class="flex items-center gap-2 mb-6">
                         <div class="w-8 h-8 flex items-center justify-center overflow-hidden rounded-full">
-                            <img src="{{ asset('logo.jpeg') }}" alt="TIPTAP Logo" class="w-full h-full object-cover">
+                            <img src="{{ asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                         </div>
                         <span class="text-xl font-display font-bold text-white">TIPTAP</span>
                     </a>
