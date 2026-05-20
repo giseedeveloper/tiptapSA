@@ -265,9 +265,19 @@
                     </div>
                 @endauth
             </div>
-            <button type="button" id="mobile-menu-btn" class="lg:hidden p-2 rounded-xl hover:bg-fin-mist text-fin-ink" aria-label="Menu">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
+            <div class="flex items-center gap-2 lg:hidden">
+                <img
+                    src="{{ public_asset('images/flags/za.svg') }}"
+                    alt="South Africa"
+                    width="28"
+                    height="20"
+                    class="h-5 w-7 shrink-0 rounded-[2px] shadow-sm ring-1 ring-black/10 object-cover"
+                    title="South Africa"
+                >
+                <button type="button" id="mobile-menu-btn" class="p-2 rounded-xl hover:bg-fin-mist text-fin-ink" aria-label="Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
         </div>
     </header>
 
