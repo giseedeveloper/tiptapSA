@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Support\WhatsAppBotUrls;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -103,13 +104,7 @@ class WhatsAppWebhookController extends Controller
 
     protected function forwardUrl(): ?string
     {
-        $base = rtrim((string) config('whatsapp.bot_notify_url', ''), '/');
-
-        if ($base === '') {
-            return null;
-        }
-
-        return $base.'/inbound';
+        return WhatsAppBotUrls::inboundForwardUrl();
     }
 
     protected function forwardToBot(string $url, array $payload): void

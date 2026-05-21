@@ -7,7 +7,7 @@ return [
     | WhatsApp Bot Notification Endpoint
     |--------------------------------------------------------------------------
     |
-    | The URL of the Node.js (Baileys) bot's notify HTTP server. When server-side
+    | The URL of the Node.js bot's notify HTTP server (Cloud API v2). When server-side
     | events occur (e.g. an order reaches the "served" stage), Laravel POSTs here
     | so the bot can deliver the bill image to the customer over WhatsApp.
     |

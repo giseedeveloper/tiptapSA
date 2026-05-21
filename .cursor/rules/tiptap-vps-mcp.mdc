@@ -1,0 +1,34 @@
+---
+description: TIPTAP VPS MCP servers — project mapping (South Africa)
+alwaysApply: true
+---
+
+# TIPTAP VPS MCP mapping
+
+This workspace folder is **TAPTAP_sauth** (TIPTAP South Africa). Use only the VPS MCP server dedicated to this project.
+
+## This project uses
+
+| MCP server name (exact) | Use for |
+|-------------------------|---------|
+| **TIPTAP SOUTH AFRICA** | Production/staging host for this Laravel app — deploy, Docker, nginx, `.env`, logs, `php artisan`, queue workers, database on SA VPS |
+
+When the user asks to SSH, deploy, fix production, rebuild Docker, or run server commands for **South Africa / sauth**, call MCP tools on **`TIPTAP SOUTH AFRICA`** only.
+
+## Do not use for TAPTAP_sauth (unless user explicitly names another project)
+
+| MCP server | Belongs to |
+|------------|------------|
+| **TITAP BOT SERVE** | `TAPTAP tz` — WhatsApp bot (`tiptopbot`) for Tanzania |
+| **TIPTAP Saloon** | `Saloon ver` — Saloon Laravel app |
+
+Never deploy SA code to TZ bot or Saloon VPS by default.
+
+## How to invoke
+
+Use `CallMcpTool` with `server` set to the exact MCP name (e.g. `"TIPTAP SOUTH AFRICA"`). Read the tool schema under the MCP descriptors before calling.
+
+## Region note
+
+- Country/market: South Africa (ZA flag on landing/login where applicable)
+- Do not confuse with **TAPTAP TZ** (Tanzania) or **Saloon ver**
