@@ -23,8 +23,8 @@
                     </div>
                     <span class="px-3 py-1.5 bg-violet-500/10 text-violet-400 text-[10px] font-bold rounded-full uppercase tracking-wider border border-violet-500/20">Today</span>
                 </div>
-                <p class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-1">Total Orders Today</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight" id="stat-total-orders">{{ number_format($totalOrdersToday) }}</h3>
+                <p class="text-xs font-semibold text-white/65 uppercase tracking-wider mb-1">Total Orders Today</p>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums" id="stat-total-orders">{{ number_format($totalOrdersToday) }}</h3>
             </div>
         </div>
 
@@ -40,8 +40,8 @@
                     </div>
                     <span class="px-3 py-1.5 bg-cyan-500/10 text-cyan-400 text-[10px] font-bold rounded-full uppercase tracking-wider border border-cyan-500/20">Revenue</span>
                 </div>
-                <p class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-1">Revenue Today</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight" id="stat-revenue-today">Tsh {{ number_format($revenueToday) }}</h3>
+                <p class="text-xs font-semibold text-white/65 uppercase tracking-wider mb-1">Revenue Today</p>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums break-all sm:break-normal" id="stat-revenue-today">Tsh {{ number_format($revenueToday) }}</h3>
             </div>
         </div>
 
@@ -57,8 +57,8 @@
                     </div>
                     <span class="px-3 py-1.5 bg-amber-500/10 text-amber-400 text-[10px] font-bold rounded-full uppercase tracking-wider border border-amber-500/20">Rating</span>
                 </div>
-                <p class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-1">Avg. Rating</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight" id="stat-avg-rating">{{ number_format($avgRating, 1) }}/5.0</h3>
+                <p class="text-xs font-semibold text-white/65 uppercase tracking-wider mb-1">Avg. Rating</p>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums" id="stat-avg-rating">{{ number_format($avgRating, 1) }}/5.0</h3>
             </div>
         </div>
 
@@ -77,8 +77,8 @@
                         Online
                     </span>
                 </div>
-                <p class="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-1">Waiters Online</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight" id="stat-waiters-online">{{ $waitersOnline }} Active</h3>
+                <p class="text-xs font-semibold text-white/65 uppercase tracking-wider mb-1">Waiters Online</p>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums" id="stat-waiters-online">{{ $waitersOnline }} Active</h3>
             </div>
         </div>
     </div>

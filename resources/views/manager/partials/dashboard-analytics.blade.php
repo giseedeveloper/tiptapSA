@@ -38,15 +38,24 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
-    .analytics-bar {
+    .analytics-bar-v {
         border-radius: 8px 8px 0 0;
         transform-origin: bottom;
-        animation: analyticsBarGrow 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation: analyticsBarGrowV 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         transform: scaleY(0);
     }
-    @keyframes analyticsBarGrow {
+    .analytics-bar-h {
+        transform-origin: left center;
+        animation: analyticsBarGrowH 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        transform: scaleX(0);
+    }
+    @keyframes analyticsBarGrowV {
         from { opacity: 0; transform: scaleY(0); }
         to { opacity: 1; transform: scaleY(1); }
+    }
+    @keyframes analyticsBarGrowH {
+        from { opacity: 0; transform: scaleX(0); }
+        to { opacity: 1; transform: scaleX(1); }
     }
     .cycle-ring {
         background: conic-gradient({{ $conicGradient }});
@@ -72,14 +81,14 @@
         <div>
             <p class="text-[10px] font-bold text-violet-400 uppercase tracking-[0.2em] mb-1">Smart Analytics</p>
             <h3 class="text-2xl font-bold text-white tracking-tight">{{ $analytics['restaurant_name'] ?? 'Restaurant' }} Insights</h3>
-            <p class="text-sm text-white/45 mt-1">7-day cycles, live pipeline, and performance histograms</p>
+            <p class="text-sm text-white/60 mt-1">7-day cycles, live pipeline, and performance histograms</p>
         </div>
         @if(count($insights) > 0)
             <div class="flex flex-wrap gap-2">
                 @foreach($insights as $insight)
                     <div class="insight-pill px-3 py-2 rounded-xl border text-xs" data-tone="{{ $insight['tone'] }}">
-                        <span class="text-white/50 block">{{ $insight['label'] }}</span>
-                        <span class="font-semibold text-white">{{ $insight['value'] }}</span>
+                        <span class="text-white/65 block text-[11px]">{{ $insight['label'] }}</span>
+                        <span class="font-semibold text-white text-sm">{{ $insight['value'] }}</span>
                     </div>
                 @endforeach
             </div>
@@ -91,10 +100,10 @@
             <div class="flex items-start justify-between gap-4 mb-6">
                 <div>
                     <h4 class="text-lg font-bold text-white">Revenue & Orders Cycle</h4>
-                    <p class="text-xs text-white/40 mt-1">Last 7 days · dual histogram</p>
+                    <p class="text-xs text-white/55 mt-1">Last 7 days · dual histogram</p>
                 </div>
                 <div class="text-right">
-                    <p class="text-[10px] text-white/40 uppercase tracking-wider">Week growth</p>
+                    <p class="text-[11px] text-white/55 uppercase tracking-wider">Week growth</p>
                     <p class="text-lg font-bold {{ ($weekComparison['change_pct'] ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400' }}">
                         {{ ($weekComparison['change_pct'] ?? 0) >= 0 ? '+' : '' }}{{ number_format($weekComparison['change_pct'] ?? 0, 1) }}%
                     </p>
@@ -108,19 +117,19 @@
                     @endphp
                     <div class="flex-1 h-full flex flex-col justify-end items-center gap-1 min-w-[28px] group">
                         <div class="w-full flex items-end justify-center gap-0.5 h-[85%]">
-                            <div class="analytics-bar w-[42%] relative bg-gradient-to-t from-violet-600 via-violet-500 to-cyan-400 opacity-90 group-hover:opacity-100"
+                            <div class="analytics-bar-v w-[42%] relative bg-gradient-to-t from-violet-600 via-violet-500 to-cyan-400 opacity-90 group-hover:opacity-100"
                                  style="height: {{ $revH }}%; animation-delay: {{ $index * 0.06 }}s;"
                                  title="Tsh {{ number_format($day['revenue']) }}"></div>
-                            <div class="analytics-bar w-[42%] relative bg-gradient-to-t from-amber-600/80 to-amber-400/90 group-hover:opacity-100"
+                            <div class="analytics-bar-v w-[42%] relative bg-gradient-to-t from-amber-600/80 to-amber-400/90 group-hover:opacity-100"
                                  style="height: {{ $ordH }}%; animation-delay: {{ ($index * 0.06) + 0.03 }}s;"
                                  title="{{ $day['orders'] }} orders"></div>
                         </div>
-                        <p class="text-[10px] font-bold text-white/70">{{ $day['day'] }}</p>
-                        <p class="text-[9px] text-white/35">{{ $day['date'] }}</p>
+                        <p class="text-[11px] font-semibold text-white/80">{{ $day['day'] }}</p>
+                        <p class="text-[10px] text-white/50">{{ $day['date'] }}</p>
                     </div>
                 @endforeach
             </div>
-            <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-white/5 text-xs text-white/50">
+            <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-white/5 text-xs text-white/65">
                 <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-gradient-to-t from-violet-600 to-cyan-400"></span> Revenue</span>
                 <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-gradient-to-t from-amber-600 to-amber-400"></span> Orders</span>
             </div>
@@ -128,12 +137,12 @@
 
         <div class="analytics-shell glass-card rounded-2xl p-6 flex flex-col">
             <h4 class="text-lg font-bold text-white mb-1">Order Pipeline</h4>
-            <p class="text-xs text-white/40 mb-6">Today's status cycle</p>
+            <p class="text-xs text-white/55 mb-6">Today's status cycle</p>
             <div class="flex-1 flex flex-col items-center justify-center">
                 <div class="relative w-44 h-44 cycle-ring rounded-full mb-6">
                     <div class="absolute inset-0 flex flex-col items-center justify-center z-10 text-center">
                         <span class="text-3xl font-black text-white">{{ $statusCycle['total'] ?? 0 }}</span>
-                        <span class="text-[10px] uppercase tracking-wider text-white/40">orders</span>
+                        <span class="text-[10px] uppercase tracking-wider text-white/55">orders</span>
                     </div>
                 </div>
                 <div class="w-full space-y-2">
@@ -155,25 +164,30 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <div class="analytics-shell glass-card rounded-2xl p-6">
             <h4 class="text-lg font-bold text-white mb-1">Hourly Traffic</h4>
-            <p class="text-xs text-white/40 mb-5">Orders histogram · today</p>
-            <div class="h-48 flex items-end gap-1 border-b border-white/10 pb-2">
+            <p class="text-xs text-white/55 mb-4">Orders histogram · today (8:00–23:00)</p>
+            <div class="overflow-x-auto -mx-1 px-1 pb-1">
+                <div class="h-52 flex items-end gap-1.5 sm:gap-2 border-b border-white/15 pb-3 min-w-[520px] sm:min-w-0">
                 @foreach($hourlyActivity as $index => $slot)
-                    @php $h = max(($slot['orders'] / $maxHourlyOrders) * 100, $slot['orders'] > 0 ? 10 : 3); @endphp
-                    <div class="flex-1 flex flex-col justify-end items-center group min-w-0">
-                        <div class="analytics-bar w-full bg-gradient-to-t from-cyan-600 to-violet-500 rounded-t-md opacity-80 group-hover:opacity-100"
-                             style="height: {{ $h }}%; animation-delay: {{ $index * 0.03 }}s;"
-                             title="{{ $slot['orders'] }} orders"></div>
-                        @if($index % 2 === 0)
-                            <span class="text-[8px] text-white/35 mt-1 truncate w-full text-center">{{ substr($slot['label'], 0, 2) }}</span>
+                    @php $h = max(($slot['orders'] / $maxHourlyOrders) * 100, $slot['orders'] > 0 ? 12 : 4); @endphp
+                    <div class="flex-1 min-w-[28px] flex flex-col justify-end items-center group">
+                        @if($slot['orders'] > 0)
+                            <span class="text-[10px] font-bold text-cyan-300 mb-1 tabular-nums">{{ $slot['orders'] }}</span>
+                        @else
+                            <span class="text-[10px] mb-1 opacity-0 select-none" aria-hidden="true">0</span>
                         @endif
+                        <div class="analytics-bar-v w-full max-w-[32px] bg-gradient-to-t from-cyan-600 to-violet-500 rounded-t-md opacity-90 group-hover:opacity-100 min-h-[4px]"
+                             style="height: {{ $h }}%; animation-delay: {{ $index * 0.03 }}s;"
+                             title="{{ $slot['label'] }} · {{ $slot['orders'] }} orders"></div>
+                        <span class="text-[10px] sm:text-[11px] font-medium text-white/70 mt-2 tabular-nums">{{ sprintf('%02d', (int) $slot['hour']) }}</span>
                     </div>
                 @endforeach
+                </div>
             </div>
         </div>
 
         <div class="analytics-shell glass-card rounded-2xl p-6">
             <h4 class="text-lg font-bold text-white mb-1">Top Menu Items</h4>
-            <p class="text-xs text-white/40 mb-5">Best sellers · 7 days</p>
+            <p class="text-xs text-white/55 mb-5">Best sellers · 7 days</p>
             <div class="space-y-3">
                 @forelse($topMenuItems as $index => $item)
                     @php $barW = max(($item['quantity'] / $maxTopQty) * 100, $item['quantity'] > 0 ? 12 : 0); @endphp
@@ -183,7 +197,7 @@
                             <span class="text-violet-300 font-semibold shrink-0">{{ $item['quantity'] }}×</span>
                         </div>
                         <div class="h-2.5 rounded-full bg-white/5 overflow-hidden">
-                            <div class="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 analytics-bar"
+                            <div class="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 analytics-bar-h"
                                  style="width: {{ $barW }}%; animation-delay: {{ $index * 0.08 }}s;"></div>
                         </div>
                     </div>
@@ -195,29 +209,29 @@
 
         <div class="analytics-shell glass-card rounded-2xl p-6">
             <h4 class="text-lg font-bold text-white mb-1">Customer Ratings</h4>
-            <p class="text-xs text-white/40 mb-5">Feedback histogram</p>
+            <p class="text-xs text-white/55 mb-5">Feedback histogram</p>
             <div class="space-y-2.5 mb-6">
                 @foreach($ratingHistogram as $index => $row)
                     @php $rW = max(($row['count'] / $maxRatingCount) * 100, $row['count'] > 0 ? 10 : 0); @endphp
                     <div class="flex items-center gap-3">
                         <span class="text-xs text-amber-400 font-semibold w-8">{{ $row['stars'] }}★</span>
                         <div class="flex-1 h-3 rounded-full bg-white/5 overflow-hidden">
-                            <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400 analytics-bar"
+                            <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400 analytics-bar-h"
                                  style="width: {{ $rW }}%; animation-delay: {{ $index * 0.07 }}s;"></div>
                         </div>
-                        <span class="text-xs text-white/50 w-6 text-right">{{ $row['count'] }}</span>
+                        <span class="text-xs text-white/65 w-6 text-right tabular-nums">{{ $row['count'] }}</span>
                     </div>
                 @endforeach
             </div>
             <div class="pt-4 border-t border-white/5">
-                <p class="text-[10px] text-white/40 uppercase tracking-wider mb-2">This week vs last</p>
+                <p class="text-[11px] text-white/55 uppercase tracking-wider mb-2">This week vs last</p>
                 <div class="flex items-center gap-3">
                     <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
                         <div class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400" style="width: {{ min($weekProgress, 100) }}%"></div>
                     </div>
                     <span class="text-xs font-bold text-white">{{ $weekProgress }}%</span>
                 </div>
-                <p class="text-[11px] text-white/45 mt-2">
+                <p class="text-xs text-white/60 mt-2 tabular-nums">
                     Tsh {{ number_format($weekComparison['current'] ?? 0) }} · {{ $weekComparison['current_orders'] ?? 0 }} orders
                 </p>
             </div>
