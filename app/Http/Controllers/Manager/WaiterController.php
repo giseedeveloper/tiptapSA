@@ -116,6 +116,8 @@ class WaiterController extends Controller
                 'is_active' => $a->unlinked_at === null,
             ]);
 
+        $managerRestaurantId = Auth::user()->restaurant_id;
+
         return response()->json([
             'success' => true,
             'waiter' => [
@@ -129,6 +131,8 @@ class WaiterController extends Controller
                 'feedback_count' => $waiter->feedback_count,
                 'current_restaurant' => $waiter->restaurant?->name,
                 'is_linked' => (bool) $waiter->restaurant_id,
+                'is_linked_to_my_restaurant' => $waiter->restaurant_id !== null
+                    && $waiter->restaurant_id === $managerRestaurantId,
                 'work_history' => $workHistory,
                 'profile_photo_url' => $waiter->profilePhotoUrl(),
             ],
@@ -145,6 +149,10 @@ class WaiterController extends Controller
         }
 
         if ($waiter->restaurant_id !== null) {
+            if ($waiter->restaurant_id === Auth::user()->restaurant_id) {
+                return back()->with('error', 'This waiter is already linked to your restaurant.');
+            }
+
             return back()->with('error', "Waiter is already linked to another restaurant. That restaurant's manager must unlink them first.");
         }
 

@@ -340,14 +340,29 @@
             resultEl.innerHTML = '<p class="text-white/50 text-sm py-3">Searching…</p>';
             resultEl.classList.remove('hidden');
             fetch('{{ route("manager.waiters.search") }}?q=' + encodeURIComponent(q), {
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                credentials: 'same-origin',
             })
-                .then(r => r.json())
-                .then(data => {
-                    if (!data.success) {
+                .then(async function (r) {
+                    let data = null;
+                    try {
+                        data = await r.json();
+                    } catch (e) {
+                        data = null;
+                    }
+
+                    if (!r.ok) {
                         resultEl.classList.add('hidden');
                         resultEl.innerHTML = '';
-                        errorEl.textContent = data.message || 'Waiter not found.';
+                        errorEl.textContent = (data && (data.message || data.error)) || (r.status === 401 ? 'Session expired. Please sign in again.' : 'Search failed. Please try again.');
+                        errorEl.classList.remove('hidden');
+                        return;
+                    }
+
+                    if (!data || !data.success) {
+                        resultEl.classList.add('hidden');
+                        resultEl.innerHTML = '';
+                        errorEl.textContent = (data && data.message) || 'Waiter not found.';
                         errorEl.classList.remove('hidden');
                         return;
                     }
@@ -383,8 +398,14 @@
                         html += '</ul></div>';
                     }
 
-                    if (w.is_linked && w.current_restaurant) {
-                        html += '<p class="text-amber-400 text-sm mt-2">Already linked to: ' + w.current_restaurant + '. That restaurant's manager must unlink them first.</p>';
+                    if (w.is_linked) {
+                        if (w.is_linked_to_my_restaurant) {
+                            html += '<p class="text-emerald-400 text-sm mt-2">Already linked to your restaurant. Check the waiters list above.</p>';
+                        } else if (w.current_restaurant) {
+                            html += '<p class="text-amber-400 text-sm mt-2">Already linked to: ' + (w.current_restaurant || '—') + '. That restaurant manager must unlink them first.</p>';
+                        } else {
+                            html += '<p class="text-amber-400 text-sm mt-2">This waiter is already linked to another restaurant.</p>';
+                        }
                     } else {
                         var token = (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
                         var linkUrl = '{{ url("manager/waiters") }}/' + w.id + '/link';
