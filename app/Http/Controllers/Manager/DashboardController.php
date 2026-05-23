@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
 use App\Models\Order;
-use App\Models\Payment;
 use App\Models\User;
 use App\Services\ManagerDashboardAnalytics;
 use Carbon\Carbon;
@@ -83,20 +82,26 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function getAnalytics(): JsonResponse
+    {
+        $restaurantId = Auth::user()->restaurant_id;
+        $analytics = app(ManagerDashboardAnalytics::class)->forRestaurant($restaurantId);
+
+        return response()->json([
+            'weekly_trend' => $analytics['weekly_trend'],
+            'hourly_activity' => $analytics['hourly_activity'],
+            'week_comparison' => $analytics['week_comparison'],
+            'insights' => $analytics['insights'],
+        ]);
+    }
+
     /**
      * @return array{total_orders_today: int, revenue_today: float, avg_rating: float, waiters_online: int}
      */
     private function buildStats(int $restaurantId, Carbon $today): array
     {
-        $revenueToday = (float) Payment::query()
-            ->where(function ($query) use ($restaurantId) {
-                $query->where('restaurant_id', $restaurantId)
-                    ->orWhereHas('order', fn ($orderQuery) => $orderQuery
-                        ->where('restaurant_id', $restaurantId));
-            })
-            ->whereIn('status', ['paid', 'completed'])
-            ->whereDate('created_at', $today)
-            ->sum('amount');
+        $revenueToday = app(ManagerDashboardAnalytics::class)
+            ->revenueForPaidOrdersOnDate($restaurantId, $today);
 
         return [
             'total_orders_today' => Order::query()

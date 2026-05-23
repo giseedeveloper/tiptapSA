@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Order;
-use App\Models\Payment;
 use App\Models\Restaurant;
 use App\Models\User;
 use App\Services\ManagerDashboardAnalytics;
@@ -29,7 +28,7 @@ test('manager dashboard analytics service returns seven day trend', function () 
     $analytics = app(ManagerDashboardAnalytics::class)->forRestaurant($this->restaurant->id);
 
     expect($analytics['weekly_trend'])->toHaveCount(7);
-    expect($analytics['hourly_activity'])->toHaveCount(16);
+    expect($analytics['hourly_activity'])->toHaveCount(24);
     expect($analytics['status_cycle']['segments'])->toHaveCount(4);
 });
 
@@ -39,14 +38,6 @@ test('analytics reflect restaurant orders and payments', function () {
         'table_number' => '5',
         'status' => 'paid',
         'total_amount' => 25000,
-    ]);
-
-    Payment::create([
-        'order_id' => $order->id,
-        'restaurant_id' => $this->restaurant->id,
-        'amount' => 25000,
-        'method' => 'mobile',
-        'status' => 'paid',
     ]);
 
     $analytics = app(ManagerDashboardAnalytics::class)->forRestaurant($this->restaurant->id);

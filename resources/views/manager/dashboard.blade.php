@@ -353,6 +353,97 @@
         </div>
     </div>
     <script>
+        const pctHeight = (value, max, minWhenPositive = 12, minWhenZero = 3) => {
+            if (max <= 0) {
+                return value > 0 ? minWhenPositive : minWhenZero;
+            }
+
+            return Math.max((value / max) * 100, value > 0 ? minWhenPositive : minWhenZero);
+        };
+
+        const refreshManagerAnalytics = () => {
+            fetch('{{ route("manager.dashboard.analytics") }}', {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Analytics request failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const weekly = data.weekly_trend ?? [];
+                    const maxWeeklyRevenue = Math.max(...weekly.map(day => day.revenue ?? 0), 1);
+                    const maxWeeklyOrders = Math.max(...weekly.map(day => day.orders ?? 0), 1);
+
+                    weekly.forEach((day, index) => {
+                        const column = document.querySelector(`#weekly-trend-chart .weekly-day[data-index="${index}"]`);
+                        if (!column) {
+                            return;
+                        }
+
+                        const revBar = column.querySelector('.weekly-rev-bar');
+                        const ordBar = column.querySelector('.weekly-ord-bar');
+                        const revenue = Number(day.revenue ?? 0);
+                        const orders = Number(day.orders ?? 0);
+                        const revH = pctHeight(revenue, maxWeeklyRevenue, 10, 3);
+                        const ordH = pctHeight(orders, maxWeeklyOrders, 12, 3);
+
+                        if (revBar) {
+                            revBar.style.height = `${revH}%`;
+                            revBar.style.minHeight = revenue > 0 ? '10px' : '3px';
+                            revBar.dataset.revenue = String(revenue);
+                            revBar.title = `Tsh ${new Intl.NumberFormat().format(revenue)}`;
+                        }
+
+                        if (ordBar) {
+                            ordBar.style.height = `${ordH}%`;
+                            ordBar.style.minHeight = orders > 0 ? '12px' : '3px';
+                            ordBar.dataset.orders = String(orders);
+                            ordBar.title = `${orders} orders`;
+                        }
+                    });
+
+                    const hourly = data.hourly_activity ?? [];
+                    const maxHourlyOrders = Math.max(...hourly.map(slot => slot.orders ?? 0), 1);
+
+                    hourly.forEach(slot => {
+                        const column = document.querySelector(`#hourly-traffic-chart .hourly-slot[data-hour="${slot.hour}"]`);
+                        if (!column) {
+                            return;
+                        }
+
+                        const orders = Number(slot.orders ?? 0);
+                        const bar = column.querySelector('.hourly-bar');
+                        const count = column.querySelector('.hourly-count');
+                        const barH = pctHeight(orders, maxHourlyOrders, 12, 4);
+
+                        column.dataset.orders = String(orders);
+
+                        if (bar) {
+                            bar.style.height = `${barH}%`;
+                            bar.style.minHeight = orders > 0 ? '8px' : '4px';
+                            bar.title = `${slot.label} · ${orders} orders`;
+                        }
+
+                        if (count) {
+                            count.textContent = String(orders);
+                            count.classList.toggle('opacity-0', orders <= 0);
+                        }
+                    });
+
+                    const growth = data.week_comparison?.change_pct ?? 0;
+                    const growthEl = document.getElementById('week-growth-value');
+                    if (growthEl) {
+                        growthEl.textContent = `${growth >= 0 ? '+' : ''}${Number(growth).toFixed(1)}%`;
+                        growthEl.classList.toggle('text-emerald-400', growth >= 0);
+                        growthEl.classList.toggle('text-rose-400', growth < 0);
+                    }
+                })
+                .catch(error => console.error('Error fetching analytics:', error));
+        };
+
         const refreshManagerStats = () => {
             fetch('{{ route("manager.dashboard.stats") }}', {
                 headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
@@ -374,6 +465,10 @@
         };
 
         refreshManagerStats();
-        setInterval(refreshManagerStats, 30000);
+        refreshManagerAnalytics();
+        setInterval(() => {
+            refreshManagerStats();
+            refreshManagerAnalytics();
+        }, 30000);
     </script>
 </x-manager-layout>

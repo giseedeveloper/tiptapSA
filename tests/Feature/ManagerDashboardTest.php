@@ -2,7 +2,6 @@
 
 use App\Models\Feedback;
 use App\Models\Order;
-use App\Models\Payment;
 use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,7 +41,7 @@ test('manager dashboard stats api returns accurate counts', function () {
     ]);
     $waiter->assignRole('waiter');
 
-    $order = Order::create([
+    Order::create([
         'restaurant_id' => $this->restaurant->id,
         'table_number' => 'T1',
         'status' => 'paid',
@@ -50,27 +49,9 @@ test('manager dashboard stats api returns accurate counts', function () {
         'created_at' => now(),
     ]);
 
-    Payment::create([
-        'order_id' => $order->id,
-        'restaurant_id' => $this->restaurant->id,
-        'amount' => 25000,
-        'method' => 'cash',
-        'status' => 'paid',
-        'created_at' => now(),
-    ]);
-
-    Payment::create([
-        'order_id' => $order->id,
-        'restaurant_id' => $this->restaurant->id,
-        'amount' => 10000,
-        'method' => 'ussd',
-        'status' => 'completed',
-        'created_at' => now(),
-    ]);
-
     Feedback::withoutGlobalScopes()->create([
         'restaurant_id' => $this->restaurant->id,
-        'order_id' => $order->id,
+        'order_id' => Order::first()->id,
         'waiter_id' => $waiter->id,
         'rating' => 4,
         'comment' => 'Great service',
@@ -81,10 +62,50 @@ test('manager dashboard stats api returns accurate counts', function () {
     $response->assertOk();
     $response->assertJson([
         'total_orders_today' => 1,
-        'revenue_today' => 35000,
+        'revenue_today' => 50000,
         'avg_rating' => '4.0',
         'waiters_online' => 1,
     ]);
+});
+
+test('manager dashboard stats use paid order totals when no payment row exists', function () {
+    Order::create([
+        'restaurant_id' => $this->restaurant->id,
+        'table_number' => 'T2',
+        'status' => 'paid',
+        'total_amount' => 7000,
+        'created_at' => now(),
+    ]);
+
+    $response = $this->actingAs($this->manager)->getJson(route('manager.dashboard.stats'));
+
+    $response->assertOk();
+    $response->assertJson([
+        'total_orders_today' => 1,
+        'revenue_today' => 7000,
+    ]);
+});
+
+test('manager dashboard analytics api returns chart data', function () {
+    Order::create([
+        'restaurant_id' => $this->restaurant->id,
+        'table_number' => 'T3',
+        'status' => 'paid',
+        'total_amount' => 12000,
+        'created_at' => now(),
+    ]);
+
+    $response = $this->actingAs($this->manager)->getJson(route('manager.dashboard.analytics'));
+
+    $response->assertOk();
+    $response->assertJsonStructure([
+        'weekly_trend',
+        'hourly_activity',
+        'week_comparison',
+        'insights',
+    ]);
+    expect($response->json('weekly_trend'))->toHaveCount(7);
+    expect($response->json('hourly_activity'))->toHaveCount(24);
 });
 
 test('guest is redirected from manager dashboard', function () {

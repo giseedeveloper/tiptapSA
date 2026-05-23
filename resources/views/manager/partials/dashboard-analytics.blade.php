@@ -40,22 +40,20 @@
     }
     .analytics-bar-v {
         border-radius: 8px 8px 0 0;
-        transform-origin: bottom;
-        animation: analyticsBarGrowV 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        transform: scaleY(0);
+        animation: analyticsBarFadeV 0.7s ease forwards;
+        opacity: 0;
     }
     .analytics-bar-h {
-        transform-origin: left center;
-        animation: analyticsBarGrowH 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        transform: scaleX(0);
+        animation: analyticsBarFadeH 0.7s ease forwards;
+        opacity: 0;
     }
-    @keyframes analyticsBarGrowV {
-        from { opacity: 0; transform: scaleY(0); }
-        to { opacity: 1; transform: scaleY(1); }
+    @keyframes analyticsBarFadeV {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes analyticsBarGrowH {
-        from { opacity: 0; transform: scaleX(0); }
-        to { opacity: 1; transform: scaleX(1); }
+    @keyframes analyticsBarFadeH {
+        from { opacity: 0; transform: translateX(-4px); }
+        to { opacity: 1; transform: translateX(0); }
     }
     .cycle-ring {
         background: conic-gradient({{ $conicGradient }});
@@ -104,25 +102,27 @@
                 </div>
                 <div class="text-right">
                     <p class="text-[11px] text-white/55 uppercase tracking-wider">Week growth</p>
-                    <p class="text-lg font-bold {{ ($weekComparison['change_pct'] ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400' }}">
+                    <p id="week-growth-value" class="text-lg font-bold {{ ($weekComparison['change_pct'] ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400' }}">
                         {{ ($weekComparison['change_pct'] ?? 0) >= 0 ? '+' : '' }}{{ number_format($weekComparison['change_pct'] ?? 0, 1) }}%
                     </p>
                 </div>
             </div>
-            <div class="h-64 flex items-end gap-2 sm:gap-3 border-b border-white/10 pb-3">
+            <div id="weekly-trend-chart" class="h-64 flex items-end gap-2 sm:gap-3 border-b border-white/10 pb-3">
                 @foreach($weeklyTrend as $index => $day)
                     @php
-                        $revH = max(($day['revenue'] / $maxWeeklyRevenue) * 100, $day['revenue'] > 0 ? 6 : 2);
-                        $ordH = max(($day['orders'] / $maxWeeklyOrders) * 55, $day['orders'] > 0 ? 8 : 0);
+                        $revH = max(($day['revenue'] / $maxWeeklyRevenue) * 100, $day['revenue'] > 0 ? 10 : 3);
+                        $ordH = max(($day['orders'] / $maxWeeklyOrders) * 100, $day['orders'] > 0 ? 12 : 3);
                     @endphp
-                    <div class="flex-1 h-full flex flex-col justify-end items-center gap-1 min-w-[28px] group">
+                    <div class="weekly-day flex-1 h-full flex flex-col justify-end items-center gap-1 min-w-[28px] group" data-index="{{ $index }}">
                         <div class="w-full flex items-end justify-center gap-0.5 h-[85%]">
-                            <div class="analytics-bar-v w-[42%] relative bg-gradient-to-t from-violet-600 via-violet-500 to-cyan-400 opacity-90 group-hover:opacity-100"
-                                 style="height: {{ $revH }}%; animation-delay: {{ $index * 0.06 }}s;"
-                                 title="Tsh {{ number_format($day['revenue']) }}"></div>
-                            <div class="analytics-bar-v w-[42%] relative bg-gradient-to-t from-amber-600/80 to-amber-400/90 group-hover:opacity-100"
-                                 style="height: {{ $ordH }}%; animation-delay: {{ ($index * 0.06) + 0.03 }}s;"
-                                 title="{{ $day['orders'] }} orders"></div>
+                            <div class="weekly-rev-bar analytics-bar-v w-[42%] relative bg-gradient-to-t from-violet-600 via-violet-500 to-cyan-400 opacity-90 group-hover:opacity-100"
+                                 style="height: {{ $revH }}%; min-height: {{ $day['revenue'] > 0 ? '10px' : '3px' }}; animation-delay: {{ $index * 0.06 }}s;"
+                                 title="Tsh {{ number_format($day['revenue']) }}"
+                                 data-revenue="{{ $day['revenue'] }}"></div>
+                            <div class="weekly-ord-bar analytics-bar-v w-[42%] relative bg-gradient-to-t from-amber-600/80 to-amber-400/90 group-hover:opacity-100"
+                                 style="height: {{ $ordH }}%; min-height: {{ $day['orders'] > 0 ? '12px' : '3px' }}; animation-delay: {{ ($index * 0.06) + 0.03 }}s;"
+                                 title="{{ $day['orders'] }} orders"
+                                 data-orders="{{ $day['orders'] }}"></div>
                         </div>
                         <p class="text-[11px] font-semibold text-white/80">{{ $day['day'] }}</p>
                         <p class="text-[10px] text-white/50">{{ $day['date'] }}</p>
@@ -164,18 +164,18 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <div class="analytics-shell glass-card rounded-2xl p-6">
             <h4 class="text-lg font-bold text-white mb-1">Hourly Traffic</h4>
-            <p class="text-xs text-white/55 mb-4">Orders histogram · today (8:00–23:00)</p>
+            <p class="text-xs text-white/55 mb-4">Orders histogram · today (00:00–23:00)</p>
             <div class="overflow-x-auto -mx-1 px-1 pb-1">
-                <div class="h-52 flex items-end gap-1.5 sm:gap-2 border-b border-white/15 pb-3 min-w-[520px] sm:min-w-0">
+                <div id="hourly-traffic-chart" class="h-52 flex items-end gap-1 sm:gap-1.5 border-b border-white/15 pb-3 min-w-[720px] sm:min-w-0">
                 @foreach($hourlyActivity as $index => $slot)
                     @php $h = max(($slot['orders'] / $maxHourlyOrders) * 100, $slot['orders'] > 0 ? 12 : 4); @endphp
-                    <div class="flex-1 min-w-[28px] flex flex-col justify-end items-center group">
+                    <div class="hourly-slot flex-1 min-w-[22px] flex flex-col justify-end items-center group" data-hour="{{ $slot['hour'] }}" data-orders="{{ $slot['orders'] }}">
                         @if($slot['orders'] > 0)
-                            <span class="text-[10px] font-bold text-cyan-300 mb-1 tabular-nums">{{ $slot['orders'] }}</span>
+                            <span class="hourly-count text-[10px] font-bold text-cyan-300 mb-1 tabular-nums">{{ $slot['orders'] }}</span>
                         @else
                             <span class="text-[10px] mb-1 opacity-0 select-none" aria-hidden="true">0</span>
                         @endif
-                        <div class="analytics-bar-v w-full max-w-[32px] bg-gradient-to-t from-cyan-600 to-violet-500 rounded-t-md opacity-90 group-hover:opacity-100 min-h-[4px]"
+                        <div class="hourly-bar analytics-bar-v w-full max-w-[28px] bg-gradient-to-t from-cyan-600 to-violet-500 rounded-t-md opacity-90 group-hover:opacity-100 min-h-[4px]"
                              style="height: {{ $h }}%; animation-delay: {{ $index * 0.03 }}s;"
                              title="{{ $slot['label'] }} · {{ $slot['orders'] }} orders"></div>
                         <span class="text-[10px] sm:text-[11px] font-medium text-white/70 mt-2 tabular-nums">{{ sprintf('%02d', (int) $slot['hour']) }}</span>

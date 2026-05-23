@@ -5,12 +5,20 @@ namespace App\Services;
 use App\Models\Feedback;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Payment;
 use App\Models\Restaurant;
 use Carbon\Carbon;
 
 class ManagerDashboardAnalytics
 {
+    public function revenueForPaidOrdersOnDate(int $restaurantId, Carbon $date): float
+    {
+        return (float) Order::query()
+            ->where('restaurant_id', $restaurantId)
+            ->where('status', 'paid')
+            ->whereDate('created_at', $date)
+            ->sum('total_amount');
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -47,15 +55,15 @@ class ManagerDashboardAnalytics
         $end = $today->copy()->endOfDay();
 
         $revenueByDay = [];
-        $payments = Payment::query()
+        $paidOrders = Order::query()
             ->where('restaurant_id', $restaurantId)
-            ->whereIn('status', ['paid', 'completed'])
+            ->where('status', 'paid')
             ->whereBetween('created_at', [$start, $end])
-            ->get(['amount', 'created_at']);
+            ->get(['total_amount', 'created_at']);
 
-        foreach ($payments as $payment) {
-            $key = $payment->created_at->toDateString();
-            $revenueByDay[$key] = ($revenueByDay[$key] ?? 0) + (float) $payment->amount;
+        foreach ($paidOrders as $order) {
+            $key = $order->created_at->toDateString();
+            $revenueByDay[$key] = ($revenueByDay[$key] ?? 0) + (float) $order->total_amount;
         }
 
         $ordersByDay = [];
@@ -102,7 +110,7 @@ class ManagerDashboardAnalytics
         }
 
         $hours = [];
-        for ($h = 8; $h <= 23; $h++) {
+        for ($h = 0; $h <= 23; $h++) {
             $hours[] = [
                 'hour' => (string) $h,
                 'label' => sprintf('%02d:00', $h),
@@ -167,17 +175,17 @@ class ManagerDashboardAnalytics
         $previousStart = $currentStart->copy()->subWeek();
         $previousEnd = $currentStart->copy()->subSecond();
 
-        $currentRevenue = (float) Payment::query()
+        $currentRevenue = (float) Order::query()
             ->where('restaurant_id', $restaurantId)
-            ->whereIn('status', ['paid', 'completed'])
+            ->where('status', 'paid')
             ->whereBetween('created_at', [$currentStart, $currentEnd])
-            ->sum('amount');
+            ->sum('total_amount');
 
-        $previousRevenue = (float) Payment::query()
+        $previousRevenue = (float) Order::query()
             ->where('restaurant_id', $restaurantId)
-            ->whereIn('status', ['paid', 'completed'])
+            ->where('status', 'paid')
             ->whereBetween('created_at', [$previousStart, $previousEnd])
-            ->sum('amount');
+            ->sum('total_amount');
 
         $currentOrders = Order::query()
             ->where('restaurant_id', $restaurantId)
