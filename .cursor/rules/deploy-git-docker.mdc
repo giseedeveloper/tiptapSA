@@ -3,50 +3,57 @@ description: After code changes — commit, push, VPS pull, Docker rebuild
 alwaysApply: true
 ---
 
-# Deploy workflow (TIPTAP_sauth)
+# Deploy workflow (TIPTAP SOUTH AFRICA)
 
-When you finish a task that changed code and the user expects it live (or says deploy / push / VPS):
+## VPS Details
+- **Host:** 139.59.151.111 (DigitalOcean – Cape Town)
+- **User:** root
+- **Password:** HMF$_h9TMN6XT.x
+- **Project path:** /root/TIPTAP
+- **Domain:** https://tiptapafrica.co.za
 
 ## 1. Local — Git
 
 1. `git status` and `git diff` — confirm only intended files.
 2. **Commit** with a clear message (why, not just what).
-3. **Push** to `origin` on the current branch (`git push -u origin HEAD` if needed).
+3. **Push** to `origin main`.
 4. Never commit `.env`, tokens, or `auth_info_baileys/`.
 
-Only skip commit/push if the user explicitly says not to.
+## 2. VPS — Docker Deploy
 
-## 2. VPS — correct server only
-
-Use MCP **`TIPTAP SOUTH AFRICA`** for this project (not TZ bot VPS, not Saloon).
-
-Typical sequence on the server:
+Use sshpass to connect (or read from `~/.codeium/windsurf/mcp_config.json`):
 
 ```bash
-cd /path/to/TAPTAP_sauth   # app root on VPS
-git pull
-
-# Laravel (if PHP/views/config changed)
-composer install --no-dev --optimize-autoloader
-php artisan migrate --force
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-# WhatsApp bot (tiptopbot)
-cd tiptopbot
-docker compose down
-docker compose build --no-cache bot
-docker compose up -d bot
-curl -sS http://127.0.0.1:3000/health
+sshpass -p 'HMF$_h9TMN6XT.x' ssh -o StrictHostKeyChecking=no root@139.59.151.111
 ```
 
-Adjust paths to match the VPS layout. If only `tiptopbot/` changed, bot steps alone are enough.
+Deploy sequence on the server:
 
-## 3. Verify
+```bash
+cd /root/TIPTAP
+git pull origin main
 
-- `php artisan whatsapp:doctor --probe` (from app root, if `.env` reachable)
-- Meta webhook still verified after deploy
-- Send a test WhatsApp message
+# Rebuild Laravel app & queue containers
+docker compose build --no-cache app queue
+docker compose up -d
 
-Report commit hash, branch, and health-check result to the user.
+# Clear and cache Laravel
+docker exec tiptap_app php artisan config:cache
+docker exec tiptap_app php artisan route:cache
+docker exec tiptap_app php artisan view:cache
+
+# Verify
+docker ps --format '{{.Names}} {{.Status}}'
+```
+
+## 3. Or use deploy.sh script
+
+```bash
+./deploy.sh
+```
+
+## 4. Verify
+
+- Open https://tiptapafrica.co.za in browser
+- Check manager dashboard text colors are white on dark background
+- Report commit hash, branch, and container status to user.
