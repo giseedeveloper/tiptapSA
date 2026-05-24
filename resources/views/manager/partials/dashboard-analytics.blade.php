@@ -5,8 +5,6 @@
     $weekComparison = $analytics['week_comparison'] ?? ['current' => 0, 'previous' => 0, 'change_pct' => 0, 'current_orders' => 0, 'previous_orders' => 0];
     $topMenuItems = $analytics['top_menu_items'] ?? [];
     $ratingHistogram = $analytics['rating_histogram'] ?? [];
-    $insights = $analytics['insights'] ?? [];
-
     $maxWeeklyRevenue = max(collect($weeklyTrend)->max('revenue') ?: 1, 1);
     $maxWeeklyOrders = max(collect($weeklyTrend)->max('orders') ?: 1, 1);
     $maxHourlyOrders = max(collect($hourlyActivity)->max('orders') ?: 1, 1);
@@ -62,11 +60,6 @@
         background: #12101c;
         box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     }
-    .insight-pill[data-tone="violet"] { border-color: rgba(140, 113, 246, 0.35); background: rgba(140, 113, 246, 0.12); }
-    .insight-pill[data-tone="cyan"] { border-color: rgba(109, 82, 232, 0.35); background: rgba(109, 82, 232, 0.12); }
-    .insight-pill[data-tone="emerald"] { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12); }
-    .insight-pill[data-tone="amber"] { border-color: rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.12); }
-    .insight-pill[data-tone="rose"] { border-color: rgba(244, 63, 94, 0.35); background: rgba(244, 63, 94, 0.12); }
 </style>
 
 <section class="mb-10" aria-label="Restaurant analytics">
@@ -76,16 +69,6 @@
             <h3 class="text-2xl font-bold text-white tracking-tight">{{ $analytics['restaurant_name'] ?? 'Restaurant' }} Insights</h3>
             <p class="text-sm text-white/60 mt-1">7-day cycles, live pipeline, and performance histograms</p>
         </div>
-        @if(count($insights) > 0)
-            <div class="flex flex-wrap gap-2">
-                @foreach($insights as $insight)
-                    <div class="insight-pill px-3 py-2 rounded-xl border text-xs" data-tone="{{ $insight['tone'] }}">
-                        <span class="text-white/65 block text-[11px]">{{ $insight['label'] }}</span>
-                        <span class="font-semibold text-white text-sm">{{ $insight['value'] }}</span>
-                    </div>
-                @endforeach
-            </div>
-        @endif
     </div>
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">

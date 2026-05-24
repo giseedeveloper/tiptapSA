@@ -9,6 +9,10 @@
         </div>
     @endif
 
+    @php
+        $weekRevChange = (float) ($analytics['week_comparison']['change_pct'] ?? 0);
+    @endphp
+
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <!-- Stat 1: Orders -->
@@ -42,6 +46,12 @@
                 </div>
                 <p class="text-xs font-semibold text-white/65 uppercase tracking-wider mb-1">Revenue Today</p>
                 <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums break-all sm:break-normal" id="stat-revenue-today">Tsh {{ number_format($revenueToday) }}</h3>
+                <p class="text-sm text-white/55 mt-2">
+                    <span class="text-white/65">Week vs last week</span>
+                    <span id="stat-revenue-week-change" class="font-semibold {{ $weekRevChange >= 0 ? 'text-emerald-400' : 'text-rose-400' }}">
+                        {{ $weekRevChange >= 0 ? '+' : '' }}{{ number_format($weekRevChange, 1) }}% revenue
+                    </span>
+                </p>
             </div>
         </div>
 
@@ -439,6 +449,13 @@
                         growthEl.textContent = `${growth >= 0 ? '+' : ''}${Number(growth).toFixed(1)}%`;
                         growthEl.classList.toggle('text-emerald-400', growth >= 0);
                         growthEl.classList.toggle('text-rose-400', growth < 0);
+                    }
+
+                    const revenueWeekEl = document.getElementById('stat-revenue-week-change');
+                    if (revenueWeekEl) {
+                        revenueWeekEl.textContent = `${growth >= 0 ? '+' : ''}${Number(growth).toFixed(1)}% revenue`;
+                        revenueWeekEl.classList.toggle('text-emerald-400', growth >= 0);
+                        revenueWeekEl.classList.toggle('text-rose-400', growth < 0);
                     }
                 })
                 .catch(error => console.error('Error fetching analytics:', error));

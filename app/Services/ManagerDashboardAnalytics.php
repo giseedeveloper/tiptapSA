@@ -42,7 +42,7 @@ class ManagerDashboardAnalytics
             'week_comparison' => $weekComparison,
             'top_menu_items' => $topMenuItems,
             'rating_histogram' => $ratingHistogram,
-            'insights' => $this->buildInsights($weeklyTrend, $hourlyActivity, $statusCycle, $weekComparison),
+            'insights' => $this->buildInsights($hourlyActivity, $statusCycle),
         ];
     }
 
@@ -257,13 +257,11 @@ class ManagerDashboardAnalytics
     }
 
     /**
-     * @param  list<array{date: string, day: string, revenue: float, orders: int}>  $weeklyTrend
      * @param  list<array{hour: string, label: string, orders: int}>  $hourlyActivity
      * @param  array{segments: list<array{key: string, label: string, count: int, color: string}>, total: int}  $statusCycle
-     * @param  array{current: float, previous: float, change_pct: float, current_orders: int, previous_orders: int}  $weekComparison
      * @return list<array{label: string, value: string, tone: string}>
      */
-    private function buildInsights(array $weeklyTrend, array $hourlyActivity, array $statusCycle, array $weekComparison): array
+    private function buildInsights(array $hourlyActivity, array $statusCycle): array
     {
         $insights = [];
 
@@ -273,23 +271,6 @@ class ManagerDashboardAnalytics
                 'label' => 'Peak hour today',
                 'value' => $peakHour['label'].' · '.$peakHour['orders'].' orders',
                 'tone' => 'cyan',
-            ];
-        }
-
-        $bestDay = collect($weeklyTrend)->sortByDesc('revenue')->first();
-        if ($bestDay && $bestDay['revenue'] > 0) {
-            $insights[] = [
-                'label' => 'Best revenue day (7d)',
-                'value' => $bestDay['day'].' · Tsh '.number_format($bestDay['revenue']),
-                'tone' => 'violet',
-            ];
-        }
-
-        if ($weekComparison['change_pct'] !== 0.0) {
-            $insights[] = [
-                'label' => 'Week vs last week',
-                'value' => ($weekComparison['change_pct'] >= 0 ? '+' : '').$weekComparison['change_pct'].'% revenue',
-                'tone' => $weekComparison['change_pct'] >= 0 ? 'emerald' : 'rose',
             ];
         }
 

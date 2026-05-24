@@ -32,6 +32,8 @@ test('manager can view dashboard', function () {
     $response->assertSee('Manager Dashboard');
     $response->assertSee('Quick Actions');
     $response->assertSee('Live Orders');
+    $response->assertSee('Week vs last week', false);
+    $response->assertDontSee('Best revenue day (7d)', false);
 });
 
 test('manager dashboard stats api returns accurate counts', function () {
