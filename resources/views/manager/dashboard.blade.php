@@ -103,7 +103,7 @@
                 <p class="text-xs sm:text-sm font-medium text-white/40 uppercase tracking-wide break-words">Real-time kitchen & service status</p>
             </div>
             <div class="flex flex-wrap gap-2 sm:gap-3 shrink-0">
-                <button onclick="window.location.reload()" class="glass px-4 py-2.5 rounded-xl font-semibold text-white/70 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2 text-sm">
+                <button onclick="window.location.reload()" class="glass px-4 py-2.5 rounded-xl font-semibold text-white/70 hover:text-white hover:bg-surface-900/10 transition-all flex items-center gap-2 text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>
                     </svg>
@@ -141,7 +141,7 @@
                                         $itemName = $item->menuItem ? $item->menuItem->name : ($item->name ?? 'Item');
                                         $itemImageUrl = $item->menuItem ? $item->menuItem->imageUrl() : null;
                                     @endphp
-                                    <div class="w-7 h-7 rounded-full border-2 border-surface-900 bg-white/10 flex items-center justify-center text-[9px] font-bold text-white overflow-hidden" title="{{ $itemName }}">
+                                    <div class="w-7 h-7 rounded-full border-2 border-surface-900 bg-surface-900/10 flex items-center justify-center text-[9px] font-bold text-white overflow-hidden" title="{{ $itemName }}">
                                         @if($itemImageUrl)
                                             <img src="{{ $itemImageUrl }}" alt="" class="w-full h-full object-cover">
                                         @else
@@ -150,7 +150,7 @@
                                     </div>
                                 @endforeach
                                 @if($order->items->count() > 3)
-                                    <div class="w-7 h-7 rounded-full border-2 border-surface-900 bg-white/5 flex items-center justify-center text-[8px] font-bold text-white/50">
+                                    <div class="w-7 h-7 rounded-full border-2 border-surface-900 bg-surface-900/5 flex items-center justify-center text-[8px] font-bold text-white/50">
                                         +{{ $order->items->count() - 3 }}
                                     </div>
                                 @endif
@@ -194,7 +194,7 @@
                                     <span class="text-[10px] font-bold">In Kitchen</span>
                                 </div>
                             </div>
-                            <div class="w-full bg-white/5 h-1.5 rounded-full mb-3 overflow-hidden">
+                            <div class="w-full bg-surface-900/5 h-1.5 rounded-full mb-3 overflow-hidden">
                                 <div class="bg-gradient-to-r from-amber-500 to-amber-400 h-full rounded-full animate-pulse" style="width: 65%"></div>
                             </div>
                             <div class="flex justify-between items-center">
@@ -331,28 +331,28 @@
                 <span class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Shortcuts</span>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <a href="{{ route('manager.orders.live') }}" class="glass p-4 rounded-xl hover:bg-white/10 transition-all group border border-white/5">
+                <a href="{{ route('manager.orders.live') }}" class="glass p-4 rounded-xl hover:bg-surface-900/10 transition-all group border border-white/5">
                     <div class="w-9 h-9 rounded-lg bg-amber-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     </div>
                     <p class="text-sm font-semibold text-white">Live Orders</p>
                     <p class="text-[11px] text-white/40 mt-0.5">Kitchen board</p>
                 </a>
-                <a href="{{ route('manager.menu.index') }}" class="glass p-4 rounded-xl hover:bg-white/10 transition-all group border border-white/5">
+                <a href="{{ route('manager.menu.index') }}" class="glass p-4 rounded-xl hover:bg-surface-900/10 transition-all group border border-white/5">
                     <div class="w-9 h-9 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-400"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                     </div>
                     <p class="text-sm font-semibold text-white">Menu</p>
                     <p class="text-[11px] text-white/40 mt-0.5">Items & prices</p>
                 </a>
-                <a href="{{ route('manager.waiters.index') }}" class="glass p-4 rounded-xl hover:bg-white/10 transition-all group border border-white/5">
+                <a href="{{ route('manager.waiters.index') }}" class="glass p-4 rounded-xl hover:bg-surface-900/10 transition-all group border border-white/5">
                     <div class="w-9 h-9 rounded-lg bg-blue-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                     </div>
                     <p class="text-sm font-semibold text-white">Staff</p>
                     <p class="text-[11px] text-white/40 mt-0.5">Link waiters</p>
                 </a>
-                <a href="{{ route('manager.payments.index') }}" class="glass p-4 rounded-xl hover:bg-white/10 transition-all group border border-white/5">
+                <a href="{{ route('manager.payments.index') }}" class="glass p-4 rounded-xl hover:bg-surface-900/10 transition-all group border border-white/5">
                     <div class="w-9 h-9 rounded-lg bg-pink-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-pink-400"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                     </div>

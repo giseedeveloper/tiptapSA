@@ -174,7 +174,7 @@
                             <span class="text-white/80 font-medium truncate">{{ $item['name'] }}</span>
                             <span class="text-fin-lavender font-semibold shrink-0">{{ $item['quantity'] }}×</span>
                         </div>
-                        <div class="h-2.5 rounded-full bg-white/5 overflow-hidden">
+                        <div class="h-2.5 rounded-full bg-surface-900/5 overflow-hidden">
                             <div class="h-full rounded-full bg-gradient-to-r from-fin-primary to-fin-primary-dark analytics-bar-h"
                                  style="width: {{ $barW }}%; animation-delay: {{ $index * 0.08 }}s;"></div>
                         </div>
@@ -193,7 +193,7 @@
                     @php $rW = max(($row['count'] / $maxRatingCount) * 100, $row['count'] > 0 ? 10 : 0); @endphp
                     <div class="flex items-center gap-3">
                         <span class="text-xs text-amber-400 font-semibold w-8">{{ $row['stars'] }}★</span>
-                        <div class="flex-1 h-3 rounded-full bg-white/5 overflow-hidden">
+                        <div class="flex-1 h-3 rounded-full bg-surface-900/5 overflow-hidden">
                             <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400 analytics-bar-h"
                                  style="width: {{ $rW }}%; animation-delay: {{ $index * 0.07 }}s;"></div>
                         </div>
@@ -204,7 +204,7 @@
             <div class="pt-4 border-t border-white/5">
                 <p class="text-[11px] text-white/55 uppercase tracking-wider mb-2">This week vs last</p>
                 <div class="flex items-center gap-3">
-                    <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div class="flex-1 h-2 rounded-full bg-surface-900/10 overflow-hidden">
                         <div class="h-full rounded-full bg-gradient-to-r from-fin-primary-dark to-fin-primary" style="width: {{ min($weekProgress, 100) }}%"></div>
                     </div>
                     <span class="text-xs font-bold text-white">{{ $weekProgress }}%</span>

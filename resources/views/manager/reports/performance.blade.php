@@ -9,7 +9,7 @@
                 <h2 class="text-3xl font-bold text-white tracking-tight">Performance Report</h2>
                 <p class="text-sm font-medium text-white/40 uppercase tracking-wider">Restaurant & Waiter Performance Metrics</p>
             </div>
-            <a href="{{ route('manager.reports.export-performance', ['period' => $period, 'start_date' => $startDate, 'end_date' => $endDate]) }}" class="bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all flex items-center gap-2">
+            <a href="{{ route('manager.reports.export-performance', ['period' => $period, 'start_date' => $startDate, 'end_date' => $endDate]) }}" class="bg-linear-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-fin-primary/25 transition-all flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
                 </svg>
@@ -22,7 +22,7 @@
             <div class="flex flex-wrap gap-4 items-end">
                 <div class="flex-1 min-w-[200px]">
                     <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Period</label>
-                    <select name="period" id="periodSelect" onchange="toggleCustomDates()" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                    <select name="period" id="periodSelect" onchange="toggleCustomDates()" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent transition-all">
                         <option value="today" {{ $period === 'today' ? 'selected' : '' }}>Today</option>
                         <option value="week" {{ $period === 'week' ? 'selected' : '' }}>This Week</option>
                         <option value="month" {{ $period === 'month' ? 'selected' : '' }}>This Month</option>
@@ -32,14 +32,14 @@
                 <div id="customDates" class="flex gap-4 flex-1 {{ $period === 'custom' ? '' : 'hidden' }}">
                     <div class="flex-1">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Start Date</label>
-                        <input type="date" name="start_date" value="{{ $startDate }}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                        <input type="date" name="start_date" value="{{ $startDate }}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent transition-all">
                     </div>
                     <div class="flex-1">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">End Date</label>
-                        <input type="date" name="end_date" value="{{ $endDate }}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
+                        <input type="date" name="end_date" value="{{ $endDate }}" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent transition-all">
                     </div>
                 </div>
-                <button type="submit" class="bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all">
+                <button type="submit" class="bg-linear-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-fin-primary/25 transition-all">
                     Apply Filter
                 </button>
             </div>
@@ -50,7 +50,7 @@
             <div class="glass-card p-6 rounded-2xl">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-violet-500/20 rounded-xl flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-violet-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-fin-primary">
                             <path d="M3 3h18v18H3zM8 12h8M12 8v8"/>
                         </svg>
                     </div>
@@ -62,7 +62,7 @@
             <div class="glass-card p-6 rounded-2xl">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600">
                             <line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
                         </svg>
                     </div>
@@ -74,7 +74,7 @@
             <div class="glass-card p-6 rounded-2xl">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
                     </div>
@@ -88,7 +88,7 @@
         @if($topPerformer)
         <div class="glass-card p-6 rounded-2xl mb-8 border-2 border-violet-500/30">
             <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-gradient-to-br from-fin-primary to-fin-primary-dark rounded-2xl flex items-center justify-center">
+                <div class="w-16 h-16 bg-linear-to-br from-fin-primary to-fin-primary-dark rounded-2xl flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
                         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
                     </svg>
@@ -98,7 +98,7 @@
                     <p class="text-white/60">{{ $topPerformer['name'] }} - {{ $topPerformer['orders_count'] }} orders handled</p>
                 </div>
                 <div class="text-right">
-                    <div class="text-2xl font-bold text-violet-400">{{ number_format($topPerformer['tips_earned']) }} Tsh</div>
+                    <div class="text-2xl font-bold text-fin-primary">{{ number_format($topPerformer['tips_earned']) }} Tsh</div>
                     <div class="text-sm text-white/40">Tips Earned</div>
                 </div>
             </div>
@@ -156,13 +156,13 @@
                                 <span class="font-semibold text-white">{{ number_format($stat['orders_count']) }}</span>
                             </td>
                             <td class="p-4">
-                                <span class="font-semibold text-emerald-400">Tsh {{ number_format($stat['tips_earned']) }}</span>
+                                <span class="font-semibold text-emerald-600">Tsh {{ number_format($stat['tips_earned']) }}</span>
                             </td>
                             <td class="p-4">
                                 <div class="flex items-center gap-2">
-                                    <span class="font-semibold text-amber-400">{{ $stat['avg_rating'] > 0 ? number_format($stat['avg_rating'], 1) : 'N/A' }}</span>
+                                    <span class="font-semibold text-amber-600">{{ $stat['avg_rating'] > 0 ? number_format($stat['avg_rating'], 1) : 'N/A' }}</span>
                                     @if($stat['avg_rating'] > 0)
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-amber-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="text-amber-600">
                                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                                     </svg>
                                     @endif

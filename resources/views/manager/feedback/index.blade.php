@@ -11,7 +11,7 @@
         <div class="flex items-center gap-3">
             <div class="glass px-4 py-2 rounded-xl flex items-center gap-2">
                 <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span class="text-[11px] font-bold text-white/70 uppercase tracking-wider">Live Updates</span>
+                <span class="text-[11px] font-bold text-white/60 uppercase tracking-wider">Live Updates</span>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
             <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-1">Average Rating</p>
             <div class="flex items-end gap-2">
                 <h3 class="text-4xl font-black text-white">{{ number_format($avgRating, 1) }}</h3>
-                <div class="flex text-amber-400 mb-1.5">
+                <div class="flex text-amber-600 mb-1.5">
                     @for($i = 1; $i <= 5; $i++)
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="{{ $i <= round($avgRating) ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2" class="{{ $i <= round($avgRating) ? '' : 'text-white/10' }}">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -71,24 +71,24 @@
                             <div class="flex justify-between text-[11px] font-bold uppercase tracking-widest">
                                 <span class="text-white/60 flex items-center gap-1.5">
                                     {{ $star }} Stars
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="text-amber-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="text-amber-600">
                                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                                     </svg>
                                 </span>
                                 <span class="text-white">{{ $count }}</span>
                             </div>
                             <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full transition-all duration-1000" style="width: {{ $percentage }}%"></div>
+                                <div class="h-full bg-linear-to-r from-amber-500 to-amber-300 rounded-full transition-all duration-1000" style="width: {{ $percentage }}%"></div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
 
-            <div class="glass-card p-8 rounded-3xl bg-gradient-to-br from-violet-600/20 to-transparent border-violet-500/20">
+            <div class="glass-card p-8 rounded-3xl bg-linear-to-br from-violet-600/20 to-transparent border-violet-500/20">
                 <h4 class="text-sm font-bold text-white mb-2">Improve your score</h4>
                 <p class="text-xs text-white/40 leading-relaxed mb-4">Responding to negative feedback within 24 hours can increase customer retention by 30%.</p>
-                <button class="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all uppercase tracking-widest">View Tips</button>
+                <button class="w-full py-3 bg-fin-mist hover:bg-surface-900/20 text-white rounded-xl text-xs font-bold transition-all uppercase tracking-widest">View Tips</button>
             </div>
         </div>
 
@@ -98,8 +98,8 @@
                 <div class="glass-card p-6 rounded-3xl card-hover group">
                     <div class="flex gap-5">
                         <div class="shrink-0">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                                <span class="text-lg font-black text-white/80">{{ substr($feedback->order->customer_name ?? $feedback->waiter->name ?? 'C', 0, 1) }}</span>
+                            <div class="w-12 h-12 rounded-2xl bg-linear-to-br from-white/10 to-white/5 flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                                <span class="text-lg font-black text-white">{{ substr($feedback->order->customer_name ?? $feedback->waiter->name ?? 'C', 0, 1) }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -110,19 +110,19 @@
                                 </div>
                                 <div class="flex gap-0.5">
                                     @for($i = 1; $i <= 5; $i++)
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="{{ $i <= $feedback->rating ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2" class="{{ $i <= $feedback->rating ? 'text-amber-400' : 'text-white/10' }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="{{ $i <= $feedback->rating ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2" class="{{ $i <= $feedback->rating ? 'text-amber-600' : 'text-white/10' }}">
                                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                                         </svg>
                                     @endfor
                                 </div>
                             </div>
-                            <p class="text-sm text-white/70 leading-relaxed italic mb-4">"{{ $feedback->comment }}"</p>
+                            <p class="text-sm text-white/60 leading-relaxed italic mb-4">"{{ $feedback->comment }}"</p>
                             <div class="flex items-center gap-4">
-                                <button class="text-[10px] font-black uppercase tracking-widest text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1.5">
+                                <button class="text-[10px] font-black uppercase tracking-widest text-fin-primary hover:text-violet-300 transition-colors flex items-center gap-1.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                                     Reply
                                 </button>
-                                <button class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-rose-400 transition-colors flex items-center gap-1.5">
+                                <button class="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-rose-600 transition-colors flex items-center gap-1.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                                     Report
                                 </button>

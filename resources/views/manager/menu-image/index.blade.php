@@ -7,7 +7,7 @@
         <!-- Header Section -->
         <div class="glass-card rounded-2xl p-8 mb-8">
             <div class="flex items-start gap-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-fin-primary to-fin-primary-dark rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/30">
+                <div class="w-16 h-16 bg-linear-to-br from-fin-primary to-fin-primary-dark rounded-2xl flex items-center justify-center shadow-lg shadow-fin-primary/30">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
                         <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
                         <circle cx="9" cy="9" r="2"/>
@@ -32,7 +32,7 @@
                         <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                         <h3 class="text-lg font-bold text-white">Current Menu Image</h3>
                     </div>
-                    <span class="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-full uppercase tracking-wider border border-emerald-500/20">
+                    <span class="px-3 py-1.5 bg-emerald-500/10 text-emerald-600 text-xs font-bold rounded-full uppercase tracking-wider border border-emerald-500/20">
                         Active
                     </span>
                 </div>
@@ -46,13 +46,13 @@
                             class="w-full h-auto max-h-[600px] object-contain bg-surface-900 transition-transform duration-500 group-hover:scale-105"
                         >
                         <!-- Overlay on hover -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     
                     <!-- Image Info -->
                     <div class="mt-4 flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <a href="{{ $restaurant->menuImageUrl() }}" target="_blank" class="flex items-center gap-2 px-4 py-2 glass rounded-lg text-white/70 hover:text-white hover:bg-white/10 transition-all text-sm font-medium">
+                            <a href="{{ $restaurant->menuImageUrl() }}" target="_blank" class="flex items-center gap-2 px-4 py-2 glass rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all text-sm font-medium">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                                     <polyline points="15 3 21 3 21 9"/>
@@ -109,8 +109,8 @@
 
                     <!-- Default Upload UI -->
                     <div id="uploadUI" class="space-y-4">
-                        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-violet-500/10 to-cyan-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-violet-400">
+                        <div class="w-20 h-20 mx-auto bg-linear-to-br from-violet-500/10 to-cyan-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-fin-primary">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                                 <polyline points="17 8 12 3 7 8"/>
                                 <line x1="12" x2="12" y1="3" y2="15"/>
@@ -159,7 +159,7 @@
                     <button 
                         type="submit" 
                         id="submitBtn"
-                        class="px-8 py-3 bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white font-semibold rounded-xl shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="px-8 py-3 bg-linear-to-r from-fin-primary to-fin-primary-dark text-white font-semibold rounded-xl shadow-lg shadow-fin-primary/25 hover:shadow-fin-primary/40 transition-all flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -176,8 +176,8 @@
         <!-- API Info -->
         <div class="glass-card rounded-2xl p-6 mt-8">
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400">
+                <div class="w-10 h-10 bg-linear-to-br from-cyan-500/15 to-blue-500/10 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-600">
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                     </svg>
@@ -188,7 +188,7 @@
                 </div>
             </div>
             <div class="bg-surface-900 rounded-xl p-4 font-mono text-sm">
-                <code class="text-cyan-400">GET /api/bot/restaurant/{restaurant_id}/menu-image</code>
+                <code class="text-cyan-600">GET /api/bot/restaurant/{restaurant_id}/menu-image</code>
             </div>
         </div>
     </div>

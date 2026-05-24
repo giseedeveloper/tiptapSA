@@ -9,7 +9,7 @@
     <div class="glass-card rounded-2xl p-6 border border-white/10 space-y-6">
         <section>
             <h3 class="text-lg font-bold text-white mb-3">Payroll Management</h3>
-            <ol class="list-decimal list-inside space-y-2 text-white/80 text-sm">
+            <ol class="list-decimal list-inside space-y-2 text-white text-sm">
                 <li>Go to the <strong class="text-white">Payroll</strong> menu in the sidebar (under Finance).</li>
                 <li>Select the <strong class="text-white">month</strong> you want to process (dropdown at the top right).</li>
                 <li>For each waiter, fill in the amounts: <strong class="text-white">Basic Salary</strong>, <strong class="text-white">Allowances</strong>, <strong class="text-white">PAYE</strong>, <strong class="text-white">NSSF</strong>.</li>
@@ -19,7 +19,7 @@
         </section>
         <section>
             <h3 class="text-lg font-bold text-white mb-3">Payment History</h3>
-            <p class="text-white/80 text-sm">The <strong class="text-white">Payment History</strong> page shows all payments you've confirmed for each month, total gross and net amounts, and you can print or export (CSV) for records and tax purposes.</p>
+            <p class="text-white text-sm">The <strong class="text-white">Payment History</strong> page shows all payments you've confirmed for each month, total gross and net amounts, and you can print or export (CSV) for records and tax purposes.</p>
         </section>
     </div>
 </x-manager-layout>

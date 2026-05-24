@@ -13,7 +13,7 @@
             <input type="hidden" name="waiter" value="{{ $waiter }}">
             <input type="hidden" name="date_from" value="{{ $dateFrom }}">
             <input type="hidden" name="date_to" value="{{ $dateTo }}">
-            <button type="submit" class="bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all flex items-center gap-2">
+            <button type="submit" class="bg-linear-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-fin-primary/25 transition-all flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
                 </svg>
@@ -25,28 +25,28 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="glass-card p-6 rounded-2xl card-hover relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-violet-500/20 to-violet-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-fin-primary/15 to-violet-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
             <div class="relative z-10">
                 <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Orders</p>
                 <h3 class="text-3xl font-bold text-white tracking-tight">{{ number_format($totalOrders) }}</h3>
             </div>
         </div>
         <div class="glass-card p-6 rounded-2xl card-hover relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-emerald-500/15 to-emerald-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
             <div class="relative z-10">
                 <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Completed</p>
                 <h3 class="text-3xl font-bold text-white tracking-tight">{{ number_format($completedOrders) }}</h3>
             </div>
         </div>
         <div class="glass-card p-6 rounded-2xl card-hover relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-cyan-500/15 to-cyan-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
             <div class="relative z-10">
                 <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Revenue</p>
                 <h3 class="text-3xl font-bold text-white tracking-tight">Tsh {{ number_format($totalRevenue) }}</h3>
             </div>
         </div>
         <div class="glass-card p-6 rounded-2xl card-hover relative overflow-hidden group">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-amber-500/20 to-amber-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-amber-500/15 to-amber-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
             <div class="relative z-10">
                 <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Avg Order Value</p>
                 <h3 class="text-3xl font-bold text-white tracking-tight">Tsh {{ number_format($avgOrderValue) }}</h3>
@@ -61,7 +61,7 @@
             <!-- Status Filter -->
             <div>
                 <label class="block text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Status</label>
-                <select name="status" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                <select name="status" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent">
                     <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Status</option>
                     <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="preparing" {{ $status === 'preparing' ? 'selected' : '' }}>Preparing</option>
@@ -74,7 +74,7 @@
             <!-- Waiter Filter -->
             <div>
                 <label class="block text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Waiter</label>
-                <select name="waiter" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                <select name="waiter" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent">
                     <option value="all" {{ $waiter === 'all' ? 'selected' : '' }}>All Waiters</option>
                     @foreach($waiters as $w)
                         <option value="{{ $w->id }}" {{ $waiter == $w->id ? 'selected' : '' }}>{{ $w->name }}</option>
@@ -85,27 +85,27 @@
             <!-- Date From -->
             <div>
                 <label class="block text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">From Date</label>
-                <input type="date" name="date_from" value="{{ $dateFrom }}" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                <input type="date" name="date_from" value="{{ $dateFrom }}" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent">
             </div>
 
             <!-- Date To -->
             <div>
                 <label class="block text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">To Date</label>
-                <input type="date" name="date_to" value="{{ $dateTo }}" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                <input type="date" name="date_to" value="{{ $dateTo }}" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white focus:ring-2 focus:ring-fin-primary focus:border-transparent">
             </div>
 
             <!-- Search -->
             <div>
                 <label class="block text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Search</label>
-                <input type="text" name="search" value="{{ $search }}" placeholder="Table, customer..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                <input type="text" name="search" value="{{ $search }}" placeholder="Table, customer..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 font-semibold text-sm text-white placeholder-white/30 focus:ring-2 focus:ring-fin-primary focus:border-transparent">
             </div>
 
             <!-- Buttons -->
             <div class="md:col-span-2 lg:col-span-5 flex gap-3">
-                <button type="submit" class="bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg hover:shadow-violet-500/25 transition-all">
+                <button type="submit" class="bg-linear-to-r from-fin-primary to-fin-primary-dark text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg hover:shadow-fin-primary/25 transition-all">
                     Apply Filters
                 </button>
-                <a href="{{ route('manager.orders.history') }}" class="glass px-6 py-2.5 rounded-xl font-semibold text-white/70 hover:text-white hover:bg-white/10 transition-all">
+                <a href="{{ route('manager.orders.history') }}" class="glass px-6 py-2.5 rounded-xl font-semibold text-white/60 hover:text-white hover:bg-white/10 transition-all">
                     Clear Filters
                 </a>
             </div>
@@ -117,7 +117,7 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-white/[0.02]">
+                    <tr class="bg-surface-900/[0.02]">
                         <th class="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-wider">Order ID</th>
                         <th class="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-wider">Date & Time</th>
                         <th class="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-wider">Table</th>
@@ -131,10 +131,10 @@
                 </thead>
                 <tbody class="divide-y divide-white/5">
                     @forelse($orders as $order)
-                        <tr class="hover:bg-white/[0.02] transition-colors">
+                        <tr class="hover:bg-surface-900/[0.02] transition-colors">
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-2">
-                                    <span class="px-2 py-1 bg-violet-500/10 border border-violet-500/20 rounded-lg text-xs font-bold text-violet-400 font-mono tracking-wider">
+                                    <span class="px-2 py-1 bg-violet-500/10 border border-violet-500/20 rounded-lg text-xs font-bold text-fin-primary font-mono tracking-wider">
                                         ORD-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
                                     </span>
                                 </div>
@@ -144,11 +144,11 @@
                                 <div class="text-xs text-white/40">{{ $order->created_at->format('H:i') }}</div>
                             </td>
                             <td class="px-6 py-5 font-semibold text-white">Table #{{ $order->table_number }}</td>
-                            <td class="px-6 py-5 text-sm text-white/70">
+                            <td class="px-6 py-5 text-sm text-white/60">
                                 <div>{{ $order->customer_name ?? 'N/A' }}</div>
                                 <div class="text-xs text-white/40">{{ $order->customer_phone ?? 'N/A' }}</div>
                             </td>
-                            <td class="px-6 py-5 text-sm text-cyan-400">{{ $order->waiter?->name ?? 'Unassigned' }}</td>
+                            <td class="px-6 py-5 text-sm text-cyan-600">{{ $order->waiter?->name ?? 'Unassigned' }}</td>
                             <td class="px-6 py-5 text-sm text-white/60">{{ $order->items->count() }} items</td>
                             <td class="px-6 py-5 font-bold text-white">Tsh {{ number_format($order->total_amount) }}</td>
                             <td class="px-6 py-5">
@@ -167,14 +167,14 @@
                                 </span>
                             </td>
                             <td class="px-6 py-5">
-                                <button @click="expandedOrder = expandedOrder === {{ $order->id }} ? null : {{ $order->id }}" class="text-violet-400 hover:text-violet-300 font-semibold text-sm transition-colors">
+                                <button @click="expandedOrder = expandedOrder === {{ $order->id }} ? null : {{ $order->id }}" class="text-fin-primary hover:text-violet-300 font-semibold text-sm transition-colors">
                                     <span x-show="expandedOrder !== {{ $order->id }}">View Details</span>
                                     <span x-show="expandedOrder === {{ $order->id }}" x-cloak>Hide Details</span>
                                 </button>
                             </td>
                         </tr>
                         <!-- Expanded Details Row -->
-                        <tr x-show="expandedOrder === {{ $order->id }}" x-cloak x-transition class="bg-white/[0.02]">
+                        <tr x-show="expandedOrder === {{ $order->id }}" x-cloak x-transition class="bg-surface-900/[0.02]">
                             <td colspan="9" class="px-6 py-6">
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     <!-- Order Items -->
@@ -187,7 +187,7 @@
                                                         @if($item->menuItem && $item->menuItem->image)
                                                             <img src="{{ $item->menuItem->imageUrl() }}" alt="{{ $item->menuItem->name }}" class="w-10 h-10 rounded-lg object-cover">
                                                         @else
-                                                            <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
+                                                            <div class="w-10 h-10 bg-fin-mist rounded-lg flex items-center justify-center">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/40">
                                                                     <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
                                                                 </svg>
@@ -222,7 +222,7 @@
                                                         </div>
                                                         <div class="flex justify-between">
                                                             <span class="text-white/40">Status:</span>
-                                                            <span class="text-emerald-400 font-semibold">{{ ucfirst($payment->status) }}</span>
+                                                            <span class="text-emerald-600 font-semibold">{{ ucfirst($payment->status) }}</span>
                                                         </div>
                                                         <div class="flex justify-between">
                                                             <span class="text-white/40">Amount:</span>
@@ -268,7 +268,7 @@
                                             <div class="space-y-2 text-sm">
                                                 <div class="flex justify-between">
                                                     <span class="text-white/40">Order ID:</span>
-                                                    <span class="text-violet-400 font-mono font-bold">ORD-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</span>
+                                                    <span class="text-fin-primary font-mono font-bold">ORD-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</span>
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="text-white/40">Table:</span>
@@ -276,7 +276,7 @@
                                                 </div>
                                                 <div class="flex justify-between">
                                                     <span class="text-white/40">Waiter:</span>
-                                                    <span class="text-cyan-400">{{ $order->waiter?->name ?? 'Unassigned' }}</span>
+                                                    <span class="text-cyan-600">{{ $order->waiter?->name ?? 'Unassigned' }}</span>
                                                 </div>
                                                 @if($order->customer_name)
                                                     <div class="flex justify-between">
