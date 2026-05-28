@@ -36,8 +36,8 @@
 
                 <div class="pt-6 border-t border-white/10">
                     <div class="mb-6">
-                        <h4 class="text-sm font-black text-white uppercase tracking-widest">Payment Gateway (Selcom)</h4>
-                        <p class="text-[10px] text-white/40 font-bold mt-1">Configure Selcom credentials for processing payments</p>
+                        <h4 class="text-sm font-black text-white uppercase tracking-widest">Payment Gateway ({{ config('tiptap.payment_gateway') }})</h4>
+                        <p class="text-[10px] text-white/40 font-bold mt-1">Configure {{ config('tiptap.payment_gateway') }} credentials for processing payments</p>
                     </div>
                     
                     <div class="space-y-4">

@@ -92,7 +92,7 @@
                 {{-- Bot: tip prompt --}}
                 <div class="chat-bubble" style="--delay: 0.9s">
                     <div class="max-w-[88%] bg-white rounded-lg rounded-tl-none px-2.5 py-1.5 shadow-sm text-[10px] text-[#111B21]">
-                        💰 Tip ANNA DOE (Tsh):
+                        💰 Tip ANNA DOE ({{ config('tiptap.currency_symbol') }}):
                         <p class="text-[8px] text-[#667781] text-right mt-0.5">10:17</p>
                     </div>
                 </div>

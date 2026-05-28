@@ -95,7 +95,7 @@
                         <div class="w-full flex items-end justify-center gap-0.5 h-[85%]">
                             <div class="weekly-rev-bar analytics-bar-v w-[42%] relative bg-gradient-to-t from-fin-primary-dark via-fin-primary to-fin-lavender opacity-90 group-hover:opacity-100"
                                  style="height: {{ $revH }}%; min-height: {{ $day['revenue'] > 0 ? '10px' : '3px' }}; animation-delay: {{ $index * 0.06 }}s;"
-                                 title="Tsh {{ number_format($day['revenue']) }}"
+                                 title="{{ $currencySymbol }} {{ number_format($day['revenue']) }}"
                                  data-revenue="{{ $day['revenue'] }}"></div>
                             <div class="weekly-ord-bar analytics-bar-v w-[42%] relative bg-gradient-to-t from-amber-600/80 to-amber-400/90 group-hover:opacity-100"
                                  style="height: {{ $ordH }}%; min-height: {{ $day['orders'] > 0 ? '12px' : '3px' }}; animation-delay: {{ ($index * 0.06) + 0.03 }}s;"
@@ -210,7 +210,7 @@
                     <span class="text-xs font-bold text-white">{{ $weekProgress }}%</span>
                 </div>
                 <p class="text-xs text-white/60 mt-2 tabular-nums">
-                    Tsh {{ number_format($weekComparison['current'] ?? 0) }} · {{ $weekComparison['current_orders'] ?? 0 }} orders
+                    {{ $currencySymbol }} {{ number_format($weekComparison['current'] ?? 0) }} · {{ $weekComparison['current_orders'] ?? 0 }} orders
                 </p>
             </div>
         </div>

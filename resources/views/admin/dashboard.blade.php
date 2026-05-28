@@ -48,7 +48,7 @@
             <div class="flex flex-wrap gap-3">
                 <div class="px-4 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
                     <p class="text-[9px] font-bold text-white/40 uppercase">This week revenue</p>
-                    <p class="text-lg font-black text-white mt-0.5">Tsh {{ number_format($analytics['week_comparison']['revenue_this_week']) }}</p>
+                    <p class="text-lg font-black text-white mt-0.5">{{ $currencySymbol }} {{ number_format($analytics['week_comparison']['revenue_this_week']) }}</p>
                     <p class="text-[10px] font-bold mt-1 {{ $revChange >= 0 ? 'text-emerald-400' : 'text-rose-400' }}">
                         {{ $revChange >= 0 ? '↑' : '↓' }} {{ abs($revChange) }}% vs last week
                     </p>
@@ -86,17 +86,17 @@
         </a>
         <a href="{{ route('admin.payments.index') }}" class="glass-card rounded-2xl p-5 border border-cyan-500/20 admin-stat-glow-cyan card-hover block">
             <p class="text-[9px] font-black text-white/40 uppercase tracking-wider">Revenue</p>
-            <p class="text-xl font-black text-cyan-400 mt-2 tabular-nums" id="stat-total-revenue">Tsh {{ number_format($stats['total_revenue'] / 1000, 1) }}K</p>
+            <p class="text-xl font-black text-cyan-400 mt-2 tabular-nums" id="stat-total-revenue">{{ $currencySymbol }} {{ number_format($stats['total_revenue'] / 1000, 1) }}K</p>
             <p class="text-[10px] text-white/40 mt-1">All time</p>
         </a>
         <div class="glass-card rounded-2xl p-5 border border-emerald-500/20 admin-stat-glow-emerald">
             <p class="text-[9px] font-black text-white/40 uppercase tracking-wider">Today</p>
-            <p class="text-xl font-black text-emerald-400 mt-2 tabular-nums">Tsh {{ number_format($stats['revenue_today']) }}</p>
+            <p class="text-xl font-black text-emerald-400 mt-2 tabular-nums">{{ $currencySymbol }} {{ number_format($stats['revenue_today']) }}</p>
             <p class="text-[10px] text-white/40 mt-1">Revenue</p>
         </div>
         <a href="{{ route('admin.tips.index') }}" class="glass-card rounded-2xl p-5 border border-pink-500/20 card-hover block">
             <p class="text-[9px] font-black text-white/40 uppercase tracking-wider">Tips</p>
-            <p class="text-xl font-black text-pink-400 mt-2 tabular-nums">Tsh {{ number_format($stats['total_tips'] / 1000, 1) }}K</p>
+            <p class="text-xl font-black text-pink-400 mt-2 tabular-nums">{{ $currencySymbol }} {{ number_format($stats['total_tips'] / 1000, 1) }}K</p>
             <p class="text-[10px] text-white/40 mt-1">Collected</p>
         </a>
     </div>
@@ -110,7 +110,7 @@
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h3 class="text-lg font-black text-white">Revenue histogram</h3>
-                        <p class="text-[10px] text-violet-400/80 uppercase tracking-widest mt-1">Last 7 days · TZS</p>
+                        <p class="text-[10px] text-violet-400/80 uppercase tracking-widest mt-1">Last 7 days · {{ config('tiptap.currency_code') }}</p>
                     </div>
                     <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20">
                         {{ $revChange >= 0 ? '+' : '' }}{{ $revChange }}% WoW
@@ -122,7 +122,7 @@
                         <div class="flex-1 flex flex-col items-center justify-end h-full group" style="min-width:28px">
                             <div class="admin-bar-revenue admin-bar-animate w-full relative" style="height:{{ $h }}%; animation-delay:{{ $i * 0.06 }}s">
                                 <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded-lg bg-black/90 border border-violet-500/40 text-[10px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
-                                    Tsh {{ number_format($day['revenue']) }}
+                                    {{ $currencySymbol }} {{ number_format($day['revenue']) }}
                                 </div>
                             </div>
                             <p class="text-[9px] font-bold text-white/50 mt-2">{{ $day['label'] }}</p>
@@ -252,7 +252,7 @@
                             <p class="font-bold text-white truncate group-hover:text-violet-300">{{ $venue['name'] }}</p>
                             <p class="text-[10px] text-white/40">{{ number_format($venue['orders']) }} orders</p>
                         </div>
-                        <p class="text-sm font-black text-emerald-400 tabular-nums">Tsh {{ number_format($venue['revenue']) }}</p>
+                        <p class="text-sm font-black text-emerald-400 tabular-nums">{{ $currencySymbol }} {{ number_format($venue['revenue']) }}</p>
                     </a>
                 @empty
                     <p class="px-6 py-12 text-center text-white/40">No venue revenue yet</p>

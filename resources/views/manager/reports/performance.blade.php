@@ -67,7 +67,7 @@
                         </svg>
                     </div>
                 </div>
-                <h3 class="text-3xl font-bold text-white mb-1">Tsh {{ number_format($totalRevenue) }}</h3>
+                <h3 class="text-3xl font-bold text-white mb-1">{{ $currencySymbol }} {{ number_format($totalRevenue) }}</h3>
                 <p class="text-sm text-white/40 font-medium uppercase tracking-wider">Total Revenue</p>
             </div>
 
@@ -98,7 +98,7 @@
                     <p class="text-white/60">{{ $topPerformer['name'] }} - {{ $topPerformer['orders_count'] }} orders handled</p>
                 </div>
                 <div class="text-right">
-                    <div class="text-2xl font-bold text-fin-primary">{{ number_format($topPerformer['tips_earned']) }} Tsh</div>
+                    <div class="text-2xl font-bold text-fin-primary">{{ $currencySymbol }} {{ number_format($topPerformer['tips_earned']) }}</div>
                     <div class="text-sm text-white/40">Tips Earned</div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
                                 <span class="font-semibold text-white">{{ number_format($stat['orders_count']) }}</span>
                             </td>
                             <td class="p-4">
-                                <span class="font-semibold text-emerald-600">Tsh {{ number_format($stat['tips_earned']) }}</span>
+                                <span class="font-semibold text-emerald-600">{{ $currencySymbol }} {{ number_format($stat['tips_earned']) }}</span>
                             </td>
                             <td class="p-4">
                                 <div class="flex items-center gap-2">

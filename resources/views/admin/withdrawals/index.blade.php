@@ -62,7 +62,7 @@
                             <span class="font-bold text-white">{{ $withdrawal->restaurant?->name ?? '—' }}</span>
                         </td>
                         <td class="px-6 py-5">
-                            <span class="text-sm text-white font-black">Tsh {{ number_format($withdrawal->amount, 0) }}</span>
+                            <span class="text-sm text-white font-black">{{ $currencySymbol }} {{ number_format($withdrawal->amount, 0) }}</span>
                         </td>
                         <td class="px-6 py-5">
                             <div class="flex flex-col">

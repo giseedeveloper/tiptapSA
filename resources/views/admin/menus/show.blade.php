@@ -27,7 +27,7 @@
                                 @if($item->description)<p class="text-xs text-white/40 mt-1">{{ Str::limit($item->description, 80) }}</p>@endif
                             </td>
                             <td class="px-6 py-4 text-sm text-white/60">{{ $item->category?->name ?? '—' }}</td>
-                            <td class="px-6 py-4 text-right text-white font-semibold">Tsh {{ number_format($item->price) }}</td>
+                            <td class="px-6 py-4 text-right text-white font-semibold">{{ $currencySymbol }} {{ number_format($item->price) }}</td>
                             <td class="px-6 py-4 text-center">
                                 <span class="text-xs font-bold {{ $item->is_available ? 'text-emerald-400' : 'text-rose-400' }}">{{ $item->is_available ? 'Yes' : 'No' }}</span>
                             </td>

@@ -43,7 +43,7 @@ class ApiController extends Controller
             'selcom_is_live' => $request->has('selcom_is_live'),
         ]);
 
-        return back()->with('success', 'Selcom credentials updated successfully!');
+        return back()->with('success', config('tiptap.payment_gateway').' credentials updated successfully!');
     }
 
     /**
@@ -73,7 +73,7 @@ class ApiController extends Controller
         if (! $restaurant->hasSelcomConfigured()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Please save your Selcom credentials first',
+                'message' => 'Please save your '.config('tiptap.payment_gateway').' credentials first',
             ]);
         }
 
@@ -92,7 +92,7 @@ class ApiController extends Controller
                 if ($result['resultcode'] === '404' || $result['resultcode'] === '000') {
                     return response()->json([
                         'success' => true,
-                        'message' => 'Connection successful! Selcom credentials are valid. Mode: '.
+                        'message' => 'Connection successful! '.config('tiptap.payment_gateway').' credentials are valid. Mode: '.
                             ($credentials['is_live'] ? 'LIVE' : 'TEST'),
                     ]);
                 }

@@ -102,7 +102,7 @@
                     <div class="glass p-4 rounded-xl">
                         <div class="flex justify-between items-center gap-2">
                             <span class="text-sm font-bold text-white">Table #{{ $order->table_number }}</span>
-                            <span class="text-xs font-medium text-white/50 shrink-0">Tsh {{ number_format($order->total_amount) }}</span>
+                            <span class="text-xs font-medium text-white/50 shrink-0">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
                         </div>
                     </div>
                 @empty

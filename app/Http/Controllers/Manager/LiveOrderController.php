@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendBillImageToCustomer;
 use App\Models\Order;
+use App\Services\OrderBillNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
@@ -115,7 +116,12 @@ class LiveOrderController extends Controller
                     ]);
                 }
             } else {
+                $previousStatus = $order->status;
                 $order->update(['status' => $request->status]);
+
+                if ($request->status === 'served' && $previousStatus !== 'served') {
+                    OrderBillNotification::maybePushBillImage($order);
+                }
             }
         }
 
@@ -221,7 +227,7 @@ class LiveOrderController extends Controller
 
         return redirect()->back()->with(
             'success',
-            'Bill image was sent to WhatsApp '.($recipient ?? 'customer').'. Ask them to open the chat with TipTap business number (+255 791 070 771) and scroll to the latest message.'
+            'Bill image was sent to WhatsApp '.($recipient ?? 'customer').'. Ask them to open the chat with the TipTap business number ('.config('tiptap.phone_international_prefix').' …) and scroll to the latest message.'
         );
     }
 

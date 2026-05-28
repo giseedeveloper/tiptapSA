@@ -9,7 +9,7 @@
                 <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/20 to-amber-500/5 rounded-full blur-3xl"></div>
                 <div class="relative z-10">
                     <p class="text-[11px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Tips Earned</p>
-                    <h3 class="text-4xl font-bold text-white mb-5">Tsh {{ number_format($totalTips) }}</h3>
+                    <h3 class="text-4xl font-bold text-white mb-5">{{ $currencySymbol }} {{ number_format($totalTips) }}</h3>
                     <div class="glass p-4 rounded-xl">
                         <p class="text-[11px] font-medium text-white/50 uppercase tracking-wider">Keep up the great service! 🌟</p>
                     </div>
@@ -39,7 +39,7 @@
                                 <span class="text-sm font-medium text-white/60">#{{ $tip->order_id }}</span>
                             </td>
                             <td class="px-6 py-5">
-                                <p class="font-bold text-amber-400">Tsh {{ number_format($tip->amount) }}</p>
+                                <p class="font-bold text-amber-400">{{ $currencySymbol }} {{ number_format($tip->amount) }}</p>
                             </td>
                         </tr>
                     @empty

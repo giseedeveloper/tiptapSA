@@ -107,7 +107,7 @@ class SelcomService
                 'buyer_name' => $data['name'] ?? 'Customer',
                 'buyer_phone' => $phone,
                 'amount' => (int) $data['amount'],
-                'currency' => 'TZS',
+                'currency' => config('tiptap.currency_code', 'ZAR'),
                 'buyer_remarks' => $data['description'] ?? 'Payment',
                 'merchant_remarks' => $data['description'] ?? 'Payment',
                 'no_of_items' => 1,

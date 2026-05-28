@@ -19,7 +19,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                                 </div>
                             @endif
-                            <label class="text-sm font-medium text-white cursor-pointer">{{ $item->name }} <span class="text-[10px] text-white/40">Tsh {{ number_format($item->price) }}</span></label>
+                            <label class="text-sm font-medium text-white cursor-pointer">{{ $item->name }} <span class="text-[10px] text-white/40">{{ $currencySymbol }} {{ number_format($item->price) }}</span></label>
                         </div>
                         <input type="hidden" name="items[{{ $idx }}][id]" value="{{ $item->id }}">
                         <div class="flex items-center gap-2">

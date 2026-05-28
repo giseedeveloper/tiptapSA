@@ -69,12 +69,12 @@
                             @foreach($order->items as $item)
                                 <div class="flex justify-between text-sm">
                                     <span class="font-semibold text-white">{{ $item->quantity }}x {{ $item->name ?? ($item->menuItem ? $item->menuItem->name : 'Custom Order') }}</span>
-                                    <span class="text-white/40">Tsh {{ number_format($item->total) }}</span>
+                                    <span class="text-white/40">{{ $currencySymbol }} {{ number_format($item->total) }}</span>
                                 </div>
                             @endforeach
                         </div>
                         <div class="flex items-center justify-between pt-3 border-t border-white/5">
-                            <span class="font-bold text-white">Tsh {{ number_format($order->total_amount) }}</span>
+                            <span class="font-bold text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
                             <div class="flex gap-2">
                                 <form action="{{ route('manager.orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Delete this order?')">
                                     @csrf
@@ -138,7 +138,7 @@
                             @foreach($order->items as $item)
                                 <div class="flex justify-between text-sm">
                                     <span class="font-semibold text-white">{{ $item->quantity }}x {{ $item->name ?? ($item->menuItem ? $item->menuItem->name : 'Custom Order') }}</span>
-                                    <span class="text-white/40">Tsh {{ number_format($item->total) }}</span>
+                                    <span class="text-white/40">{{ $currencySymbol }} {{ number_format($item->total) }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -326,7 +326,7 @@
                                 </form>
                             </div>
                         </div>
-                        <p class="text-[11px] font-medium text-white/40">Tsh {{ number_format($order->total_amount) }} • Paid</p>
+                        <p class="text-[11px] font-medium text-white/40">{{ $currencySymbol }} {{ number_format($order->total_amount) }} • Paid</p>
                     </div>
                 @empty
                     <p class="text-sm text-white/30 text-center py-8">No completed orders today</p>
@@ -381,7 +381,7 @@
                                     <input type="checkbox" id="item_{{ $item->id }}" name="items[{{ $loop->index }}][id]" value="{{ $item->id }}" class="w-5 h-5 rounded border-white/20 bg-white/5 text-violet-600 focus:ring-fin-primary focus:ring-offset-0" onchange="toggleQuantity({{ $loop->index }})">
                                     <label for="item_{{ $item->id }}" class="text-sm font-medium text-white cursor-pointer select-none">
                                         {{ $item->name }}
-                                        <span class="block text-[10px] text-white/40">Tsh {{ number_format($item->price) }}</span>
+                                        <span class="block text-[10px] text-white/40">{{ $currencySymbol }} {{ number_format($item->price) }}</span>
                                     </label>
                                 </div>
                                 <div class="flex items-center gap-2 opacity-50 pointer-events-none transition-all" id="qty_container_{{ $loop->index }}">
@@ -452,7 +452,7 @@
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h3 class="text-xl font-bold text-white tracking-tight">Process Payment</h3>
-                        <p class="text-sm font-medium text-white/40">Selcom USSD Push</p>
+                        <p class="text-sm font-medium text-white/40">{{ config('tiptap.payment_gateway') }} payment</p>
                     </div>
                     <button onclick="closePaymentModal()" class="p-2 hover:bg-white/10 rounded-xl transition-all text-white/40 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -463,7 +463,7 @@
 
                 <div class="glass p-5 rounded-xl mb-6 flex justify-between items-center">
                     <span class="font-medium text-white/60">Total Amount</span>
-                    <span id="modalAmount" class="text-2xl font-bold text-white">Tsh 0</span>
+                    <span id="modalAmount" class="text-2xl font-bold text-white">{{ $currencySymbol }} 0</span>
                 </div>
 
                 <form id="selcomPayForm" class="space-y-4">
@@ -502,7 +502,7 @@
 
         function openPaymentModal(orderId, amount) {
             document.getElementById('modalOrderId').value = orderId;
-            document.getElementById('modalAmount').innerText = 'Tsh ' + new Intl.NumberFormat().format(amount);
+            document.getElementById('modalAmount').innerText = @json($currencySymbol) + ' ' + new Intl.NumberFormat().format(amount);
             document.getElementById('paymentModal').classList.remove('hidden');
             document.getElementById('paymentModal').classList.add('flex');
         }

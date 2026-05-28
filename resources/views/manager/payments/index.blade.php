@@ -125,22 +125,22 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="glass-card p-6 rounded-2xl">
             <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Revenue</p>
-            <p class="text-3xl font-bold text-white mb-1">Tsh {{ number_format($totalRevenue) }}</p>
+            <p class="text-3xl font-bold text-white mb-1">{{ $currencySymbol }} {{ number_format($totalRevenue) }}</p>
             <p class="text-xs text-emerald-600 font-semibold">{{ $totalOrders }} orders</p>
         </div>
         <div class="glass-card p-6 rounded-2xl">
             <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Tips</p>
-            <p class="text-3xl font-bold text-white mb-1">Tsh {{ number_format($totalTips) }}</p>
+            <p class="text-3xl font-bold text-white mb-1">{{ $currencySymbol }} {{ number_format($totalTips) }}</p>
             <p class="text-xs text-cyan-600 font-semibold">{{ $tips->count() }} tips</p>
         </div>
         <div class="glass-card p-6 rounded-2xl">
             <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Avg Order Value</p>
-            <p class="text-3xl font-bold text-white mb-1">Tsh {{ number_format($avgOrderValue) }}</p>
+            <p class="text-3xl font-bold text-white mb-1">{{ $currencySymbol }} {{ number_format($avgOrderValue) }}</p>
             <p class="text-xs text-fin-primary font-semibold">Per transaction</p>
         </div>
         <div class="glass-card p-6 rounded-2xl">
             <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Earnings</p>
-            <p class="text-3xl font-bold text-white mb-1">Tsh {{ number_format($totalRevenue + $totalTips) }}</p>
+            <p class="text-3xl font-bold text-white mb-1">{{ $currencySymbol }} {{ number_format($totalRevenue + $totalTips) }}</p>
             <p class="text-xs text-amber-600 font-semibold">Revenue + Tips</p>
         </div>
     </div>
@@ -176,7 +176,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-600">
                         <path d="M12 2v20M2 12h20M17 7l-5-5-5 5M7 17l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <span class="text-sm font-bold text-emerald-600">Avg Tsh {{ number_format($avgDaily) }}/day</span>
+                    <span class="text-sm font-bold text-emerald-600">Avg {{ $currencySymbol }} {{ number_format($avgDaily) }}/day</span>
                 </div>
             @endif
         </div>
@@ -199,7 +199,7 @@
                                     min-height: 2px;">
                             <!-- Tooltip -->
                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-black/90 border border-violet-500/50 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                Tsh {{ number_format($day['revenue']) }}
+                                {{ $currencySymbol }} {{ number_format($day['revenue']) }}
                             </div>
                             <!-- Shine -->
                             <div class="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent rounded-t pointer-events-none"></div>
@@ -235,11 +235,11 @@
             <div class="flex items-center gap-6 text-right">
                 <div>
                     <p class="text-[10px] text-white/40 uppercase tracking-wider">Total</p>
-                    <p class="text-lg font-bold text-white">Tsh {{ number_format($totalCurrent) }}</p>
+                    <p class="text-lg font-bold text-white">{{ $currencySymbol }} {{ number_format($totalCurrent) }}</p>
                 </div>
                 <div>
                     <p class="text-[10px] text-white/40 uppercase tracking-wider">Highest</p>
-                    <p class="text-lg font-bold text-fin-primary">Tsh {{ number_format(collect($dailyRevenue)->max('revenue')) }}</p>
+                    <p class="text-lg font-bold text-fin-primary">{{ $currencySymbol }} {{ number_format(collect($dailyRevenue)->max('revenue')) }}</p>
                 </div>
                 <div>
                     <p class="text-[10px] text-white/40 uppercase tracking-wider">Days</p>
@@ -259,7 +259,7 @@
             </div>
             <div>
                 <p class="text-[11px] font-bold text-white/40 uppercase tracking-wider">Cash Payments</p>
-                <p class="text-xl font-bold text-white">Tsh {{ number_format($cashRevenue) }}</p>
+                <p class="text-xl font-bold text-white">{{ $currencySymbol }} {{ number_format($cashRevenue) }}</p>
             </div>
         </div>
         <div class="glass-card p-6 rounded-2xl flex items-center gap-5 card-hover">
@@ -270,7 +270,7 @@
             </div>
             <div>
                 <p class="text-[11px] font-bold text-white/40 uppercase tracking-wider">USSD / Mobile</p>
-                <p class="text-xl font-bold text-white">Tsh {{ number_format($ussdRevenue + $mobileRevenue) }}</p>
+                <p class="text-xl font-bold text-white">{{ $currencySymbol }} {{ number_format($ussdRevenue + $mobileRevenue) }}</p>
             </div>
         </div>
         <div class="glass-card p-6 rounded-2xl flex items-center gap-5 card-hover">
@@ -281,7 +281,7 @@
             </div>
             <div>
                 <p class="text-[11px] font-bold text-white/40 uppercase tracking-wider">Tips Collected</p>
-                <p class="text-xl font-bold text-white">Tsh {{ number_format($totalTips) }}</p>
+                <p class="text-xl font-bold text-white">{{ $currencySymbol }} {{ number_format($totalTips) }}</p>
             </div>
         </div>
     </div>
@@ -312,7 +312,7 @@
                             <td class="px-6 py-5">
                                 <span class="bg-cyan-500/10 text-cyan-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase border border-cyan-500/20">{{ $payment->method }}</span>
                             </td>
-                            <td class="px-6 py-5 font-bold text-white">Tsh {{ number_format($payment->amount) }}</td>
+                            <td class="px-6 py-5 font-bold text-white">{{ $currencySymbol }} {{ number_format($payment->amount) }}</td>
                             <td class="px-6 py-5">
                                 <span class="text-emerald-600 font-semibold flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

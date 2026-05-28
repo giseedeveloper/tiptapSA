@@ -342,7 +342,7 @@
                                                         <span class="fdot-glow e"></span>
                                                         <span class="fin-label e">Earnings</span>
                                                     </div>
-                                                    <span class="mono" style="font-size:10px;color:rgba(255,255,255,.2);">TZS</span>
+                                                    <span class="mono" style="font-size:10px;color:rgba(255,255,255,.2);">{{ $currencySymbol }}</span>
                                                 </div>
                                                 <div class="two-col">
                                                     <div>
@@ -369,7 +369,7 @@
                                                         <span class="fdot-glow d"></span>
                                                         <span class="fin-label d">Deductions</span>
                                                     </div>
-                                                    <span class="mono" style="font-size:10px;color:rgba(255,255,255,.2);">TZS</span>
+                                                    <span class="mono" style="font-size:10px;color:rgba(255,255,255,.2);">{{ $currencySymbol }}</span>
                                                 </div>
                                                 <div class="two-col">
                                                     <div>
@@ -411,7 +411,7 @@
                                                 @if($isPaid)
                                                 <div class="confirmed-badge">
                                                     <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(16,185,129,.5);margin-bottom:3px;">Confirmed</div>
-                                                    {{ number_format($payment->net_pay) }} TZS
+                                                    {{ $currencySymbol }} {{ number_format($payment->net_pay) }}
                                                 </div>
                                                 @endif
 

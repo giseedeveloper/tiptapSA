@@ -12,7 +12,7 @@
     ])
 
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-        @include('admin.partials.stat-chip', ['label' => 'Net pay (filtered)', 'value' => 'Tsh '.number_format($totalNet), 'tone' => 'emerald'])
+        @include('admin.partials.stat-chip', ['label' => 'Net pay (filtered)', 'value' => config('tiptap.currency_symbol').' '.number_format($totalNet), 'tone' => 'emerald'])
         @include('admin.partials.stat-chip', ['label' => 'Records', 'value' => number_format($payments->total()), 'tone' => 'blue'])
         @include('admin.partials.stat-chip', ['label' => 'This page', 'value' => $payments->count(), 'tone' => 'cyan'])
     </div>
@@ -46,7 +46,7 @@
                             <td class="px-6 py-4 text-sm text-white font-medium">{{ $payment->period_label }}</td>
                             <td class="px-6 py-4 text-sm text-white">{{ $payment->user?->name }}</td>
                             <td class="px-6 py-4 text-sm text-white/70">{{ $payment->restaurant?->name }}</td>
-                            <td class="px-6 py-4 text-sm text-right font-black text-white tabular-nums">Tsh {{ number_format($payment->net_pay) }}</td>
+                            <td class="px-6 py-4 text-sm text-right font-black text-white tabular-nums">{{ $currencySymbol }} {{ number_format($payment->net_pay) }}</td>
                             <td class="px-6 py-4 text-sm text-white/50">{{ $payment->paid_at?->format('d M Y') ?? '—' }}</td>
                         </tr>
                     @empty

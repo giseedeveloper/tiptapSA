@@ -15,6 +15,7 @@ use App\Models\Setting;
 use App\Models\Table;
 use App\Models\Tip;
 use App\Models\User;
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -542,7 +543,7 @@ class WhatsAppBotController extends Controller
 
                     // Log successful payment
                     Activity::create([
-                        'description' => 'Order #'.$order->id.' payment completed: Tsh '.number_format($order->total_amount),
+                        'description' => 'Order #'.$order->id.' payment completed: '.Money::format($order->total_amount),
                         'type' => 'order_payment_success',
                         'properties' => [
                             'order_id' => $order->id,
@@ -721,7 +722,7 @@ class WhatsAppBotController extends Controller
 
         return response()->json([
             'success' => false,
-            'message' => $result['message'] ?? 'Failed to initiate payment with Selcom',
+            'message' => $result['message'] ?? 'Failed to initiate payment with '.config('tiptap.payment_gateway'),
             'debug' => $result,
         ], 400);
     }
@@ -787,7 +788,7 @@ class WhatsAppBotController extends Controller
             }
 
             Activity::create([
-                'description' => 'Demo: Quick payment completed: Tsh '.number_format($request->amount),
+                'description' => 'Demo: Quick payment completed: '.Money::format($request->amount),
                 'type' => 'payment_success',
                 'properties' => [
                     'payment_id' => $payment->id,
@@ -838,7 +839,7 @@ class WhatsAppBotController extends Controller
             $payment = Payment::create($paymentData);
 
             Activity::create([
-                'description' => 'Quick payment initiated: Tsh '.number_format($request->amount)." from {$request->phone_number}",
+                'description' => 'Quick payment initiated: '.Money::format($request->amount)." from {$request->phone_number}",
                 'type' => 'quick_payment',
                 'properties' => [
                     'payment_id' => $payment->id,
@@ -857,7 +858,7 @@ class WhatsAppBotController extends Controller
 
         return response()->json([
             'success' => false,
-            'message' => $result['message'] ?? 'Failed to initiate payment with Selcom',
+            'message' => $result['message'] ?? 'Failed to initiate payment with '.config('tiptap.payment_gateway'),
             'debug' => $result,
         ], 400);
     }
@@ -932,7 +933,7 @@ class WhatsAppBotController extends Controller
 
                     // Log successful payment
                     Activity::create([
-                        'description' => 'Quick payment completed: Tsh '.number_format($payment->amount),
+                        'description' => 'Quick payment completed: '.Money::format($payment->amount),
                         'type' => 'payment_success',
                         'properties' => [
                             'payment_id' => $payment->id,

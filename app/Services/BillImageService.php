@@ -16,6 +16,11 @@ class BillImageService
 
     private const PAD_X = 48;
 
+    private function currencyLabel(): string
+    {
+        return (string) config('tiptap.currency_symbol', 'R');
+    }
+
     /** @return array{0: \GdImage, 1: int} image and total pixel height */
     private function createCanvas(int $height): array
     {
@@ -162,7 +167,7 @@ class BillImageService
         $y += 24;
 
         imagestring($image, 5, 560, $y, 'TOTAL:', $dark);
-        imagestring($image, 5, 690, $y, 'TZS '.$this->money((float) $order->total_amount), $accent);
+        imagestring($image, 5, 690, $y, $this->currencyLabel().' '.$this->money((float) $order->total_amount), $accent);
         $y += 40;
 
         imagestring($image, 3, 40, $y, 'Status: '.strtoupper($this->sanitizeAscii((string) $order->status)), $muted);
@@ -374,8 +379,8 @@ class BillImageService
         if ($order->items->isEmpty()) {
             $this->ttf($im, $fonts['bold'], 12, $x + 12, $yy + 22, $dark, '—');
             $this->ttf($im, $fonts['regular'], 12, $x + 420, $yy + 22, $dark, '0');
-            $this->ttf($im, $fonts['regular'], 12, $x + 520, $yy + 22, $muted, 'TZS 0');
-            $this->ttf($im, $fonts['regular'], 12, $x + 660, $yy + 22, $muted, 'TZS 0');
+            $this->ttf($im, $fonts['regular'], 12, $x + 520, $yy + 22, $muted, $this->currencyLabel().' 0');
+            $this->ttf($im, $fonts['regular'], 12, $x + 660, $yy + 22, $muted, $this->currencyLabel().' 0');
             $yy += $rowH;
         } else {
             foreach ($order->items as $item) {
@@ -385,8 +390,8 @@ class BillImageService
                 }
                 $this->ttf($im, $fonts['bold'], 12, $x + 12, $yy + 22, $dark, $name);
                 $this->ttf($im, $fonts['regular'], 12, $x + 420, $yy + 22, $dark, (string) $item->quantity);
-                $this->ttf($im, $fonts['regular'], 12, $x + 520, $yy + 22, $muted, 'TZS '.$this->money((float) $item->price));
-                $this->ttf($im, $fonts['regular'], 12, $x + 660, $yy + 22, $muted, 'TZS '.$this->money((float) $item->total));
+                $this->ttf($im, $fonts['regular'], 12, $x + 520, $yy + 22, $muted, $this->currencyLabel().' '.$this->money((float) $item->price));
+                $this->ttf($im, $fonts['regular'], 12, $x + 660, $yy + 22, $muted, $this->currencyLabel().' '.$this->money((float) $item->total));
                 $yy += $rowH;
             }
         }
@@ -410,7 +415,7 @@ class BillImageService
         imagefilledrectangle($im, $x + 1, $y + 1, $x + $w - 1, $y + $boxH - 1, $this->allocate($im, 255, 255, 255));
 
         $this->ttf($im, $fonts['regular'], 11, $x + 20, $y + 32, $muted, 'GRAND TOTAL');
-        $this->ttf($im, $fonts['bold'], 36, $x + 20, $y + 82, $purple, 'TZS '.$this->money((float) $order->total_amount));
+        $this->ttf($im, $fonts['bold'], 36, $x + 20, $y + 82, $purple, $this->currencyLabel().' '.$this->money((float) $order->total_amount));
 
         $this->drawWalletGraphic($im, $x + $w - 140, $y + 24);
 

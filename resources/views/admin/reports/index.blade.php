@@ -38,9 +38,9 @@
         @php
             $kpis = [
                 ['Orders', number_format($totalOrders), 'border-violet-500/20', 'text-violet-400'],
-                ['Revenue', 'Tsh '.number_format($totalRevenue), 'border-emerald-500/20', 'text-emerald-400'],
-                ['Avg order', 'Tsh '.number_format($avgOrderValue), 'border-cyan-500/20', 'text-cyan-400'],
-                ['Tips', 'Tsh '.number_format($tipsTotal), 'border-amber-500/20', 'text-amber-400'],
+                ['Revenue', config('tiptap.currency_symbol').' '.number_format($totalRevenue), 'border-emerald-500/20', 'text-emerald-400'],
+                ['Avg order', config('tiptap.currency_symbol').' '.number_format($avgOrderValue), 'border-cyan-500/20', 'text-cyan-400'],
+                ['Tips', config('tiptap.currency_symbol').' '.number_format($tipsTotal), 'border-amber-500/20', 'text-amber-400'],
                 ['Avg rating', number_format($feedbackAvg, 1).' ★', 'border-orange-500/20', 'text-orange-400'],
             ];
         @endphp
@@ -69,7 +69,7 @@
                         <tr class="admin-table-row">
                             <td class="px-6 py-4 text-white font-medium">{{ $row['name'] }}</td>
                             <td class="px-6 py-4 text-right text-white/80 tabular-nums">{{ $row['orders_count'] }}</td>
-                            <td class="px-6 py-4 text-right text-emerald-400 font-semibold tabular-nums">Tsh {{ number_format($row['revenue']) }}</td>
+                            <td class="px-6 py-4 text-right text-emerald-400 font-semibold tabular-nums">{{ $currencySymbol }} {{ number_format($row['revenue']) }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="3" class="px-6 py-16 text-center text-white/40">No data for this period</td></tr>

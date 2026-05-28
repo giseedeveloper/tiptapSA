@@ -1,34 +1,47 @@
 ---
-description: TIPTAP VPS MCP servers — project mapping (South Africa)
+description: TIPTAP VPS MCP mapping (South Africa)
 alwaysApply: true
 ---
 
 # TIPTAP VPS MCP mapping
 
-This workspace folder is **TAPTAP_sauth** (TIPTAP South Africa). Use only the VPS MCP server dedicated to this project.
+This workspace folder is **TAPTAP_sauth** (TIPTAP South Africa). Use the VPS MCP servers listed for this project only.
 
 ## This project uses
 
-| MCP server name (exact) | Use for |
-|-------------------------|---------|
-| **TIPTAP SOUTH AFRICA** | Production/staging host for this Laravel app — deploy, Docker, nginx, `.env`, logs, `php artisan`, queue workers, database on SA VPS |
+| MCP server name (exact) | Host / domain | Use for |
+|-------------------------|---------------|---------|
+| **TIPTAP SOUTH AFRICA** | `139.59.151.111` — `tiptapafrica.co.za` | Laravel app: deploy, Docker, nginx, `.env`, `php artisan`, queue, MySQL |
+| **TIPTAP SOUTH BOT** | `167.71.44.10` — `wbot.tiptapafrica.co.za` | WhatsApp bot only (`TAPTAP-BOT` / `tiptopbot` Node Docker). **Not** Laravel. |
 
-When the user asks to SSH, deploy, fix production, rebuild Docker, or run server commands for **South Africa / sauth**, call MCP tools on **`TIPTAP SOUTH AFRICA`** only.
+### Architecture (TAPTAP_sauth)
+
+```
+Meta WhatsApp  →  Laravel (TIPTAP SOUTH AFRICA)  →  Bot (TIPTAP SOUTH BOT)
+                 tiptapafrica.co.za                  wbot.tiptapafrica.co.za
+```
+
+- Laravel webhook: `https://tiptapafrica.co.za/api/whatsapp/webhook`
+- Bot notify URL: `https://wbot.tiptapafrica.co.za/notify`
+- Bot repo on VPS: `/opt/tiptap-sauth-bot/tiptopbot` (from `TAPTAP-BOT` GitHub)
+
+When the user asks to deploy **WhatsApp bot for SA / sauth**, use MCP **`TIPTAP SOUTH BOT`** only.
+When the user asks to deploy **Laravel / site / dashboard**, use MCP **`TIPTAP SOUTH AFRICA`** only.
 
 ## Do not use for TAPTAP_sauth (unless user explicitly names another project)
 
 | MCP server | Belongs to |
 |------------|------------|
-| **TITAP BOT SERVE** | `TAPTAP tz` — WhatsApp bot (`tiptopbot`) for Tanzania |
+| **TITAPtz bot** | `TAPTAP tz` — TZ WhatsApp bot (`wa-notify.tiptapafrica.co.tz`) |
 | **TIPTAP Saloon** | `Saloon ver` — Saloon Laravel app |
 
-Never deploy SA code to TZ bot or Saloon VPS by default.
+Never deploy SA Laravel to bot VPS, or TZ bot config to SA bot VPS.
 
 ## How to invoke
 
-Use `CallMcpTool` with `server` set to the exact MCP name (e.g. `"TIPTAP SOUTH AFRICA"`). Read the tool schema under the MCP descriptors before calling.
+Use `CallMcpTool` with `server` set to the exact MCP name. Read the tool schema under the MCP descriptors before calling.
 
 ## Region note
 
-- Country/market: South Africa (ZA flag on landing/login where applicable)
+- Country/market: South Africa (ZA)
 - Do not confuse with **TAPTAP TZ** (Tanzania) or **Saloon ver**

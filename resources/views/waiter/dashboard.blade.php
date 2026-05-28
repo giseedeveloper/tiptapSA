@@ -70,7 +70,7 @@
                 </div>
                 <div class="mt-4">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-amber-100/80">Total Tips</p>
-                    <h3 class="mt-1 text-2xl font-bold tracking-tight" id="stat-tips-today">Tsh {{ number_format($tipsToday) }}</h3>
+                    <h3 class="mt-1 text-2xl font-bold tracking-tight" id="stat-tips-today">{{ $currencySymbol }} {{ number_format($tipsToday) }}</h3>
                 </div>
             </div>
         </div>
@@ -288,7 +288,7 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="font-bold text-sm text-white">Tsh {{ number_format($order->total_amount) }}</span>
+                                            <span class="font-bold text-sm text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
                                         </td>
                                     </tr>
                                 @empty
@@ -429,7 +429,7 @@
             fetch('{{ route("waiter.dashboard.stats") }}')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('stat-tips-today').textContent = 'Tsh ' + new Intl.NumberFormat().format(data.tips_today);
+                    document.getElementById('stat-tips-today').textContent = @json($currencySymbol) + ' ' + new Intl.NumberFormat().format(data.tips_today);
                     document.getElementById('stat-my-active-orders').textContent = data.my_active_orders;
                     document.getElementById('stat-ready-to-serve').textContent = data.ready_to_serve;
                     document.getElementById('stat-pending-requests').textContent = data.pending_requests;

@@ -1,0 +1,70 @@
+---
+description: TIPTAP — 4 VPS map (Laravel + bot × SA + TZ). Always check before deploy.
+alwaysApply: true
+---
+
+# TIPTAP — VPS 4 (usichanganye)
+
+Kabla ya deploy, SSH, au MCP — thibitisha **MCP sahihi** na **mradi sahihi**.
+
+## Ramani
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  SOUTH AFRICA (TAPTAP_sauth)                                    │
+├──────────────────────────────┬──────────────────────────────────┤
+│  Laravel WEB                 │  WhatsApp BOT                    │
+│  MCP: TIPTAP SOUTH AFRICA    │  MCP: TIPTAPsouth bot            │
+│  IP:  139.59.151.111         │  IP:  167.71.44.10              │
+│  URL: tiptapafrica.co.za     │  URL: wbot.tiptapafrica.co.za    │
+│  Path: /root/TIPTAP          │  Path: /opt/tiptap-sauth-bot/... │
+└──────────────────────────────┴──────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  TANZANIA (TAPTAP tz)                                           │
+├──────────────────────────────┬──────────────────────────────────┤
+│  Laravel WEB                 │  WhatsApp BOT                    │
+│  MCP: TIPTAP TZ              │  MCP: TITAPtz bot                │
+│  IP:  164.92.242.245         │  IP:  178.62.61.85               │
+│  URL: tiptapafrica.co.tz     │  URL: wa-notify.tiptapafrica.co.tz│
+│  Path: /root/TIPTAP          │  Path: /opt/titap-bot/tiptopbot  │
+│  Repo: ESNyarobi123/Tiptaptz │  Repo: TipTap_tz_bot (bot only)  │
+└──────────────────────────────┴──────────────────────────────────┘
+```
+
+## Flow (kila nchi)
+
+```
+Meta WhatsApp → Laravel WEB (/api/whatsapp/webhook) → BOT (/inbound)
+Laravel bill  → BOT (/notify)
+Laravel API   → /api/bot/* (BOT_TOKEN, bot_sessions)
+```
+
+## MCP names (exact — copy-paste)
+
+| MCP | IP | Tumia kwa |
+|-----|-----|-----------|
+| `TIPTAP SOUTH AFRICA` | 139.59.151.111 | SA Laravel only |
+| `TIPTAPsouth bot` | 167.71.44.10 | SA bot only |
+| `TIPTAP TZ` | 164.92.242.245 | TZ Laravel only |
+| `TITAPtz bot` | 178.62.61.85 | TZ bot only |
+
+## Usifanye
+
+- SA Laravel code → TZ VPS (au kinyume)
+- Bot deploy → Laravel VPS
+- `TIPTAPsouth bot` kwa TZ — tumia `TITAPtz bot`
+- `TIPTAP TZ` kwa SA — tumia `TIPTAP SOUTH AFRICA`
+
+## Mradi wa 5 (si moja ya 4 hizi)
+
+| MCP | Mradi |
+|-----|--------|
+| `TIPTAP Saloon` | Saloon ver (Laravel pekee, VPS tofauti) |
+
+## Workspace ↔ repo
+
+| Folder | Laravel repo | Bot repo |
+|--------|--------------|----------|
+| `TAPTAP_sauth` | repo sauth | TAPTAP-BOT / tiptopbot |
+| `TAPTAP tz` | github.com/ESNyarobi123/Tiptaptz | TipTap_tz_bot |

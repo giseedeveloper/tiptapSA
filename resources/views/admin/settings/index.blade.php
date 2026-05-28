@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Min. Withdrawal (Tsh)</label>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Min. Withdrawal ({{ config('tiptap.currency_symbol') }})</label>
                         <input type="number" name="min_withdrawal" value="{{ $settings['financial']['min_withdrawal']->value ?? '50000' }}" class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all">
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         class="w-5 h-5 rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500">
                     <label for="demo_push" class="text-sm font-bold text-white">Demo push ON – payments auto-success (no real push)</label>
                 </div>
-                <p class="text-[10px] text-amber-400/80 mt-2">When ON: USSD push is not sent; payment is marked successful. When OFF: normal Selcom flow.</p>
+                <p class="text-[10px] text-amber-400/80 mt-2">When ON: payment push is not sent; payment is marked successful. When OFF: normal {{ config('tiptap.payment_gateway') }} flow.</p>
             </div>
 
             <!-- Bot & API Settings -->
@@ -74,7 +74,7 @@
                 <div class="space-y-6">
                     <div class="space-y-2">
                         <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">WhatsApp Bot Number</label>
-                        <input type="text" name="whatsapp_bot_number" value="{{ $settings['api']['whatsapp_bot_number']->value ?? '+255 794 321 510' }}" class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all" placeholder="+255 000 000 000">
+                        <input type="text" name="whatsapp_bot_number" value="{{ $settings['api']['whatsapp_bot_number']->value ?? config('tiptap.phone_international_prefix').' 82 123 4567' }}" class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm font-bold text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all" placeholder="{{ config('tiptap.phone_international_prefix') }} 82 123 4567">
                         <p class="text-[10px] text-white/20">This number will be used to generate all restaurant and table QR codes.</p>
                     </div>
 

@@ -99,7 +99,7 @@
                             <span class="text-sm text-white font-bold">{{ $order->restaurant?->name ?? '—' }}</span>
                         </td>
                         <td class="px-6 py-5">
-                            <span class="text-sm text-white font-black">Tsh {{ number_format($order->total_amount, 0) }}</span>
+                            <span class="text-sm text-white font-black">{{ $currencySymbol }} {{ number_format($order->total_amount, 0) }}</span>
                         </td>
                         <td class="px-6 py-5">
                             @php

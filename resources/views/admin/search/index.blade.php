@@ -35,7 +35,7 @@
                                     <p class="text-xs text-white/40 mt-1">{{ $item->email }} · {{ $item->restaurant?->name ?? '—' }}</p>
                                 @else
                                     <a href="{{ route('admin.orders.show', $item) }}" class="text-white font-semibold hover:text-violet-300">Order #{{ $item->id }}</a>
-                                    <p class="text-xs text-white/40 mt-1">{{ $item->restaurant?->name }} · {{ ucfirst($item->status) }} · Tsh {{ number_format($item->total_amount) }}</p>
+                                    <p class="text-xs text-white/40 mt-1">{{ $item->restaurant?->name }} · {{ ucfirst($item->status) }} · {{ $currencySymbol }} {{ number_format($item->total_amount) }}</p>
                                 @endif
                             </li>
                         @empty

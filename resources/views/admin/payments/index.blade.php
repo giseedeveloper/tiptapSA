@@ -80,7 +80,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-5"><span class="text-sm text-white font-bold">{{ $payment->order?->restaurant?->name ?? '—' }}</span></td>
-                        <td class="px-6 py-5"><span class="text-sm text-white font-black">Tsh {{ number_format($payment->amount, 0) }}</span></td>
+                        <td class="px-6 py-5"><span class="text-sm text-white font-black">{{ $currencySymbol }} {{ number_format($payment->amount, 0) }}</span></td>
                         <td class="px-6 py-5"><span class="px-3 py-1 bg-white/10 text-white/70 text-[10px] font-black rounded-full uppercase tracking-widest border border-white/10">{{ $payment->method ?? '—' }}</span></td>
                         <td class="px-6 py-5">
                             @php

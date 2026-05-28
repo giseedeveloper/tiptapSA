@@ -1,0 +1,37 @@
+---
+description: WhatsApp bot changes — deploy to ALL bot VPS (SA + TZ), never one server only.
+alwaysApply: true
+---
+
+# Bot deploy — kote (SA + TZ)
+
+**Chanzo cha code (master):** `TipTap_tz_bot/` (sync kutoka `TAPTAP_sauth/tiptopbot/src` ikiwa unahariri huko).
+
+## Bot VPS 2 — lazima zote
+
+| MCP | IP | Path |
+|-----|-----|------|
+| **TIPTAPsouth bot** | 167.71.44.10 | `/opt/tiptap-sauth-bot/tiptopbot` |
+| **TITAPtz bot** | 178.62.61.85 | `/opt/titap-bot/tiptopbot` |
+
+**Usi-deploy bot kwenye Laravel VPS** (`TIPTAP SOUTH AFRICA`, `TIPTAP TZ`).
+
+## Workflow (kila update ya bot)
+
+1. Hariri `src/*.js` kwenye **TipTap_tz_bot** (au sync kutoka `TAPTAP_sauth/tiptopbot/src`).
+2. Thibitisha `.env.example`: `USE_INTERACTIVE_MENU=true` (buttons, si menu ya namba).
+3. Deploy **zote mbili**:
+   ```bash
+   cd TipTap_tz_bot && bash scripts/deploy-bot-all.sh
+   ```
+4. Test: `Hi` / `0` — buttons 3 (Menu, Pay Bill, More), si “Reply with the number”.
+
+## Usifanye
+
+- Update TZ bot pekee na kuacha SA (au kinyume).
+- `USE_INTERACTIVE_MENU=false` isipokuwa user ameomba text menu kwa makusudi.
+- Deploy bot code kwenye `164.92.242.245` au `139.59.151.111` (Laravel web).
+
+## Laravel (tofauti na bot)
+
+Webhook / `bot_sessions` / `.env` `WHATSAPP_BOT_NOTIFY_URL` — deploy kwenye **Laravel VPS** ya nchi husika, si script hii.

@@ -38,7 +38,7 @@
                 <div class="p-5">
                     <div class="flex justify-between items-start mb-2">
                         <h4 class="text-lg font-bold text-white leading-tight">{{ $item->name }}</h4>
-                        <span class="font-bold text-violet-400 whitespace-nowrap ml-2">Tsh {{ number_format($item->price) }}</span>
+                        <span class="font-bold text-violet-400 whitespace-nowrap ml-2">{{ $currencySymbol }} {{ number_format($item->price) }}</span>
                     </div>
                     
                     <p class="text-sm text-white/40 mb-4 line-clamp-2">{{ $item->description }}</p>

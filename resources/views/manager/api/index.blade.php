@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <!-- Selcom Payment Integration -->
+        <!-- {{ config('tiptap.payment_gateway') }} Payment Integration -->
         <div class="glass-card p-8 rounded-2xl">
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-12 h-12 bg-linear-to-br from-cyan-500/15 to-blue-500/10 rounded-xl flex items-center justify-center border border-cyan-500/20">
@@ -51,12 +51,12 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-white tracking-tight">Selcom Mobile Money</h3>
+                    <h3 class="text-xl font-bold text-white tracking-tight">{{ config('tiptap.payment_gateway') }} Mobile Money</h3>
                     <p class="text-[10px] font-bold uppercase tracking-wider text-white/40">USSD Push Payment Gateway</p>
                 </div>
             </div>
 
-            @if(session('success') && str_contains(session('success'), 'Selcom'))
+            @if(session('success') && str_contains(session('success'), config('tiptap.payment_gateway')))
             <div class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
                 <div class="flex items-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600">
@@ -90,7 +90,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
                             <circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>
                         </svg>
-                        <input type="password" name="selcom_api_key" value="{{ $restaurant->selcom_api_key }}" placeholder="Enter your Selcom API Key" 
+                        <input type="password" name="selcom_api_key" value="{{ $restaurant->selcom_api_key }}" placeholder="Enter your {{ config('tiptap.payment_gateway') }} API Key" 
                                class="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
                     </div>
                     @error('selcom_api_key') <p class="text-rose-600 text-[10px] font-medium mt-1">{{ $message }}</p> @enderror
@@ -103,7 +103,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40">
                             <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                         </svg>
-                        <input type="password" name="selcom_api_secret" value="{{ $restaurant->selcom_api_secret }}" placeholder="Enter your Selcom API Secret" 
+                        <input type="password" name="selcom_api_secret" value="{{ $restaurant->selcom_api_secret }}" placeholder="Enter your {{ config('tiptap.payment_gateway') }} API Secret" 
                                class="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
                     </div>
                     @error('selcom_api_secret') <p class="text-rose-600 text-[10px] font-medium mt-1">{{ $message }}</p> @enderror
@@ -131,7 +131,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-emerald-600">Selcom Configured</p>
+                            <p class="text-sm font-semibold text-emerald-600">{{ config('tiptap.payment_gateway') }} Configured</p>
                             <p class="text-[10px] text-white/40">{{ $restaurant->selcom_is_live ? 'LIVE MODE' : 'TEST MODE' }}</p>
                         </div>
                         @else
@@ -154,15 +154,15 @@
                             <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
                         </svg>
                         <div>
-                            <p class="text-sm font-semibold text-cyan-600 mb-1">How to get Selcom credentials?</p>
-                            <p class="text-[11px] text-white/60 leading-relaxed">Log in to your Selcom Merchant Portal, go to Settings → API Integration. Copy your Vendor ID, API Key, and API Secret. Start with Test Mode, then switch to Live Mode when ready for production.</p>
+                            <p class="text-sm font-semibold text-cyan-600 mb-1">How to get {{ config('tiptap.payment_gateway') }} credentials?</p>
+                            <p class="text-[11px] text-white/60 leading-relaxed">Log in to your {{ config('tiptap.payment_gateway') }} merchant portal and copy your Vendor ID, API Key, and API Secret. Start with test mode, then switch to live when ready.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button type="submit" class="w-full bg-linear-to-r from-cyan-600 to-blue-600 text-white py-3.5 rounded-xl font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all">
-                        Save Selcom Settings
+                        Save {{ config('tiptap.payment_gateway') }} Settings
                     </button>
                     
                     @if($restaurant->hasSelcomConfigured())
@@ -200,8 +200,8 @@
             <form action="{{ route('manager.api.support-phone.update') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Phone number (e.g. 0712345678)</label>
-                    <input type="text" name="support_phone" value="{{ old('support_phone', $restaurant->support_phone) }}" placeholder="0712345678 or 255712345678"
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Phone number (e.g. {{ config('tiptap.phone_local_example') }})</label>
+                    <input type="text" name="support_phone" value="{{ old('support_phone', $restaurant->support_phone) }}" placeholder="{{ config('tiptap.phone_local_example') }} or {{ config('tiptap.country_code') }}821234567"
                            class="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
                     <p class="text-white/40 text-xs mt-1">Customers will see this under "📞 Customer Support" on WhatsApp. Leave empty to hide the option or use the main restaurant phone.</p>
                     @error('support_phone') <p class="text-rose-600 text-[10px] font-medium mt-1">{{ $message }}</p> @enderror

@@ -40,10 +40,10 @@
                                     </div>
                                     <div>
                                         <p class="font-bold text-white">{{ $item->name ?? ($item->menuItem ? $item->menuItem->name : 'Custom Order') }}</p>
-                                        <p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Tsh {{ number_format($item->price, 0) }} per unit</p>
+                                        <p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">{{ $currencySymbol }} {{ number_format($item->price, 0) }} per unit</p>
                                     </div>
                                 </div>
-                                <p class="font-black text-white">Tsh {{ number_format($item->price * $item->quantity, 0) }}</p>
+                                <p class="font-black text-white">{{ $currencySymbol }} {{ number_format($item->price * $item->quantity, 0) }}</p>
                             </div>
                             @endforeach
                         </div>
@@ -51,11 +51,11 @@
                         <div class="pt-6 border-t border-white/10 space-y-2">
                             <div class="flex justify-between items-center text-white/40 font-bold uppercase tracking-widest text-[10px]">
                                 <span>Subtotal</span>
-                                <span>Tsh {{ number_format($order->total_amount, 0) }}</span>
+                                <span>{{ $currencySymbol }} {{ number_format($order->total_amount, 0) }}</span>
                             </div>
                             <div class="flex justify-between items-center text-white font-black text-xl tracking-tight pt-2">
                                 <span>Total Amount</span>
-                                <span>Tsh {{ number_format($order->total_amount, 0) }}</span>
+                                <span>{{ $currencySymbol }} {{ number_format($order->total_amount, 0) }}</span>
                             </div>
                         </div>
                     </div>

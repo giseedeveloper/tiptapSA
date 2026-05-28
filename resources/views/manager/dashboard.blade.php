@@ -45,7 +45,7 @@
                     <span class="px-3 py-1.5 bg-cyan-500/10 text-cyan-400 text-[10px] font-bold rounded-full uppercase tracking-wider border border-cyan-500/20">Revenue</span>
                 </div>
                 <p class="text-xs font-semibold text-white/65 uppercase tracking-wider mb-1">Revenue Today</p>
-                <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums break-all sm:break-normal" id="stat-revenue-today">Tsh {{ number_format($revenueToday) }}</h3>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white tracking-tight tabular-nums break-all sm:break-normal" id="stat-revenue-today">{{ $currencySymbol }} {{ number_format($revenueToday) }}</h3>
                 <p class="text-sm text-white/55 mt-2">
                     <span class="text-white/65">Week vs last week</span>
                     <span id="stat-revenue-week-change" class="font-semibold {{ $weekRevChange >= 0 ? 'text-emerald-400' : 'text-rose-400' }}">
@@ -156,7 +156,7 @@
                                 @endif
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-[11px] font-bold text-rose-400">Tsh {{ number_format($order->total_amount) }}</span>
+                                <span class="text-[11px] font-bold text-rose-400">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/20">
                                     <path d="m9 18 6-6-6-6"/>
                                 </svg>
@@ -240,7 +240,7 @@
                                 <p class="text-[11px] font-medium text-white/40">Waiting for payment</p>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-[11px] font-bold text-white">Tsh {{ number_format($order->total_amount) }}</span>
+                                <span class="text-[11px] font-bold text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/20">
                                     <path d="m9 18 6-6-6-6"/>
                                 </svg>
@@ -404,7 +404,7 @@
                             revBar.style.height = `${revH}%`;
                             revBar.style.minHeight = revenue > 0 ? '10px' : '3px';
                             revBar.dataset.revenue = String(revenue);
-                            revBar.title = `Tsh ${new Intl.NumberFormat().format(revenue)}`;
+                            revBar.title = `${{ $currencySymbol }} ${new Intl.NumberFormat().format(revenue)}`;
                         }
 
                         if (ordBar) {
@@ -474,7 +474,7 @@
                 })
                 .then(data => {
                     document.getElementById('stat-total-orders').textContent = new Intl.NumberFormat().format(data.total_orders_today ?? 0);
-                    document.getElementById('stat-revenue-today').textContent = 'Tsh ' + new Intl.NumberFormat().format(data.revenue_today ?? 0);
+                    document.getElementById('stat-revenue-today').textContent = @json($currencySymbol) + ' ' + new Intl.NumberFormat().format(data.revenue_today ?? 0);
                     document.getElementById('stat-avg-rating').textContent = (data.avg_rating ?? '0.0') + '/5.0';
                     document.getElementById('stat-waiters-online').textContent = (data.waiters_online ?? 0) + ' Active';
                 })

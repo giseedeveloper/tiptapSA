@@ -69,7 +69,7 @@
                         <label for="phone" class="sr-only">Phone number</label>
                         <input id="phone" type="text" name="phone" value="{{ old('phone') }}" required
                                class="block w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all text-sm"
-                               placeholder="Phone number (0712 345 678)">
+                               placeholder="Phone number ({{ config('tiptap.phone_local_example') }})">
                         <x-input-error :messages="$errors->get('phone')" class="mt-1.5 text-xs" />
                     </div>
                     <div>

@@ -20,13 +20,13 @@
                     @endif
                     <span class="font-medium text-white truncate">{{ $item->quantity }}× {{ $item->name ?? ($item->menuItem?->name ?? 'Item') }}</span>
                 </div>
-                <span class="text-white/40 shrink-0 text-xs">Tsh {{ number_format($item->total) }}</span>
+                <span class="text-white/40 shrink-0 text-xs">{{ $currencySymbol }} {{ number_format($item->total) }}</span>
             </div>
         @endforeach
     </div>
     <div class="pt-3 border-t border-white/5 space-y-3">
         <div class="flex items-center justify-between gap-2 min-w-0">
-            <span class="font-bold text-white text-sm sm:text-base truncate">Tsh {{ number_format($order->total_amount) }}</span>
+            <span class="font-bold text-white text-sm sm:text-base truncate">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
         </div>
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <form action="{{ route('order-portal.orders.destroy', $order) }}" method="POST" onsubmit="return confirm('Delete this order?');" class="inline">

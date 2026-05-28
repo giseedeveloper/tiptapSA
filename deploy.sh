@@ -6,42 +6,35 @@ set -e
 # Project: /root/TIPTAP
 # Domain: tiptapafrica.co.za
 #
-# HITAJI: sshpass (brew install sshpass)
+# Requires SSH key access to root@139.59.151.111
+# Optional env overrides: TIPTAP_SA_HOST, TIPTAP_SA_USER, TIPTAP_SA_PATH, TIPTAP_SA_BRANCH
 
-HOST="139.59.151.111"
-USER="root"
-PASS="HMF\$_h9TMN6XT.x"
-PROJECT_PATH="/root/TIPTAP"
-BRANCH="main"
+HOST="${TIPTAP_SA_HOST:-139.59.151.111}"
+USER="${TIPTAP_SA_USER:-root}"
+PROJECT_PATH="${TIPTAP_SA_PATH:-/root/TIPTAP}"
+BRANCH="${TIPTAP_SA_BRANCH:-main}"
 
 echo "=== TIPTAP SOUTH AFRICA DEPLOY ==="
 echo "Host: $HOST"
 echo "Path: $PROJECT_PATH"
 echo ""
 
-# Check if sshpass is installed
-if ! command -v sshpass &> /dev/null; then
-    echo "sshpass is not installed. Install it with: brew install sshpass"
-    exit 1
-fi
-
-# Push latest code to GitHub first
 echo "--- Pushing to GitHub ---"
-git push origin $BRANCH
+git push origin "$BRANCH"
 
-# SSH and deploy
 echo "--- Connecting to VPS ---"
-sshpass -p "$PASS" ssh -o StrictHostKeyChecking=no "$USER@$HOST" "
+ssh -o StrictHostKeyChecking=no "${USER}@${HOST}" "
     set -e
     echo '--- Pulling latest code ---'
-    cd $PROJECT_PATH
-    git pull origin $BRANCH
+    cd ${PROJECT_PATH}
+    git pull origin ${BRANCH}
 
     echo '--- Building Docker containers ---'
     docker compose build --no-cache app queue
     docker compose up -d
 
-    echo '--- Caching Laravel ---'
+    echo '--- Migrating + caching Laravel ---'
+    docker exec tiptap_app php artisan migrate --force
     docker exec tiptap_app php artisan config:cache
     docker exec tiptap_app php artisan route:cache
     docker exec tiptap_app php artisan view:cache

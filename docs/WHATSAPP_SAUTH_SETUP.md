@@ -64,15 +64,32 @@ Bonyeza **Verify and save**. Server lazima iwe live na HTTPS kabla ya verify.
 
 Baada ya save, subscribe field **`messages`**.
 
-## 5. Anzisha bot (VPS: **TIPTAP SOUTH AFRICA**)
+## 5. Anzisha bot (VPS: **TIPTAP SOUTH BOT** — `wbot.tiptapafrica.co.za`)
+
+Bot ya SA **haikwendi ndani ya** Docker ya Laravel. Iko kwenye VPS tofauti:
+
+| VPS | IP | Domain |
+|-----|-----|--------|
+| Laravel | `139.59.151.111` | `tiptapafrica.co.za` |
+| WhatsApp bot | `167.71.44.10` | `wbot.tiptapafrica.co.za` |
 
 ```bash
-cd tiptopbot
-npm install
-npm start
-# au: docker compose up -d --build
-curl http://127.0.0.1:3000/health
+# Kwenye VPS ya bot (167.71.44.10) — mara ya kwanza:
+curl -fsSL https://raw.githubusercontent.com/ESNyarobi123/TAPTAP-BOT/main/deploy/bootstrap-sauth-wbot.sh | bash
+# Kisha hariri /opt/tiptap-sauth-bot/tiptopbot/.env (tazama .env.sauth.example)
+cd /opt/tiptap-sauth-bot/tiptopbot && docker compose up -d --build bot
+certbot --nginx -d wbot.tiptapafrica.co.za
+curl https://wbot.tiptapafrica.co.za/health
 ```
+
+Laravel `.env` (VPS **TIPTAP SOUTH AFRICA**):
+
+```env
+WHATSAPP_BOT_NOTIFY_URL=https://wbot.tiptapafrica.co.za/notify
+WHATSAPP_BOT_NOTIFY_SECRET=<sawa na NOTIFY_SECRET kwenye bot>
+```
+
+**Usitumie** `wa-notify.tiptapafrica.co.tz` kwa SA — hiyo ni bot ya Tanzania.
 
 ## 6. HTTPS + nginx (production)
 

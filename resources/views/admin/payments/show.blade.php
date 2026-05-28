@@ -27,7 +27,7 @@
                 <div class="space-y-8">
                     <div>
                         <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-2">Amount Paid</p>
-                        <p class="text-3xl font-black text-white tracking-tight">Tsh {{ number_format($payment->amount, 0) }}</p>
+                        <p class="text-3xl font-black text-white tracking-tight">{{ $currencySymbol }} {{ number_format($payment->amount, 0) }}</p>
                     </div>
 
                     <div>

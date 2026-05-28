@@ -69,7 +69,7 @@
                             {{ $restaurant->is_active ? 'Active' : 'Blocked' }}
                         </span>
                         <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border {{ $restaurant->hasSelcomConfigured() ? 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30' : 'bg-amber-500/15 text-amber-400 border-amber-500/30' }}">
-                            {{ $restaurant->hasSelcomConfigured() ? ($restaurant->selcom_is_live ? 'Selcom Live' : 'Selcom Test') : 'Payments not configured' }}
+                            {{ $restaurant->hasSelcomConfigured() ? ($restaurant->selcom_is_live ? config('tiptap.payment_gateway').' Live' : config('tiptap.payment_gateway').' Test') : 'Payments not configured' }}
                         </span>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
         <div class="glass-card rounded-xl p-4 border border-emerald-500/20">
             <p class="text-[9px] font-black text-white/40 uppercase">Total revenue</p>
-            <p class="text-lg font-black text-emerald-400 mt-1 tabular-nums">Tsh {{ number_format($overview['total_earnings']) }}</p>
+            <p class="text-lg font-black text-emerald-400 mt-1 tabular-nums">{{ $currencySymbol }} {{ number_format($overview['total_earnings']) }}</p>
         </div>
         <div class="glass-card rounded-xl p-4 border border-blue-500/20">
             <p class="text-[9px] font-black text-white/40 uppercase">All orders</p>
@@ -102,7 +102,7 @@
         </div>
         <div class="glass-card rounded-xl p-4 border border-violet-500/20">
             <p class="text-[9px] font-black text-white/40 uppercase">Today revenue</p>
-            <p class="text-lg font-black text-violet-400 mt-1 tabular-nums">Tsh {{ number_format($venueAnalytics['revenue_today']) }}</p>
+            <p class="text-lg font-black text-violet-400 mt-1 tabular-nums">{{ $currencySymbol }} {{ number_format($venueAnalytics['revenue_today']) }}</p>
         </div>
         <div class="glass-card rounded-xl p-4 border border-cyan-500/20">
             <p class="text-[9px] font-black text-white/40 uppercase">Live orders</p>
@@ -141,7 +141,7 @@
                             <div class="flex-1 flex flex-col items-center justify-end h-full group">
                                 <div class="venue-bar w-full relative" style="height:{{ $h }}%">
                                     <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-0.5 rounded bg-black/90 text-[9px] text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                        Tsh {{ number_format($day['revenue']) }}
+                                        {{ $currencySymbol }} {{ number_format($day['revenue']) }}
                                     </div>
                                 </div>
                                 <p class="text-[9px] text-white/45 mt-2 font-bold">{{ $day['label'] }}</p>
@@ -194,7 +194,7 @@
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <h3 class="text-sm font-black text-white uppercase tracking-wider">Payment gateway</h3>
-                        <p class="text-xs text-white/40 mt-1">Selcom configuration</p>
+                        <p class="text-xs text-white/40 mt-1">{{ config('tiptap.payment_gateway') }} configuration</p>
                     </div>
                     <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase border {{ $restaurant->hasSelcomConfigured() ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/15 text-amber-400 border-amber-500/30' }}">
                         {{ $restaurant->hasSelcomConfigured() ? ($restaurant->selcom_is_live ? 'Live mode' : 'Test mode') : 'Not configured' }}
@@ -251,7 +251,7 @@
                                 <td class="px-6 py-4">
                                     <span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase border {{ $statusColors[$order->status] ?? 'bg-white/10 text-white/60 border-white/10' }}">{{ $order->status }}</span>
                                 </td>
-                                <td class="px-6 py-4 text-right font-black text-white tabular-nums">Tsh {{ number_format($order->total_amount) }}</td>
+                                <td class="px-6 py-4 text-right font-black text-white tabular-nums">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</td>
                             </tr>
                         @empty
                             <tr><td colspan="5" class="px-6 py-16 text-center text-white/40">No orders for this venue</td></tr>
@@ -286,7 +286,7 @@
                                 <td class="px-6 py-4"><a href="{{ route('admin.orders.show', $payment->order_id) }}" class="text-violet-400 font-mono text-sm font-bold">#{{ $payment->order_id }}</a></td>
                                 <td class="px-6 py-4 text-sm text-white/70 capitalize">{{ $payment->method ?? '—' }}</td>
                                 <td class="px-6 py-4"><span class="text-[10px] font-bold uppercase text-emerald-400">{{ $payment->status }}</span></td>
-                                <td class="px-6 py-4 text-right font-black text-emerald-400 tabular-nums">Tsh {{ number_format($payment->amount) }}</td>
+                                <td class="px-6 py-4 text-right font-black text-emerald-400 tabular-nums">{{ $currencySymbol }} {{ number_format($payment->amount) }}</td>
                             </tr>
                         @empty
                             <tr><td colspan="5" class="px-6 py-16 text-center text-white/40">No payments recorded</td></tr>
@@ -313,7 +313,7 @@
                             <p class="text-[10px] text-white/40 mt-0.5">{{ $item->category?->name ?? 'Uncategorized' }}</p>
                         </div>
                         <div class="text-right shrink-0">
-                            <p class="font-black text-lime-400 text-sm">Tsh {{ number_format($item->price) }}</p>
+                            <p class="font-black text-lime-400 text-sm">{{ $currencySymbol }} {{ number_format($item->price) }}</p>
                             <p class="text-[9px] font-bold uppercase mt-1 {{ $item->is_available ? 'text-emerald-400' : 'text-rose-400' }}">{{ $item->is_available ? 'Available' : 'Off' }}</p>
                         </div>
                     </div>

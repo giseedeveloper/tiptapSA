@@ -36,9 +36,8 @@ return [
     | The WhatsApp bot downloads the PNG from this URL when sending the bill.
     | It must be reachable from your bot VPS (curl/open HTTPS). If your Laravel
     | app lives under /public on shared hosting, set this to that full base, e.g.
-    | https://tiptapafrica.co.tz/public — otherwise route() may generate
-    | https://tiptapafrica.co.tz/bill-image/... which returns 404 and Baileys
-    | reports "Failed to fetch stream".
+    | https://tiptapafrica.co.za — otherwise route() may generate
+    | https://tiptapafrica.co.za/bill-image/... which returns 404
     |
     | Bill URLs use /bill-image/{id}/{signature} (path) so shared-host WAFs that
     | block ?signature=... still allow the bot to download the PNG.

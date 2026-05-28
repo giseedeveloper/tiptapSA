@@ -140,12 +140,18 @@ class Order extends Model
     }
 
     /**
-     * Build {msisdn}@s.whatsapp.net from digits. Maps common Tanzania local form (0 + 9 digits) to 255…
+     * Build {msisdn}@s.whatsapp.net from digits. Maps SA local 0 + 9 digits to 27…
      */
     protected static function whatsappJidFromDigits(string $digits): string
     {
+        $countryCode = (string) config('tiptap.country_code', '27');
+
         if (preg_match('/^0(\d{9})$/', $digits, $matches) === 1) {
-            return '255'.$matches[1].'@s.whatsapp.net';
+            return $countryCode.$matches[1].'@s.whatsapp.net';
+        }
+
+        if (str_starts_with($digits, $countryCode) && strlen($digits) >= 11) {
+            return $digits.'@s.whatsapp.net';
         }
 
         return $digits.'@s.whatsapp.net';

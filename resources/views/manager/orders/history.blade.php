@@ -42,14 +42,14 @@
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-cyan-500/15 to-cyan-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
             <div class="relative z-10">
                 <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Total Revenue</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight">Tsh {{ number_format($totalRevenue) }}</h3>
+                <h3 class="text-3xl font-bold text-white tracking-tight">{{ $currencySymbol }} {{ number_format($totalRevenue) }}</h3>
             </div>
         </div>
         <div class="glass-card p-6 rounded-2xl card-hover relative overflow-hidden group">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-amber-500/15 to-amber-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
             <div class="relative z-10">
                 <p class="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-2">Avg Order Value</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight">Tsh {{ number_format($avgOrderValue) }}</h3>
+                <h3 class="text-3xl font-bold text-white tracking-tight">{{ $currencySymbol }} {{ number_format($avgOrderValue) }}</h3>
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@
                             </td>
                             <td class="px-6 py-5 text-sm text-cyan-600">{{ $order->waiter?->name ?? 'Unassigned' }}</td>
                             <td class="px-6 py-5 text-sm text-white/60">{{ $order->items->count() }} items</td>
-                            <td class="px-6 py-5 font-bold text-white">Tsh {{ number_format($order->total_amount) }}</td>
+                            <td class="px-6 py-5 font-bold text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</td>
                             <td class="px-6 py-5">
                                 @php
                                     $statusColors = [
@@ -198,13 +198,13 @@
                                                             <p class="text-xs text-white/40">Qty: {{ $item->quantity }}</p>
                                                         </div>
                                                     </div>
-                                                    <p class="font-bold text-white">Tsh {{ number_format($item->price * $item->quantity) }}</p>
+                                                    <p class="font-bold text-white">{{ $currencySymbol }} {{ number_format($item->price * $item->quantity) }}</p>
                                                 </div>
                                             @endforeach
                                         </div>
                                         <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-center">
                                             <span class="font-bold text-white/60 uppercase text-sm">Total</span>
-                                            <span class="text-xl font-bold text-white">Tsh {{ number_format($order->total_amount) }}</span>
+                                            <span class="text-xl font-bold text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
                                         </div>
                                     </div>
 
@@ -226,7 +226,7 @@
                                                         </div>
                                                         <div class="flex justify-between">
                                                             <span class="text-white/40">Amount:</span>
-                                                            <span class="text-white font-bold">Tsh {{ number_format($payment->amount) }}</span>
+                                                            <span class="text-white font-bold">{{ $currencySymbol }} {{ number_format($payment->amount) }}</span>
                                                         </div>
                                                         @if($payment->transaction_reference)
                                                             <div class="flex justify-between">

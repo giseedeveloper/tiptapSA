@@ -4,13 +4,13 @@
             <div class="flex justify-between items-start mb-6">
                 <div>
                     <h3 class="text-xl font-bold text-white tracking-tight">Process Payment</h3>
-                    <p class="text-sm font-medium text-white/40">Selcom USSD Push</p>
+                    <p class="text-sm font-medium text-white/40">{{ config('tiptap.payment_gateway') }} payment</p>
                 </div>
                 <button type="button" onclick="closePaymentModal()" class="p-2 hover:bg-white/10 rounded-xl text-white/40 hover:text-white">✕</button>
             </div>
             <div class="glass p-5 rounded-xl mb-6 flex justify-between items-center">
                 <span class="font-medium text-white/60">Total Amount</span>
-                <span id="modalAmount" class="text-2xl font-bold text-white">Tsh 0</span>
+                <span id="modalAmount" class="text-2xl font-bold text-white">{{ $currencySymbol }} 0</span>
             </div>
             <form id="selcomPayForm" class="space-y-4">
                 <input type="hidden" id="modalOrderId">
@@ -37,7 +37,7 @@
 var orderPortalPollingInterval = null;
 function openPaymentModal(orderId, amount) {
     document.getElementById('modalOrderId').value = orderId;
-    document.getElementById('modalAmount').textContent = 'Tsh ' + new Intl.NumberFormat().format(amount);
+    document.getElementById('modalAmount').textContent = '{{ $currencySymbol }} ' + new Intl.NumberFormat().format(amount);
     document.getElementById('paymentModal').classList.remove('hidden');
     document.getElementById('paymentModal').classList.add('flex');
 }

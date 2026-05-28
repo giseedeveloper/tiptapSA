@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TIPTAP | QR & WhatsApp Ordering for Restaurants</title>
-    <meta name="description" content="The smartest QR and WhatsApp ordering system for modern restaurants in Tanzania. TipTap Rafiki, instant mobile money, kitchen display, and live analytics.">
+    <meta name="description" content="The smartest QR and WhatsApp ordering system for modern restaurants in South Africa. TipTap Rafiki, instant payments, kitchen display, and live analytics.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -331,7 +331,7 @@
                         <span class="trust-pill"><i data-lucide="message-circle" class="w-3.5 h-3.5 text-whatsapp"></i> WhatsApp</span>
                         <span class="trust-pill"><i data-lucide="qr-code" class="w-3.5 h-3.5 text-fin-primary"></i> QR Tables</span>
                         <span class="trust-pill"><i data-lucide="wallet" class="w-3.5 h-3.5 text-emerald-600"></i> Mobile payment · Bank</span>
-                        <span class="trust-pill"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-fin-primary"></i> Selcom</span>
+                        <span class="trust-pill"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-fin-primary"></i> {{ config('tiptap.payment_gateway') }}</span>
                     </div>
                 </div>
                 <div class="flex-1 w-full flex justify-center lg:justify-end" id="demo">
@@ -345,7 +345,7 @@
     <section class="py-14 lg:py-20 bg-white relative">
         <div class="max-w-6xl mx-auto px-5">
             <p class="text-center text-fin-muted text-sm font-medium mb-10 max-w-md mx-auto leading-relaxed">
-                Trusted by leading restaurants across Tanzania for faster ordering and payments
+                Trusted by leading restaurants across South Africa for faster ordering and payments
             </p>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
                 @foreach([
@@ -391,7 +391,7 @@
                 <div class="fin-card rounded-3xl p-8 md:col-span-5 reveal">
                     <div class="icon-box mb-6 !bg-emerald-50 !border-emerald-100"><i data-lucide="banknote" class="w-6 h-6 text-emerald-600"></i></div>
                     <h3 class="text-xl font-semibold text-fin-ink mb-2">Instant mobile money</h3>
-                    <p class="text-fin-muted text-sm leading-relaxed">M-Pesa, TigoPesa, and Airtel Money via Selcom. Tips and bills sync to your dashboard in real time.</p>
+                    <p class="text-fin-muted text-sm leading-relaxed">Card, EFT, and mobile payments via {{ config('tiptap.payment_gateway') }}. Tips and bills sync to your dashboard in real time.</p>
                 </div>
                 <div class="fin-card rounded-3xl p-8 md:col-span-5 reveal">
                     <div class="icon-box mb-6 !bg-amber-50 !border-amber-100"><i data-lucide="qr-code" class="w-6 h-6 text-amber-600"></i></div>
@@ -491,7 +491,7 @@
                 <div class="pricing-featured rounded-3xl p-8 flex flex-col relative reveal scale-[1.02]">
                     <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">Most popular</span>
                     <h3 class="font-semibold text-fin-ink text-lg">Business</h3>
-                    <p class="mt-3"><span class="text-4xl font-light text-hero-accent tracking-tight">50k</span><span class="text-sm text-fin-muted ml-1">TZS / month</span></p>
+                    <p class="mt-3"><span class="text-4xl font-light text-hero-accent tracking-tight">R499</span><span class="text-sm text-fin-muted ml-1">/ month</span></p>
                     <ul class="mt-8 space-y-3.5 text-sm text-fin-ink flex-1">
                         @foreach(['Unlimited tables', 'TipTap Rafiki', 'Mobile money payments', 'Kitchen display'] as $f)
                             <li class="flex gap-2.5 items-center"><span class="w-5 h-5 rounded-full bg-fin-primary/15 flex items-center justify-center shrink-0"><i data-lucide="check" class="w-3 h-3 text-fin-primary-dark"></i></span>{{ $f }}</li>
@@ -507,7 +507,7 @@
                             <li class="flex gap-2.5 items-center"><span class="w-5 h-5 rounded-full bg-fin-mist flex items-center justify-center shrink-0"><i data-lucide="check" class="w-3 h-3 text-fin-primary"></i></span>{{ $f }}</li>
                         @endforeach
                     </ul>
-                    <a href="https://wa.me/255620366103" class="mt-8 block text-center rounded-xl border-2 border-fin-ink/8 py-3.5 text-sm font-bold text-fin-ink hover:bg-fin-surface transition-colors">Contact sales</a>
+                    <a href="{{ route('restaurant.register') }}" class="mt-8 block text-center rounded-xl border-2 border-fin-ink/8 py-3.5 text-sm font-bold text-fin-ink hover:bg-fin-surface transition-colors">Contact sales</a>
                 </div>
             </div>
         </div>
@@ -522,9 +522,9 @@
             </div>
             <div class="space-y-3 reveal">
                 @foreach([
-                    ['What is TIPTAP?', 'A restaurant operating system: QR ordering, TipTap Rafiki on WhatsApp, mobile money payments, kitchen display, and manager dashboards — built for Tanzania.'],
+                    ['What is TIPTAP?', 'A restaurant operating system: QR ordering, TipTap Rafiki on WhatsApp, card and mobile payments, kitchen display, and manager dashboards — built for South Africa.'],
                     ['Do customers need an app?', 'No. Guests scan a QR code and order through WhatsApp — the chat they already use every day.'],
-                    ['Which payments are supported?', 'M-Pesa, TigoPesa, and Airtel Money via Selcom. Tips and bills are tracked in real time.'],
+                    ['Which payments are supported?', 'Card, EFT, and mobile payments via '.config('tiptap.payment_gateway').'. Tips and bills are tracked in real time.'],
                     ['Can waiters register separately?', 'Yes. Waiters receive a unique TIPTAP-W code and link to venues through their manager.'],
                 ] as [$q, $a])
                     <details class="fin-card rounded-2xl px-6 py-5 group bg-white">
@@ -563,7 +563,7 @@
                         <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP" class="h-9 w-9 rounded-lg bg-white p-1">
                         <span class="text-lg font-bold text-white">TIPTAP</span>
                     </a>
-                    <p class="text-sm text-slate-400 max-w-xs leading-relaxed">The operating system for modern dining. Built with care in Tanzania 🇹🇿</p>
+                    <p class="text-sm text-slate-400 max-w-xs leading-relaxed">The operating system for modern dining. Built with care in South Africa 🇿🇦</p>
                 </div>
                 <div>
                     <h4 class="text-sm font-semibold text-white mb-4">Product</h4>

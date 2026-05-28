@@ -40,7 +40,7 @@
                                 @endif
                                 <div class="min-w-0">
                                     <input type="checkbox" id="create_item_{{ $item->id }}" name="items[{{ $loop->index }}][id]" value="{{ $item->id }}" class="w-5 h-5 rounded border-white/20 bg-white/5 text-violet-600 focus:ring-violet-500" onchange="toggleCreateQty({{ $loop->index }})">
-                                    <label for="create_item_{{ $item->id }}" class="text-sm font-medium text-white cursor-pointer ml-2">{{ $item->name }} <span class="block text-[10px] text-white/40">Tsh {{ number_format($item->price) }}</span></label>
+                                    <label for="create_item_{{ $item->id }}" class="text-sm font-medium text-white cursor-pointer ml-2">{{ $item->name }} <span class="block text-[10px] text-white/40">{{ $currencySymbol }} {{ number_format($item->price) }}</span></label>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 opacity-50 pointer-events-none transition-all" id="create_qty_container_{{ $loop->index }}">

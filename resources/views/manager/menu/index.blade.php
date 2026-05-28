@@ -70,7 +70,7 @@
                 <div class="p-5">
                     <div class="flex justify-between items-start mb-2">
                         <h4 class="text-lg font-bold text-white">{{ $item->name }}</h4>
-                        <span class="font-bold text-fin-primary">Tsh {{ number_format($item->price) }}</span>
+                        <span class="font-bold text-fin-primary">{{ $currencySymbol }} {{ number_format($item->price) }}</span>
                     </div>
                     <p class="text-sm text-white/40 mb-4 line-clamp-2">{{ $item->description }}</p>
                     <div class="flex items-center justify-between pt-4 border-t border-white/5">
@@ -148,7 +148,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Price (Tsh)</label>
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Price ({{ $currencySymbol }})</label>
                             <input type="number" name="price" id="menuPrice" required placeholder="e.g. 15000" 
                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-fin-primary focus:border-transparent transition-all">
                         </div>

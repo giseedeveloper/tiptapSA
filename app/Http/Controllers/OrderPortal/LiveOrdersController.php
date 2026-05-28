@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Restaurant;
 use App\Models\Table;
+use App\Services\OrderBillNotification;
 use App\Services\SelcomService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -195,7 +196,12 @@ class LiveOrdersController extends Controller
 
         if ($request->has('status')) {
             $request->validate(['status' => 'in:pending,preparing,served,paid']);
+            $previousStatus = $orderModel->status;
             $orderModel->update(['status' => $request->status]);
+
+            if ($request->status === 'served' && $previousStatus !== 'served') {
+                OrderBillNotification::maybePushBillImage($orderModel);
+            }
         }
 
         if ($request->has('table_number')) {
@@ -277,7 +283,7 @@ class LiveOrdersController extends Controller
         if (! $restaurant->hasSelcomConfigured()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Selcom is not configured. Contact your manager.',
+                'message' => config('tiptap.payment_gateway').' is not configured. Contact your manager.',
             ], 400);
         }
 

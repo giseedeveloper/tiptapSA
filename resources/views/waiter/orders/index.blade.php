@@ -67,7 +67,7 @@
                         @endif
                     </div>
                     <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <p class="text-sm font-bold text-white">Tsh {{ number_format($order->total_amount) }}</p>
+                        <p class="text-sm font-bold text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</p>
                         <button class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded-lg transition-all uppercase tracking-wider">
                             Serve Now
                         </button>
@@ -111,7 +111,7 @@
                         @endif
                     </div>
                     <div class="flex items-center justify-between pt-3 border-t border-white/10">
-                        <p class="text-sm font-bold text-white">Tsh {{ number_format($order->total_amount) }}</p>
+                        <p class="text-sm font-bold text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</p>
                         <div class="flex items-center gap-1 text-amber-400 text-[9px] font-bold">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-spin">
                                 <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
@@ -149,7 +149,7 @@
                             <path d="M20 6 9 17l-5-5"/>
                         </svg>
                     </div>
-                    <p class="text-xs font-bold text-white/80">Tsh {{ number_format($order->total_amount) }}</p>
+                    <p class="text-xs font-bold text-white/80">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</p>
                 </div>
             @endforeach
         </div>

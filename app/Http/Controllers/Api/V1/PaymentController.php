@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Services\SelcomService;
+use App\Support\Money;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -76,7 +77,7 @@ class PaymentController extends Controller
 
     /**
      * Change notification before payment: get change to give when customer pays cash.
-     * Call this before confirming cash payment so the app can show "Change to give: X Tsh".
+     * Call this before confirming cash payment so the app can show "Change to give: X {{ currency }}".
      */
     public function cashChangeNotification(Request $request)
     {
@@ -97,7 +98,7 @@ class PaymentController extends Controller
             'amount_received' => $amountReceived,
             'change_to_give' => $changeToGive,
             'message' => $changeToGive > 0
-                ? 'Change to give to customer: '.number_format($changeToGive).' Tsh'
+                ? 'Change to give to customer: '.Money::format($changeToGive)
                 : ($amountReceived >= $orderTotal ? 'Exact amount or no change needed.' : 'Amount received is less than order total.'),
         ]);
     }
@@ -139,7 +140,7 @@ class PaymentController extends Controller
             $response['order_total'] = $orderTotal;
             $response['amount_received'] = $amountReceived;
             $response['message'] = $changeToGive > 0
-                ? 'Change to give to customer: '.number_format($changeToGive).' Tsh'
+                ? 'Change to give to customer: '.Money::format($changeToGive)
                 : 'Payment recorded. No change needed.';
         }
 

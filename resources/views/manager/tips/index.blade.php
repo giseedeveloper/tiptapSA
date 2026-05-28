@@ -35,7 +35,7 @@
                     </svg>
                 </div>
                 <p class="text-[11px] font-bold text-white/40 uppercase tracking-wider mb-1">Total Tips Today</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight">Tsh {{ number_format($totalTipsToday) }}</h3>
+                <h3 class="text-3xl font-bold text-white tracking-tight">{{ $currencySymbol }} {{ number_format($totalTipsToday) }}</h3>
             </div>
         </div>
 
@@ -48,7 +48,7 @@
                     </svg>
                 </div>
                 <p class="text-[11px] font-bold text-white/40 uppercase tracking-wider mb-1">Avg. Tip per Order</p>
-                <h3 class="text-3xl font-bold text-white tracking-tight">Tsh {{ number_format($avgTip) }}</h3>
+                <h3 class="text-3xl font-bold text-white tracking-tight">{{ $currencySymbol }} {{ number_format($avgTip) }}</h3>
             </div>
         </div>
 
@@ -99,7 +99,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-5 font-medium text-white/60">{{ $waiter->orders_count }} Orders</td>
-                            <td class="px-6 py-5 font-bold text-white">Tsh {{ number_format($waiter->tips_sum_amount ?? 0) }}</td>
+                            <td class="px-6 py-5 font-bold text-white">{{ $currencySymbol }} {{ number_format($waiter->tips_sum_amount ?? 0) }}</td>
                             <td class="px-6 py-5">
                                 <button class="text-[11px] font-bold uppercase tracking-wider text-fin-primary hover:text-violet-300 transition-colors">View Details</button>
                             </td>

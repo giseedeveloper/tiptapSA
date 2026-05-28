@@ -12,7 +12,7 @@
     ])
 
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-        @include('admin.partials.stat-chip', ['label' => 'Total (filtered)', 'value' => 'Tsh '.number_format($totalTips), 'tone' => 'emerald'])
+        @include('admin.partials.stat-chip', ['label' => 'Total (filtered)', 'value' => config('tiptap.currency_symbol').' '.number_format($totalTips), 'tone' => 'emerald'])
         @include('admin.partials.stat-chip', ['label' => 'Records', 'value' => number_format($tips->total()), 'tone' => 'amber'])
         @include('admin.partials.stat-chip', ['label' => 'This page', 'value' => $tips->count(), 'tone' => 'cyan'])
     </div>
@@ -45,7 +45,7 @@
                             <td class="px-6 py-4 text-sm text-white font-medium">{{ $tip->restaurant?->name }}</td>
                             <td class="px-6 py-4 text-sm text-white/80">{{ $tip->waiter?->name ?? '—' }}</td>
                             <td class="px-6 py-4 text-sm"><a href="{{ route('admin.orders.show', $tip->order_id) }}" class="text-violet-400 hover:text-violet-300 font-semibold">#{{ str_pad($tip->order_id, 6, '0', STR_PAD_LEFT) }}</a></td>
-                            <td class="px-6 py-4 text-sm text-right font-black text-emerald-400 tabular-nums">Tsh {{ number_format($tip->amount) }}</td>
+                            <td class="px-6 py-4 text-sm text-right font-black text-emerald-400 tabular-nums">{{ $currencySymbol }} {{ number_format($tip->amount) }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="5" class="px-6 py-16 text-center text-white/40">No tips in this period</td></tr>
