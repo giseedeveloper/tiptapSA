@@ -61,4 +61,8 @@ return [
         'graph_version' => env('WHATSAPP_GRAPH_VERSION', 'v20.0'),
     ],
 
+    'bot' => [
+        'token' => env('BOT_TOKEN'),
+    ],
+
 ];

@@ -1,4 +1,4 @@
-@props(['label', 'value', 'tone' => 'violet'])
+@props(['label', 'value', 'tone' => 'violet', 'id' => null])
 
 @php
     $valueClass = match ($tone) {
@@ -16,5 +16,5 @@
 
 <div class="admin-stat-chip">
     <p class="text-[9px] font-black text-white/40 uppercase tracking-wider">{{ $label }}</p>
-    <p class="text-lg font-black mt-1 tabular-nums {{ $valueClass }}">{{ $value }}</p>
+    <p @if($id) id="{{ $id }}" @endif class="text-lg font-black mt-1 tabular-nums {{ $valueClass }}">{{ $value }}</p>
 </div>

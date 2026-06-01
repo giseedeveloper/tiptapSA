@@ -15,9 +15,21 @@ return [
 
     'payment_gateway' => env('TIPTAP_PAYMENT_GATEWAY', 'PayFast'),
 
+    'admin_live_poll_seconds' => (int) env('ADMIN_LIVE_POLL_SECONDS', 30),
+
     'phone_local_example' => env('TIPTAP_PHONE_EXAMPLE', '082 123 4567'),
 
     'phone_international_prefix' => env('TIPTAP_PHONE_PREFIX', '+27'),
 
     'default_whatsapp_bot_number' => env('TIPTAP_WHATSAPP_BOT_NUMBER', '27821234567'),
+
+    'admin_setting_groups' => [
+        'system_name' => 'general',
+        'support_email' => 'general',
+        'commission_rate' => 'financial',
+        'min_withdrawal' => 'financial',
+        'demo_push' => 'payments',
+        'whatsapp_bot_number' => 'api',
+        'webhook_secret' => 'api',
+    ],
 ];

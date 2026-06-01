@@ -19,12 +19,12 @@ alwaysApply: true
 ## Workflow (kila update ya bot)
 
 1. Hariri `src/*.js` kwenye **TipTap_tz_bot** (au sync kutoka `TAPTAP_sauth/tiptopbot/src`).
-2. Thibitisha `.env.example`: `USE_INTERACTIVE_MENU=true` (buttons, si menu ya namba).
+2. Thibitisha `.env.example`: `USE_INTERACTIVE_MENU=true` (list menu kuu + menu image/list chaguo).
 3. Deploy **zote mbili**:
    ```bash
    cd TipTap_tz_bot && bash scripts/deploy-bot-all.sh
    ```
-4. Test: `Hi` / `0` — buttons 3 (Menu, Pay Bill, More), si “Reply with the number”.
+4. Test: `Hi` — **list moja** na huduma zote (Menu, Pay, Rate, Tip, n.k.), si buttons 3 (Menu/Pay/More). `View Menu` → chagua **Menu Image** au **List Menu**.
 
 ## Usifanye
 

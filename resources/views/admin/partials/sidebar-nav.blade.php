@@ -99,6 +99,12 @@
 </a>
 
 <div class="mt-5 mb-3 px-4 sidebar-label"><p class="text-[9px] font-bold text-white/25 uppercase tracking-[0.25em]">System</p></div>
+<a href="{{ route('admin.docker.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2 px-3 py-1.5 mx-2 rounded-lg {{ request()->routeIs('admin.docker.*') ? 'sidebar-link-active' : 'text-white/55' }}">
+    <div class="w-6 h-6 rounded-md bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="{{ request()->routeIs('admin.docker.*') ? 'text-sky-400' : 'text-white/50' }}"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <span class="font-medium text-xs">Docker</span>
+</a>
 <a href="{{ route('admin.bots.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2 px-3 py-1.5 mx-2 rounded-lg {{ request()->routeIs('admin.bots.*') ? 'sidebar-link-active' : 'text-white/55' }}">
     <div class="w-6 h-6 rounded-md bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="{{ request()->routeIs('admin.bots.*') ? 'text-cyan-400' : 'text-white/50' }}"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/></svg>

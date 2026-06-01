@@ -41,6 +41,15 @@ class DashboardController extends Controller
         return response()->json($this->buildStats());
     }
 
+    public function getAnalytics(): JsonResponse
+    {
+        return response()->json([
+            'analytics' => $this->buildAnalytics(),
+            'stats' => $this->buildStats(),
+            'currency_symbol' => \App\Support\Money::symbol(),
+        ]);
+    }
+
     /**
      * @return array<string, int|float>
      */
@@ -154,7 +163,7 @@ class DashboardController extends Controller
             'pending' => ['label' => 'Pending', 'color' => '#f59e0b'],
             'preparing' => ['label' => 'Preparing', 'color' => '#3b82f6'],
             'ready' => ['label' => 'Ready', 'color' => '#10b981'],
-            'served' => ['label' => 'Served', 'color' => '#8b5cf6'],
+            'served' => ['label' => 'Served', 'color' => '#8C71F6'],
             'paid' => ['label' => 'Paid', 'color' => '#06b6d4'],
             'completed' => ['label' => 'Completed', 'color' => '#22d3ee'],
             'cancelled' => ['label' => 'Cancelled', 'color' => '#f43f5e'],
@@ -203,7 +212,7 @@ class DashboardController extends Controller
      */
     private function paymentMethods(): array
     {
-        $colors = ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#6366f1'];
+        $colors = ['#8C71F6', '#6D52E8', '#10b981', '#f59e0b', '#06b6d4', '#ec4899'];
         $methods = Payment::query()
             ->whereIn('status', ['paid', 'completed'])
             ->select('method', DB::raw('COUNT(*) as total'))
@@ -270,6 +279,7 @@ class DashboardController extends Controller
                 'name' => $r->name,
                 'revenue' => (float) $r->revenue,
                 'orders' => (int) $r->orders,
+                'url' => route('admin.restaurants.show', $r->id),
             ])
             ->all();
     }

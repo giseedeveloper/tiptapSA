@@ -14,12 +14,6 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::view('/', 'welcome')->name('home');
 
-Route::get('/fix-storage', function () {
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-
-    return 'Storage link created!';
-});
-
 // Serve profile & menu_images from storage (works when storage:link missing on host)
 Route::get('/serve-storage/{path}', \App\Http\Controllers\ServeStorageController::class)->where('path', '.*')->name('storage.serve');
 // Path signature avoids some WAFs that block ?signature=... on shared hosting.
@@ -45,7 +39,7 @@ Route::get('/bill-image/{orderId}', BillImageController::class)
     ->name('bill.image.legacy');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:login');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/register-restaurant', [RestaurantRegistrationController::class, 'create'])->name('restaurant.register');
@@ -84,9 +78,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
     Route::get('/dashboard/stats', [AdminDashboard::class, 'getStats'])->name('dashboard.stats');
+    Route::get('/dashboard/analytics', [AdminDashboard::class, 'getAnalytics'])->name('dashboard.analytics');
 
-    Route::get('search', [\App\Http\Controllers\Admin\SearchController::class, 'index'])->name('search.index');
+    Route::get('search', [\App\Http\Controllers\Admin\SearchController::class, 'index'])
+        ->middleware('throttle:admin-search')
+        ->name('search.index');
     Route::get('live-orders', [\App\Http\Controllers\Admin\LiveOrderController::class, 'index'])->name('live-orders.index');
+    Route::get('live-orders/feed', [\App\Http\Controllers\Admin\LiveOrderController::class, 'feed'])->name('live-orders.feed');
     Route::get('customer-requests', [\App\Http\Controllers\Admin\CustomerRequestController::class, 'index'])->name('customer-requests.index');
     Route::post('customer-requests/{id}/complete', [\App\Http\Controllers\Admin\CustomerRequestController::class, 'complete'])->name('customer-requests.complete');
     Route::get('tips', [\App\Http\Controllers\Admin\TipController::class, 'index'])->name('tips.index');
@@ -129,7 +127,18 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     // Bots
     Route::get('bots', [\App\Http\Controllers\Admin\BotController::class, 'index'])->name('bots.index');
     Route::post('bots/update-endpoint', [\App\Http\Controllers\Admin\BotController::class, 'updateEndpoint'])->name('bots.update-endpoint');
-    Route::post('bots/generate-token', [\App\Http\Controllers\Admin\BotController::class, 'generateToken'])->name('bots.generate-token');
+    Route::post('bots/generate-token', [\App\Http\Controllers\Admin\BotController::class, 'generateToken'])
+        ->middleware('throttle:bot-token')
+        ->name('bots.generate-token');
+
+    Route::post('system/fix-storage', \App\Http\Controllers\Admin\FixStorageController::class)
+        ->name('fix-storage');
+
+    Route::get('infrastructure/docker', [\App\Http\Controllers\Admin\DockerController::class, 'index'])->name('docker.index');
+    Route::get('infrastructure/docker/status', [\App\Http\Controllers\Admin\DockerController::class, 'status'])->name('docker.status');
+    Route::post('infrastructure/docker/action', [\App\Http\Controllers\Admin\DockerController::class, 'action'])
+        ->middleware('throttle:docker-control')
+        ->name('docker.action');
 
     // Notifications
     Route::get('notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
