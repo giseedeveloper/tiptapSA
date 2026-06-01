@@ -283,7 +283,7 @@ class LiveOrdersController extends Controller
         if (! $restaurant->hasSelcomConfigured()) {
             return response()->json([
                 'status' => 'error',
-                'message' => config('tiptap.payment_gateway').' is not configured. Contact your manager.',
+                'message' => 'System payment gateway not configured. Contact platform admin.',
             ], 400);
         }
 

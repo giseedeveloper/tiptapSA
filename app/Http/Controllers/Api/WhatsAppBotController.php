@@ -688,7 +688,7 @@ class WhatsAppBotController extends Controller
         if (! $restaurant || ! $restaurant->hasSelcomConfigured()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Restaurant payment gateway not configured',
+                'message' => 'System payment gateway not configured. Contact platform admin.',
             ], 400);
         }
 
@@ -808,7 +808,7 @@ class WhatsAppBotController extends Controller
         if (! $restaurant->hasSelcomConfigured()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Restaurant payment gateway not configured',
+                'message' => 'System payment gateway not configured. Contact platform admin.',
             ], 400);
         }
 
