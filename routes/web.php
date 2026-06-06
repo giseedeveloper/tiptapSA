@@ -194,6 +194,9 @@ Route::middleware(['auth', 'role:manager'])->prefix('manager')->name('manager.')
     Route::post('/payments/selcom/initiate', [\App\Http\Controllers\Manager\PaymentController::class, 'initiateSelcom'])->name('payments.selcom.initiate');
     Route::get('/payments/selcom/status/{order}', [\App\Http\Controllers\Manager\PaymentController::class, 'checkSelcomStatus'])->name('payments.selcom.status');
     Route::get('/wallet', [\App\Http\Controllers\Manager\WalletController::class, 'index'])->name('wallet.index');
+    Route::get('/wallet/export', [\App\Http\Controllers\Manager\WalletController::class, 'export'])->name('wallet.export');
+    Route::put('/wallet/payout-profile', [\App\Http\Controllers\Manager\WalletController::class, 'updatePayoutProfile'])->name('wallet.payout-profile.update');
+    Route::post('/wallet/notifications/read', [\App\Http\Controllers\Manager\WalletController::class, 'markNotificationsRead'])->name('wallet.notifications.read');
     Route::post('/wallet/withdraw', [\App\Http\Controllers\Manager\WalletController::class, 'store'])->name('wallet.store');
     Route::get('/feedback', [\App\Http\Controllers\Manager\FeedbackController::class, 'index'])->name('feedback.index');
     Route::get('/tips', [\App\Http\Controllers\Manager\TipController::class, 'index'])->name('tips.index');
