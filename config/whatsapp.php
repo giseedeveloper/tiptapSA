@@ -48,4 +48,20 @@ return [
 
     'bill_image_base_url' => env('WHATSAPP_BILL_IMAGE_BASE_URL', ''),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Global bot welcome card (customer says "hi" before choosing a restaurant)
+    |--------------------------------------------------------------------------
+    |
+    | Override per deployment in Admin → Bots. image_url must be HTTPS and
+    | reachable by Meta when downloading media for WhatsApp.
+    |
+    */
+
+    'welcome_title' => env('WHATSAPP_WELCOME_TITLE', 'TipTap'),
+
+    'welcome_body' => env('WHATSAPP_WELCOME_BODY'),
+
+    'welcome_image_url' => env('WHATSAPP_WELCOME_IMAGE_URL'),
+
 ];

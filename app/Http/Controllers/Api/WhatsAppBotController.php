@@ -16,6 +16,8 @@ use App\Models\Table;
 use App\Models\Tip;
 use App\Models\User;
 use App\Support\Money;
+use App\Support\WhatsAppBotBranding;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -1398,5 +1400,16 @@ class WhatsAppBotController extends Controller
                 'total' => (float) $item->total,
             ])->values()->all(),
         ];
+    }
+
+    /**
+     * Branding for the global "hi" welcome card (logo image + title + body).
+     */
+    public function branding(): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => WhatsAppBotBranding::resolve(),
+        ]);
     }
 }
