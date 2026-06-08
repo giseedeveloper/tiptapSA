@@ -10,6 +10,7 @@ use App\Models\Restaurant;
 use App\Models\Table;
 use App\Services\OrderBillNotification;
 use App\Services\SelcomService;
+use App\Services\WhatsAppBillDelivery;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -112,15 +113,34 @@ class LiveOrdersController extends Controller
     /**
      * @return array<string, mixed>
      */
+    private function isWhatsAppOrder(Order $order): bool
+    {
+        if (filled($order->whatsapp_jid)) {
+            return true;
+        }
+
+        $digitsOnlyPhone = preg_replace('/\D+/', '', (string) $order->customer_phone);
+
+        return filled($digitsOnlyPhone) && strlen($digitsOnlyPhone) >= 9;
+    }
+
     private function orderToArray(Order $order): array
     {
         $order->loadMissing('items.menuItem');
+        $isWhatsAppOrder = $this->isWhatsAppOrder($order);
+        $billAlreadySent = ! is_null($order->bill_image_pushed_at);
 
         return [
             'id' => $order->id,
             'table_number' => $order->table_number,
             'customer_phone' => $order->customer_phone,
             'customer_name' => $order->customer_name,
+            'whatsapp_jid' => $order->whatsapp_jid,
+            'is_whatsapp_order' => $isWhatsAppOrder,
+            'bill_image_pushed_at' => $order->bill_image_pushed_at?->toIso8601String(),
+            'bill_already_sent' => $billAlreadySent,
+            'can_send_whatsapp_bill' => $order->status === 'served' && $isWhatsAppOrder,
+            'can_resend_whatsapp_bill' => $order->status === 'served' && $isWhatsAppOrder && $billAlreadySent,
             'total_amount' => $order->total_amount,
             'status' => $order->status,
             'created_at' => $order->created_at->toIso8601String(),
@@ -267,6 +287,31 @@ class LiveOrdersController extends Controller
         }
 
         return redirect()->back()->with('success', 'Order deleted.');
+    }
+
+    public function sendWhatsAppBill(Request $request, int $order, WhatsAppBillDelivery $delivery): JsonResponse
+    {
+        $orderModel = $this->orderQuery()->findOrFail($order);
+        $force = $request->boolean('force', true);
+        $result = $delivery->sendExplicit($orderModel, $force);
+
+        if (! $result['ok']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+                'error_code' => $result['error_code'],
+            ], $result['http_status']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+            'data' => $this->orderToArray($orderModel->fresh(['items.menuItem'])),
+            'meta' => [
+                'recipient' => $result['recipient'],
+                'force' => $force,
+            ],
+        ]);
     }
 
     public function paymentInitiate(Request $request, SelcomService $selcom): JsonResponse
