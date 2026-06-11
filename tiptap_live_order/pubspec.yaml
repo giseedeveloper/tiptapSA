@@ -37,7 +37,7 @@ flutter_launcher_icons:
   web:
     generate: true
     image_path: "assets/images/logo.png"
-    background_color: "#0A0614"
+    background_color: "#FFFFFF"
     theme_color: "#06B6D4"
     rounded_icon: true
 
