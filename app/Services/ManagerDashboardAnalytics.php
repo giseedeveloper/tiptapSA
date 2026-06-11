@@ -241,6 +241,7 @@ class ManagerDashboardAnalytics
     private function ratingHistogram(int $restaurantId): array
     {
         $counts = Feedback::query()
+            ->forService()
             ->where('restaurant_id', $restaurantId)
             ->get(['rating'])
             ->countBy('rating');

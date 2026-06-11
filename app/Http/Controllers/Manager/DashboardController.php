@@ -47,7 +47,7 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        $recentFeedback = Feedback::with(['order', 'waiter'])
+        $recentFeedback = Feedback::query()->forService()->with(['order', 'waiter'])
             ->where('restaurant_id', $restaurantId)
             ->latest()
             ->take(5)
@@ -110,6 +110,7 @@ class DashboardController extends Controller
                 ->count(),
             'revenue_today' => $revenueToday,
             'avg_rating' => (float) (Feedback::query()
+                ->forService()
                 ->where('restaurant_id', $restaurantId)
                 ->avg('rating') ?? 0),
             'waiters_online' => User::role('waiter')
