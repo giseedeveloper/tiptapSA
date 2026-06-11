@@ -1,6 +1,7 @@
 @props([
     'title' => 'TIPTAP |  ',
     'heroBackground' => false,
+    'wide' => false,
 ])
 
 <!DOCTYPE html>
@@ -190,7 +191,13 @@
             </a>
 
             <!-- Content Card -->
-            <div class="w-full sm:max-w-md glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 {{ $heroBackground ? 'shadow-xl shadow-[#6D52E8]/10' : 'shadow-2xl shadow-black/50' }} relative overflow-hidden">
+            <div @class([
+                'w-full glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 relative overflow-hidden',
+                'shadow-xl shadow-[#6D52E8]/10' => $heroBackground,
+                'shadow-2xl shadow-black/50' => ! $heroBackground,
+                'sm:max-w-2xl' => $wide,
+                'sm:max-w-md' => ! $wide,
+            ])>
                 <!-- Decorative elements inside card -->
                 <div class="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 {{ $heroBackground ? 'bg-[#8C71F6]/10' : 'bg-violet-500/10' }} rounded-full blur-2xl sm:blur-3xl"></div>
                 <div class="absolute -bottom-10 -left-10 w-32 h-32 sm:w-40 sm:h-40 {{ $heroBackground ? 'bg-[#DDD7FE]/60' : 'bg-cyan-500/10' }} rounded-full blur-2xl sm:blur-3xl"></div>
