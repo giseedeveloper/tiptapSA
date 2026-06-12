@@ -63,6 +63,7 @@ return [
 
     'bot' => [
         'token' => env('BOT_TOKEN'),
+        'session_idle_hours' => (int) env('BOT_SESSION_IDLE_HOURS', 12),
     ],
 
 ];
