@@ -95,6 +95,7 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->name('admin.')
     Route::get('/tiptap-analysis/language', [TiptapAnalysisController::class, 'language'])->name('tiptap-analysis.language');
     Route::get('/tiptap-analysis/venues', [TiptapAnalysisController::class, 'venues'])->name('tiptap-analysis.venues');
 
+    Route::get('/tiptap-analysis/platform-pulse', [TiptapAnalysisController::class, 'platformPulse'])->name('tiptap-analysis.platform-pulse');
     Route::get('/tiptap-analysis/snapshot', [TiptapAnalysisController::class, 'snapshot'])->name('tiptap-analysis.snapshot');
     Route::get('/tiptap-analysis/whatsapp-engagement', [TiptapAnalysisController::class, 'whatsappEngagement'])->name('tiptap-analysis.whatsapp-engagement');
     Route::get('/tiptap-analysis/qr-entry-points', [TiptapAnalysisController::class, 'qrEntryPoints'])->name('tiptap-analysis.qr-entry-points');

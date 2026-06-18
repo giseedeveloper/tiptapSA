@@ -34,7 +34,7 @@
                             >
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-widest text-fin-primary mb-1">
-                                    {{ $officeKey === $market ? 'This site' : 'Regional office' }}
+                                    Office
                                 </p>
                                 <h3 class="text-xl font-semibold text-fin-ink">{{ $office['name'] }}</h3>
                                 <p class="text-sm text-fin-muted mt-1">{{ $office['city'] }}</p>

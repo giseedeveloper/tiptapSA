@@ -33,6 +33,15 @@ ssh -o StrictHostKeyChecking=no "${USER}@${HOST}" "
     docker compose build --no-cache app queue
     docker compose up -d
 
+    echo '--- Syncing public assets into Docker volume ---'
+    CID=\$(docker create tiptap-app)
+    docker cp \"\$CID:/var/www/html/public/build\" /tmp/tiptap_build_sync
+    docker cp \"\$CID:/var/www/html/public/images/flags\" /tmp/tiptap_flags_sync
+    docker rm \"\$CID\"
+    docker cp /tmp/tiptap_build_sync/. tiptap_app:/var/www/html/public/build/
+    docker cp /tmp/tiptap_flags_sync/. tiptap_app:/var/www/html/public/images/flags/
+    rm -rf /tmp/tiptap_build_sync /tmp/tiptap_flags_sync
+
     echo '--- Migrating + caching Laravel ---'
     docker exec tiptap_app php artisan migrate --force
     docker exec tiptap_app php artisan config:cache
