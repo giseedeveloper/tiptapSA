@@ -42,8 +42,15 @@ ssh -o StrictHostKeyChecking=no "${USER}@${HOST}" "
     docker cp /tmp/tiptap_flags_sync/. tiptap_app:/var/www/html/public/images/flags/
     rm -rf /tmp/tiptap_build_sync /tmp/tiptap_flags_sync
 
+    echo '--- Syncing app code into running container ---'
+    docker cp resources/. tiptap_app:/var/www/html/resources/
+    docker cp app/. tiptap_app:/var/www/html/app/
+    docker cp routes/. tiptap_app:/var/www/html/routes/
+    docker cp config/. tiptap_app:/var/www/html/config/
+
     echo '--- Migrating + caching Laravel ---'
     docker exec tiptap_app php artisan migrate --force
+    docker exec tiptap_app php artisan optimize:clear
     docker exec tiptap_app php artisan config:cache
     docker exec tiptap_app php artisan route:cache
     docker exec tiptap_app php artisan view:cache
