@@ -29,11 +29,12 @@ test('guest can register restaurant and manager account', function () {
         'manager_password_confirmation' => 'SecurePass123!',
     ]);
 
-    $response->assertRedirect(route('manager.dashboard'));
+    $response->assertRedirect(route('manager.onboarding.waiting'));
 
     $this->assertDatabaseHas('restaurants', [
         'name' => 'Sunset Bistro',
         'location' => 'Sandton, Johannesburg',
+        'approval_status' => 'pending',
     ]);
 
     $user = User::where('email', $email)->first();
@@ -55,7 +56,7 @@ test('registration auto-seeds roles when manager role was missing', function () 
         'manager_email' => $email,
         'manager_password' => 'password123',
         'manager_password_confirmation' => 'password123',
-    ])->assertRedirect(route('manager.dashboard'));
+    ])->assertRedirect(route('manager.onboarding.waiting'));
 
     expect(User::where('email', $email)->first()?->hasRole('manager'))->toBeTrue();
 });

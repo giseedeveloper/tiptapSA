@@ -49,7 +49,8 @@ class RestaurantRegistrationController extends Controller
                     'name' => $validated['restaurant_name'],
                     'location' => $validated['location'],
                     'phone' => $validated['phone'],
-                    'is_active' => true,
+                    'is_active' => false,
+                    'approval_status' => Restaurant::STATUS_PENDING,
                 ]);
 
                 $manager = User::create([
@@ -76,8 +77,8 @@ class RestaurantRegistrationController extends Controller
         Auth::login($manager);
 
         return redirect()
-            ->route('manager.dashboard')
-            ->with('status', 'Restaurant created successfully! Please set up your menu.');
+            ->route('manager.onboarding.waiting')
+            ->with('status', 'Registration received! Your restaurant is awaiting approval.');
     }
 
     private function seedRolesIfMissing(): void
