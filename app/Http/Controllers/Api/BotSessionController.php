@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\BotEngagementEvent;
 use App\Http\Controllers\Controller;
 use App\Models\BotSession;
+use App\Services\BotEventService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -90,15 +92,32 @@ class BotSessionController extends Controller
 
         $waId = BotSession::normalizeWaId($validated['wa_id']);
 
+        $existing = BotSession::query()->where('wa_id', $waId)->first();
+        $previousLang = $existing?->lang;
+        $newLang = $validated['lang'] ?? 'en';
+
         $session = BotSession::query()->updateOrCreate(
             ['wa_id' => $waId],
             [
                 'state' => $validated['state'] ?? 'START',
-                'lang' => $validated['lang'] ?? 'en',
+                'lang' => $newLang,
                 'data' => $validated['data'] ?? [],
                 'last_message_at' => now(),
             ]
         );
+
+        if ($previousLang !== null && $previousLang !== $newLang) {
+            $restaurantId = (int) (($validated['data'] ?? $session->data ?? [])['restaurant_id'] ?? 0);
+
+            if ($restaurantId > 0) {
+                app(BotEventService::class)->record(
+                    event: BotEngagementEvent::ChangeLanguage,
+                    restaurantId: $restaurantId,
+                    waId: $waId,
+                    metadata: ['lang' => $newLang, 'previous_lang' => $previousLang],
+                );
+            }
+        }
 
         return response()->json([
             'success' => true,
