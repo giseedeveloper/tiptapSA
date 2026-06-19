@@ -161,6 +161,11 @@ class WaiterController extends Controller
             return back()->with('error', 'Your restaurant has no tag prefix configured. Contact support.');
         }
 
+        $currentWaiters = User::role('waiter')->where('restaurant_id', $restaurant->id)->count();
+        if (! $restaurant->withinLimit('waiters', $currentWaiters)) {
+            return back()->with('error', 'You have reached your plan\'s waiter limit ('.$restaurant->planLimit('waiters').'). Upgrade your plan to link more waiters.');
+        }
+
         $waiter->restaurant_id = $restaurant->id;
         $waiter->waiter_code = $restaurant->generateWaiterCode();
         $waiter->employment_type = $request->validated('employment_type');
