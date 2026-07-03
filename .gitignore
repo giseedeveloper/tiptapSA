@@ -22,10 +22,8 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 
-# WhatsApp bot (nested app)
-/tiptopbot/node_modules/
-/tiptopbot/auth_info_baileys/
-/tiptopbot/.env
+# WhatsApp bot — separate repo (not part of tiptapSA)
+/tiptopbot/
 
 # Large archives / SQL dumps (keep local only)
 tiptopbot.zip
