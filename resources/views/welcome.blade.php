@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @include('partials.landing-seo-head')
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     @include('partials.brand-icons')
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/landing.css', 'resources/js/landing.js'])
 
     <style>
         :root {
@@ -240,8 +236,13 @@
 </head>
 <body class="antialiased font-sans selection:bg-fin-primary selection:text-white" data-landing-page="true">
 
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-80 focus:rounded-xl focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-fin-ink focus:shadow-lg">
+        Skip to content
+    </a>
+
     @include('partials.landing-nav-header')
 
+    <main id="main-content">
     {{-- Hero --}}
     <section class="hero-section pt-28 pb-20 lg:pt-40 lg:pb-28">
         <div class="hero-blob hero-blob-1"></div>
@@ -402,6 +403,7 @@
     @include('partials.landing-lead-magnet')
 
     @include('partials.landing-bottom-cta')
+    </main>
 
     <footer class="footer-dark pt-16 pb-10">
         <div class="max-w-6xl mx-auto px-5">
@@ -415,7 +417,7 @@
                     <a href="#contact" class="text-sm text-fin-lavender hover:text-white transition-colors">Our offices &rarr;</a>
                 </div>
                 <div>
-                    <h4 class="text-sm font-semibold text-white mb-4">Offices</h4>
+                    <h2 class="text-sm font-semibold text-white mb-4">Offices</h2>
                     <ul class="space-y-4 text-sm text-slate-400">
                         @foreach ($landing['offices'] as $office)
                             <li>
@@ -429,7 +431,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-sm font-semibold text-white mb-4">Product</h4>
+                    <h2 class="text-sm font-semibold text-white mb-4">Product</h2>
                     <ul class="space-y-2.5 text-sm text-slate-400">
                         <li><a href="#partners" class="hover:text-fin-lavender transition-colors">Payment partners</a></li>
                         <li><a href="#demo" class="hover:text-fin-lavender transition-colors">Live demo</a></li>
@@ -439,7 +441,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-sm font-semibold text-white mb-4">Get started</h4>
+                    <h2 class="text-sm font-semibold text-white mb-4">Get started</h2>
                     <ul class="space-y-2.5 text-sm text-slate-400">
                         <li><a href="{{ route('restaurant.register') }}" class="hover:text-fin-lavender transition-colors">Register restaurant</a></li>
                         <li><a href="{{ route('waiter.register') }}" class="hover:text-fin-lavender transition-colors">Register waiter</a></li>
@@ -458,20 +460,5 @@
         <i data-lucide="message-circle" class="w-6 h-6"></i>
     </a>
 
-    <script>
-        const nav = document.getElementById('site-nav');
-        window.addEventListener('scroll', () => nav?.classList.toggle('scrolled', window.scrollY > 24));
-
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const menuClose = document.getElementById('mobile-menu-close');
-        const menu = document.getElementById('mobile-menu');
-        menuBtn?.addEventListener('click', () => { menu.classList.replace('hidden', 'flex'); });
-        menuClose?.addEventListener('click', () => { menu.classList.replace('flex', 'hidden'); });
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-    </script>
 </body>
 </html>
