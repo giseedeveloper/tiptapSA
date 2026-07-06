@@ -179,10 +179,10 @@
             </div>
         @endif
 
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-4 sm:pt-0 px-3 sm:px-4 relative z-10">
+        <div class="min-h-screen flex flex-col justify-center items-center py-5 sm:py-8 px-3 sm:px-4 relative z-10">
             <!-- Logo -->
-            <a href="/" class="flex items-center gap-2 sm:gap-3 group mb-6 sm:mb-8">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center {{ $heroBackground ? 'shadow-xl shadow-[#8C71F6]/25' : 'shadow-xl shadow-violet-500/30' }} transform group-hover:rotate-12 transition-all duration-500 animate-pulse-glow overflow-hidden">
+            <a href="/" class="flex items-center gap-2 group mb-4 sm:mb-5 shrink-0">
+                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center {{ $heroBackground ? 'shadow-lg shadow-[#8C71F6]/20' : 'shadow-lg shadow-violet-500/30' }} transform group-hover:rotate-12 transition-all duration-500 animate-pulse-glow overflow-hidden">
                     <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP Logo" class="w-full h-full object-contain bg-white">
                 </div>
                 <div>
@@ -192,11 +192,11 @@
 
             <!-- Content Card -->
             <div @class([
-                'w-full glass-card rounded-2xl sm:rounded-3xl p-5 sm:p-8 relative overflow-hidden',
+                'w-full glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden shrink-0',
                 'shadow-xl shadow-[#6D52E8]/10' => $heroBackground,
                 'shadow-2xl shadow-black/50' => ! $heroBackground,
                 'sm:max-w-2xl' => $wide,
-                'sm:max-w-md' => ! $wide,
+                'sm:max-w-[400px]' => ! $wide,
             ])>
                 <!-- Decorative elements inside card -->
                 <div class="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 {{ $heroBackground ? 'bg-[#8C71F6]/10' : 'bg-violet-500/10' }} rounded-full blur-2xl sm:blur-3xl"></div>
@@ -208,13 +208,13 @@
             </div>
 
             <!-- Footer -->
-            <p class="login-footer mt-6 sm:mt-8 {{ $heroBackground ? 'text-[#64708B]' : 'text-white/50' }} text-xs font-medium text-center flex items-center justify-center gap-2">
+            <p class="login-footer mt-4 sm:mt-5 pb-1 {{ $heroBackground ? 'text-[#64708B]' : 'text-white/50' }} text-xs font-medium text-center flex items-center justify-center gap-2 shrink-0">
                 <img
                     src="{{ public_asset('images/flags/za.svg') }}"
                     alt="South Africa flag"
-                    width="24"
-                    height="18"
-                    class="h-[18px] w-6 shrink-0 rounded-[2px] shadow-sm ring-1 ring-white/25 object-cover"
+                    width="28"
+                    height="21"
+                    class="h-5 w-7 shrink-0 rounded-[2px] shadow-sm ring-1 ring-black/10 object-cover"
                     title="South Africa"
                 >
                 <span>&copy; {{ date('Y') }} TIPTAP. All rights reserved.</span>

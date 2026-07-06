@@ -17,21 +17,62 @@ use Throwable;
 
 class RestaurantRegistrationController extends Controller
 {
+    private const SESSION_KEY = 'restaurant_registration.credentials';
+
     public function create(): View
     {
         return view('auth.register-restaurant');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function storeCredentials(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            'manager_email' => 'required|email|max:255|unique:users,email',
+            'manager_password' => 'required|confirmed|min:8',
+        ]);
+
+        $request->session()->put(self::SESSION_KEY, [
+            'manager_email' => $validated['manager_email'],
+            'manager_password' => $validated['manager_password'],
+        ]);
+
+        return redirect()->route('restaurant.register.details');
+    }
+
+    public function createDetails(Request $request): View|RedirectResponse
+    {
+        if (! $request->session()->has(self::SESSION_KEY)) {
+            return redirect()->route('restaurant.register');
+        }
+
+        return view('auth.register-restaurant-details', [
+            'managerEmail' => $request->session()->get(self::SESSION_KEY.'.manager_email'),
+        ]);
+    }
+
+    public function storeDetails(Request $request): RedirectResponse
+    {
+        $credentials = $request->session()->get(self::SESSION_KEY);
+
+        if (! is_array($credentials) || empty($credentials['manager_email']) || empty($credentials['manager_password'])) {
+            return redirect()->route('restaurant.register');
+        }
+
+        $validated = $request->validate([
+            'manager_name' => 'required|string|max:255',
             'restaurant_name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'manager_name' => 'required|string|max:255',
-            'manager_email' => 'required|email|unique:users,email',
-            'manager_password' => 'required|confirmed|min:8',
         ]);
+
+        if (User::where('email', $credentials['manager_email'])->exists()) {
+            $request->session()->forget(self::SESSION_KEY);
+
+            return redirect()
+                ->route('restaurant.register')
+                ->withErrors(['manager_email' => 'This email is already registered. Please sign in instead.'])
+                ->withInput(['manager_email' => $credentials['manager_email']]);
+        }
 
         if (! Role::where('name', 'manager')->where('guard_name', 'web')->exists()) {
             $this->seedRolesIfMissing();
@@ -44,7 +85,7 @@ class RestaurantRegistrationController extends Controller
         }
 
         try {
-            $manager = DB::transaction(function () use ($validated) {
+            $manager = DB::transaction(function () use ($validated, $credentials) {
                 $restaurant = Restaurant::create([
                     'name' => $validated['restaurant_name'],
                     'location' => $validated['location'],
@@ -55,9 +96,11 @@ class RestaurantRegistrationController extends Controller
 
                 $manager = User::create([
                     'name' => $validated['manager_name'],
-                    'email' => $validated['manager_email'],
-                    'password' => Hash::make($validated['manager_password']),
+                    'email' => $credentials['manager_email'],
+                    'auth_provider' => 'email',
+                    'password' => Hash::make($credentials['manager_password']),
                     'restaurant_id' => $restaurant->id,
+                    'phone' => $validated['phone'],
                 ]);
 
                 $manager->assignRole('manager');
@@ -73,6 +116,8 @@ class RestaurantRegistrationController extends Controller
                     'restaurant_name' => 'Registration failed. Please try again or contact support if the problem continues.',
                 ]);
         }
+
+        $request->session()->forget(self::SESSION_KEY);
 
         Auth::login($manager);
 

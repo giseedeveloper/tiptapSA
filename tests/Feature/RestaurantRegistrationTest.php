@@ -13,20 +13,29 @@ beforeEach(function () {
 test('restaurant registration page loads', function () {
     $this->get(route('restaurant.register'))
         ->assertOk()
-        ->assertSee('TIPTAP Assistant');
+        ->assertSee('Register Restaurant')
+        ->assertSee('Or register with email');
+});
+
+test('restaurant details page requires credentials step first', function () {
+    $this->get(route('restaurant.register.details'))
+        ->assertRedirect(route('restaurant.register'));
 });
 
 test('guest can register restaurant and manager account', function () {
     $email = 'newmanager'.uniqid().'@example.com';
 
-    $response = $this->post(route('restaurant.register.store'), [
-        'restaurant_name' => 'Sunset Bistro',
-        'location' => 'Sandton, Johannesburg',
-        'phone' => '0712345678',
-        'manager_name' => 'Jane Doe',
+    $this->post(route('restaurant.register.credentials'), [
         'manager_email' => $email,
         'manager_password' => 'SecurePass123!',
         'manager_password_confirmation' => 'SecurePass123!',
+    ])->assertRedirect(route('restaurant.register.details'));
+
+    $response = $this->post(route('restaurant.register.details.store'), [
+        'manager_name' => 'Jane Doe',
+        'restaurant_name' => 'Sunset Bistro',
+        'location' => 'Sandton, Johannesburg',
+        'phone' => '0712345678',
     ]);
 
     $response->assertRedirect(route('manager.onboarding.waiting'));
@@ -48,14 +57,17 @@ test('registration auto-seeds roles when manager role was missing', function () 
 
     $email = 'autoseed'.uniqid().'@example.com';
 
-    $this->post(route('restaurant.register.store'), [
-        'restaurant_name' => 'Test Cafe',
-        'location' => 'Durban',
-        'phone' => '0820000000',
-        'manager_name' => 'Bob',
+    $this->post(route('restaurant.register.credentials'), [
         'manager_email' => $email,
         'manager_password' => 'password123',
         'manager_password_confirmation' => 'password123',
+    ])->assertRedirect(route('restaurant.register.details'));
+
+    $this->post(route('restaurant.register.details.store'), [
+        'manager_name' => 'Bob',
+        'restaurant_name' => 'Test Cafe',
+        'location' => 'Durban',
+        'phone' => '0820000000',
     ])->assertRedirect(route('manager.onboarding.waiting'));
 
     expect(User::where('email', $email)->first()?->hasRole('manager'))->toBeTrue();
