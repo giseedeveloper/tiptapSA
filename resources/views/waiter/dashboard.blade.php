@@ -21,7 +21,7 @@
                 <form action="{{ route('waiter.status.update') }}" method="POST" class="inline">
                     @csrf
                     <input type="hidden" name="is_online" value="0">
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-rose-500/20 text-white/80 hover:text-rose-300 border border-white/10 text-sm font-semibold transition-all">Shift complete – Go offline</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-rose-500/20 text-white/80 hover:text-rose-300 border border-white/10 text-sm font-semibold transition-all">Nimekamilisha – Nenda Offline</button>
                 </form>
             @else
                 <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/60 border border-white/10 text-sm font-semibold">
@@ -31,7 +31,7 @@
                 <form action="{{ route('waiter.status.update') }}" method="POST" class="inline">
                     @csrf
                     <input type="hidden" name="is_online" value="1">
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all">On duty – Go online</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-all">Niko Kazini – Nenda Online</button>
                 </form>
             @endif
         </div>
@@ -44,11 +44,75 @@
         @foreach($salaryNotifications as $n)
             @php $data = $n->data; @endphp
             <a href="{{ $data['url'] ?? route('waiter.salary-slip.index') }}" class="block p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 hover:bg-amber-500/20 transition-colors">
-                <p class="font-semibold">Payment confirmed – {{ $data['period_label'] ?? 'Salary Slip' }}</p>
-                <p class="text-sm text-amber-200/80 mt-0.5">{{ $data['message'] ?? 'View your salary slip.' }}</p>
-                <span class="text-xs text-amber-400 mt-2 inline-block">View slip →</span>
+                <p class="font-semibold">Malipo yamethibitishwa – {{ $data['period_label'] ?? 'Salary Slip' }}</p>
+                <p class="text-sm text-amber-200/80 mt-0.5">{{ $data['message'] ?? 'Angalia Salary Slip.' }}</p>
+                <span class="text-xs text-amber-400 mt-2 inline-block">Angalia slip →</span>
             </a>
         @endforeach
+    </div>
+    @endif
+
+    @if(isset($rosterNotifications) && $rosterNotifications->isNotEmpty())
+    <div class="mb-6 glass-card rounded-2xl p-5 border border-teal-500/20">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+            <h3 class="text-sm font-bold text-teal-300 uppercase tracking-wider">Roster & Table Updates</h3>
+            <form action="{{ route('waiter.roster-notifications.dismiss') }}" method="POST">
+                @csrf
+                <button type="submit" class="text-xs font-semibold text-white/50 hover:text-white">Mark all read</button>
+            </form>
+        </div>
+        <div class="space-y-2">
+            @foreach($rosterNotifications as $n)
+                @php $data = $n->data; @endphp
+                <div class="p-3 rounded-xl bg-teal-500/10 border border-teal-500/20">
+                    <p class="text-sm text-teal-100">{{ $data['message'] ?? 'Assignment updated.' }}</p>
+                    @if(!empty($data['assigned_by']))
+                        <p class="text-xs text-teal-300/60 mt-1">From manager: {{ $data['assigned_by'] }}</p>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    @if(isset($isAbsentToday) && $isAbsentToday)
+    <div class="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200">
+        <p class="font-semibold">Umeandikishwa kuwa absent leo na manager.</p>
+        <p class="text-sm text-rose-200/80 mt-1">Hutapokea maombi mapya hadi manager aondoe absent status.</p>
+    </div>
+    @endif
+
+    @if(isset($myTables) && Auth::user()->restaurant_id)
+    <div class="mb-8 glass-card rounded-2xl p-6 border border-violet-500/20">
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+            <div>
+                <h3 class="text-lg font-bold text-white">Meza Zangu</h3>
+                <p class="text-sm text-white/40 mt-1">Meza ulizopewa na manager leo.</p>
+            </div>
+            @if(isset($todayShifts) && $todayShifts->isNotEmpty())
+                <div class="text-right">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-teal-400">Shift leo</p>
+                    @foreach($todayShifts as $shift)
+                        <p class="text-sm font-semibold text-white">{{ $shift->timeRangeLabel() }}@if($shift->label) · {{ $shift->label }}@endif</p>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+        @if($myTables->isNotEmpty())
+            <div class="flex flex-wrap gap-2">
+                @foreach($myTables as $table)
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-500/15 border border-violet-500/25 text-violet-200 text-sm font-semibold">
+                        {{ $table->name }}
+                        @if($table->zone)
+                            <span class="text-[10px] font-normal text-white/40 uppercase">{{ $table->zone->name }}</span>
+                        @endif
+                    </span>
+                @endforeach
+            </div>
+            <p class="text-xs text-white/40 mt-4">Unapokea call-waiter na orders za meza hizi. Unaweza ku-handover kwenye <a href="{{ route('waiter.handover') }}" class="text-violet-400 underline">Handover</a> ukiondoka.</p>
+        @else
+            <p class="text-white/50 text-sm">Bado hujapewa meza. Manager ata-assign kutoka Waiter Roster.</p>
+        @endif
     </div>
     @endif
 
@@ -70,7 +134,7 @@
                 </div>
                 <div class="mt-4">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-amber-100/80">Total Tips</p>
-                    <h3 class="mt-1 text-2xl font-bold tracking-tight" id="stat-tips-today">{{ $currencySymbol }} {{ number_format($tipsToday) }}</h3>
+                    <h3 class="mt-1 text-2xl font-bold tracking-tight" id="stat-tips-today">Tsh {{ number_format($tipsToday) }}</h3>
                 </div>
             </div>
         </div>
@@ -189,7 +253,7 @@
                             </div>
                             <form action="{{ route('waiter.requests.complete', $request->id) }}" method="POST" class="relative z-10">
                                 @csrf
-                                <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fin-primary to-fin-primary-dark py-3 text-[11px] font-bold uppercase tracking-widest text-white transition-all hover:shadow-lg hover:shadow-violet-500/25">
+                                <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-cyan-600 py-3 text-[11px] font-bold uppercase tracking-widest text-white transition-all hover:shadow-lg hover:shadow-violet-500/25">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M20 6 9 17l-5-5"/>
                                     </svg>
@@ -288,7 +352,7 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="font-bold text-sm text-white">{{ $currencySymbol }} {{ number_format($order->total_amount) }}</span>
+                                            <span class="font-bold text-sm text-white">Tsh {{ number_format($order->total_amount) }}</span>
                                         </td>
                                     </tr>
                                 @empty
@@ -331,7 +395,7 @@
                             <p class="text-[10px] font-bold uppercase tracking-widest text-white/40">Total Orders</p>
                             <p class="mt-1 text-2xl font-bold">{{ $restaurantActiveOrders }}</p>
                         </div>
-                        <div class="rounded-xl bg-gradient-to-br from-fin-primary to-fin-primary-dark p-4 shadow-lg shadow-violet-500/20">
+                        <div class="rounded-xl bg-gradient-to-br from-violet-600 to-cyan-600 p-4 shadow-lg shadow-violet-500/20">
                             <p class="text-[10px] font-bold uppercase tracking-widest text-white/80">Ready</p>
                             <p class="mt-1 text-2xl font-bold">{{ $readyToServeOrders }}</p>
                         </div>
@@ -380,10 +444,10 @@
                     <h3 class="text-lg font-bold tracking-tight">TIPTAP ORDER (Live Orders)</h3>
                     <span class="rounded-lg bg-emerald-500/20 px-2 py-1 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase">Active</span>
                 </div>
-                <p class="text-sm text-white/70 mb-4">You have access to the Live Orders portal. Sign in with your <strong class="text-cyan-300">waiter number</strong> ({{ Auth::user()->global_waiter_number ?? Auth::user()->waiter_code ?? 'N/A' }}) and <strong class="text-cyan-300">manager-assigned password</strong>.</p>
+                <p class="text-sm text-white/70 mb-4">Una ufikiaji wa Live Orders portal. Ingia kwa <strong class="text-cyan-300">nambari yako ya waiter</strong> ({{ Auth::user()->global_waiter_number ?? Auth::user()->waiter_code ?? 'N/A' }}) na <strong class="text-cyan-300">password uliyopewa na manager</strong>.</p>
                 <a href="{{ $orderPortalLoginUrl }}" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-violet-600 hover:bg-violet-500 py-2.5 px-4 text-sm font-semibold transition-all shadow-lg shadow-violet-600/20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                    Open Live Orders Portal
+                    Fungua Live Orders Portal
                 </a>
             </div>
             @endif
@@ -429,7 +493,7 @@
             fetch('{{ route("waiter.dashboard.stats") }}')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('stat-tips-today').textContent = @json($currencySymbol) + ' ' + new Intl.NumberFormat().format(data.tips_today);
+                    document.getElementById('stat-tips-today').textContent = 'Tsh ' + new Intl.NumberFormat().format(data.tips_today);
                     document.getElementById('stat-my-active-orders').textContent = data.my_active_orders;
                     document.getElementById('stat-ready-to-serve').textContent = data.ready_to_serve;
                     document.getElementById('stat-pending-requests').textContent = data.pending_requests;

@@ -8,5 +8,15 @@ class AppConfig {
     defaultValue: 'https://tiptapafrica.co.za/api',
   );
 
+  /// Web app origin (OAuth + marketing). Derived from API URL when not set.
+  static String get webBaseUrl {
+    const override = String.fromEnvironment('WEB_BASE_URL');
+    if (override.isNotEmpty) return override;
+    if (baseUrl.endsWith('/api')) {
+      return baseUrl.substring(0, baseUrl.length - 4);
+    }
+    return baseUrl;
+  }
+
   static const int statsPollIntervalSeconds = 30;
 }

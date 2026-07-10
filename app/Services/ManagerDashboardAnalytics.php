@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Feedback;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Payment;
 use App\Models\Restaurant;
 use Carbon\Carbon;
 
@@ -12,11 +13,11 @@ class ManagerDashboardAnalytics
 {
     public function revenueForPaidOrdersOnDate(int $restaurantId, Carbon $date): float
     {
-        return (float) Order::query()
+        return (float) Payment::query()
             ->where('restaurant_id', $restaurantId)
-            ->where('status', 'paid')
+            ->whereIn('status', ['paid', 'completed'])
             ->whereDate('created_at', $date)
-            ->sum('total_amount');
+            ->sum('amount');
     }
 
     /**
@@ -42,7 +43,7 @@ class ManagerDashboardAnalytics
             'week_comparison' => $weekComparison,
             'top_menu_items' => $topMenuItems,
             'rating_histogram' => $ratingHistogram,
-            'insights' => $this->buildInsights($hourlyActivity, $statusCycle),
+            'insights' => $this->buildInsights($weeklyTrend, $hourlyActivity, $statusCycle, $weekComparison),
         ];
     }
 
@@ -55,15 +56,15 @@ class ManagerDashboardAnalytics
         $end = $today->copy()->endOfDay();
 
         $revenueByDay = [];
-        $paidOrders = Order::query()
+        $payments = Payment::query()
             ->where('restaurant_id', $restaurantId)
-            ->where('status', 'paid')
+            ->whereIn('status', ['paid', 'completed'])
             ->whereBetween('created_at', [$start, $end])
-            ->get(['total_amount', 'created_at']);
+            ->get(['amount', 'created_at']);
 
-        foreach ($paidOrders as $order) {
-            $key = $order->created_at->toDateString();
-            $revenueByDay[$key] = ($revenueByDay[$key] ?? 0) + (float) $order->total_amount;
+        foreach ($payments as $payment) {
+            $key = $payment->created_at->toDateString();
+            $revenueByDay[$key] = ($revenueByDay[$key] ?? 0) + (float) $payment->amount;
         }
 
         $ordersByDay = [];
@@ -110,7 +111,7 @@ class ManagerDashboardAnalytics
         }
 
         $hours = [];
-        for ($h = 0; $h <= 23; $h++) {
+        for ($h = 8; $h <= 23; $h++) {
             $hours[] = [
                 'hour' => (string) $h,
                 'label' => sprintf('%02d:00', $h),
@@ -175,17 +176,17 @@ class ManagerDashboardAnalytics
         $previousStart = $currentStart->copy()->subWeek();
         $previousEnd = $currentStart->copy()->subSecond();
 
-        $currentRevenue = (float) Order::query()
+        $currentRevenue = (float) Payment::query()
             ->where('restaurant_id', $restaurantId)
-            ->where('status', 'paid')
+            ->whereIn('status', ['paid', 'completed'])
             ->whereBetween('created_at', [$currentStart, $currentEnd])
-            ->sum('total_amount');
+            ->sum('amount');
 
-        $previousRevenue = (float) Order::query()
+        $previousRevenue = (float) Payment::query()
             ->where('restaurant_id', $restaurantId)
-            ->where('status', 'paid')
+            ->whereIn('status', ['paid', 'completed'])
             ->whereBetween('created_at', [$previousStart, $previousEnd])
-            ->sum('total_amount');
+            ->sum('amount');
 
         $currentOrders = Order::query()
             ->where('restaurant_id', $restaurantId)
@@ -258,11 +259,13 @@ class ManagerDashboardAnalytics
     }
 
     /**
+     * @param  list<array{date: string, day: string, revenue: float, orders: int}>  $weeklyTrend
      * @param  list<array{hour: string, label: string, orders: int}>  $hourlyActivity
      * @param  array{segments: list<array{key: string, label: string, count: int, color: string}>, total: int}  $statusCycle
+     * @param  array{current: float, previous: float, change_pct: float, current_orders: int, previous_orders: int}  $weekComparison
      * @return list<array{label: string, value: string, tone: string}>
      */
-    private function buildInsights(array $hourlyActivity, array $statusCycle): array
+    private function buildInsights(array $weeklyTrend, array $hourlyActivity, array $statusCycle, array $weekComparison): array
     {
         $insights = [];
 
@@ -272,6 +275,23 @@ class ManagerDashboardAnalytics
                 'label' => 'Peak hour today',
                 'value' => $peakHour['label'].' · '.$peakHour['orders'].' orders',
                 'tone' => 'cyan',
+            ];
+        }
+
+        $bestDay = collect($weeklyTrend)->sortByDesc('revenue')->first();
+        if ($bestDay && $bestDay['revenue'] > 0) {
+            $insights[] = [
+                'label' => 'Best revenue day (7d)',
+                'value' => $bestDay['day'].' · Tsh '.number_format($bestDay['revenue']),
+                'tone' => 'violet',
+            ];
+        }
+
+        if ($weekComparison['change_pct'] !== 0.0) {
+            $insights[] = [
+                'label' => 'Week vs last week',
+                'value' => ($weekComparison['change_pct'] >= 0 ? '+' : '').$weekComparison['change_pct'].'% revenue',
+                'tone' => $weekComparison['change_pct'] >= 0 ? 'emerald' : 'rose',
             ];
         }
 

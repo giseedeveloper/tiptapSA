@@ -9,10 +9,11 @@
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    @include('partials.brand-icons')
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @include('partials.portal-theme')
     <script src="https://unpkg.com/lucide@latest"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
@@ -74,7 +75,7 @@
         }
         
         body { 
-            background: #12101c;
+            background: #0f0a1e;
             min-height: 100vh;
         }
 
@@ -87,11 +88,11 @@
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, rgba(140, 113, 246, 0.5) 0%, rgba(109, 82, 232, 0.5) 100%);
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.5) 0%, rgba(6, 182, 212, 0.5) 100%);
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, rgba(140, 113, 246, 0.8) 0%, rgba(109, 82, 232, 0.8) 100%);
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.8) 0%, rgba(6, 182, 212, 0.8) 100%);
         }
 
         /* Sidebar nav: scroll with pointer/wheel when expanded or collapsed; scrollbar never visible */
@@ -125,12 +126,12 @@
         }
 
         .bg-surface-900 {
-            background: #12101c;
+            background: #0f0a1e;
         }
 
         /* Sidebar Styling */
         .sidebar-gradient {
-            background: #12101c;
+            background: #0f0a1e;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
         }
@@ -141,12 +142,12 @@
         }
         
         .sidebar-link:hover {
-            background: linear-gradient(90deg, rgba(140, 113, 246, 0.1) 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%);
             color: #fff;
         }
         
         .sidebar-link-active {
-            background: linear-gradient(90deg, rgba(140, 113, 246, 0.2) 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, transparent 100%);
             color: #fff !important;
         }
         
@@ -158,13 +159,13 @@
             transform: translateY(-50%);
             width: 3px;
             height: 60%;
-            background: linear-gradient(180deg, #8C71F6 0%, #6D52E8 100%);
+            background: linear-gradient(180deg, #8b5cf6 0%, #06b6d4 100%);
             border-radius: 0 4px 4px 0;
         }
 
         /* Gradient Text */
         .gradient-text {
-            background: linear-gradient(135deg, #8C71F6 0%, #6D52E8 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -177,8 +178,8 @@
         }
         
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(140, 113, 246, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(140, 113, 246, 0.5); }
+            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.5); }
         }
 
         .animate-float { animation: float 6s ease-in-out infinite; }
@@ -198,7 +199,7 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .sidebar-link { min-height: 44px; }
-        .sidebar-link:focus { outline: none; box-shadow: 0 0 0 2px #12101c, 0 0 0 4px rgba(140, 113, 246, 0.6); }
+        .sidebar-link:focus { outline: none; box-shadow: 0 0 0 2px #0f0a1e, 0 0 0 4px rgba(139, 92, 246, 0.6); }
 
         .sidebar-profile-card {
             background: linear-gradient(145deg, rgba(28, 22, 51, 0.85) 0%, rgba(15, 10, 30, 0.95) 100%);
@@ -209,14 +210,14 @@
         }
 
         .sidebar-profile-card:hover {
-            border-color: rgba(140, 113, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.2);
             box-shadow:
-                0 8px 28px -6px rgba(140, 113, 246, 0.15),
+                0 8px 28px -6px rgba(139, 92, 246, 0.15),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-profile-avatar {
-            background: linear-gradient(135deg, #6D52E8 0%, #6D52E8 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
             box-shadow: 0 4px 14px -2px rgba(124, 58, 237, 0.45);
         }
 
@@ -286,7 +287,7 @@
 
         #sidebar-profile-avatar-btn:focus-visible {
             outline: none;
-            box-shadow: 0 0 0 2px #12101c, 0 0 0 4px rgba(140, 113, 246, 0.55);
+            box-shadow: 0 0 0 2px #0f0a1e, 0 0 0 4px rgba(139, 92, 246, 0.55);
             border-radius: 0.75rem;
         }
         /* Sidebar visibility: NOT relying on Tailwind – layout CSS only */
@@ -353,7 +354,7 @@
 
         #sidebar-logo-toggle:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 0 3px rgba(140, 113, 246, 0.25);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
         }
 
         #sidebar-logo-toggle:active {
@@ -362,7 +363,7 @@
     </style>
 </head>
 <body class="font-sans antialiased text-white min-h-screen pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)]">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-xl focus:ring-2 focus:ring-violet-400 focus:ring-offset-2 focus:ring-offset-[#12101c] focus:outline-none">Skip to main content</a>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-xl focus:ring-2 focus:ring-violet-400 focus:ring-offset-2 focus:ring-offset-[#0f0a1e] focus:outline-none">Skip to main content</a>
     
     <!-- Overlay (mobile only) -->
     <div id="sidebar-overlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/70 z-40 backdrop-blur-sm hidden md:hidden transition-opacity duration-300 opacity-0 cursor-pointer" aria-hidden="true"></div>
@@ -381,19 +382,19 @@
                 <button
                     type="button"
                     id="sidebar-logo-toggle"
-                    class="w-10 h-10 flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#12101c]"
+                    class="w-10 h-10 flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#0f0a1e]"
                     aria-label="Toggle sidebar"
                     title="Toggle sidebar"
                 >
-                    <img src="{{ public_asset('images/logo.png') }}" alt="TIPTAP" class="w-full h-full object-contain">
+                    <img src="{{ asset('images/logo.png') }}" alt="TIPTAP" class="w-full h-full object-contain">
                 </button>
                 <div class="flex-1 sidebar-logo-spacer"></div>
                 <div class="flex items-center gap-1 shrink-0">
-                    <button type="button" id="sidebar-toggle" class="hidden md:flex min-h-[44px] min-w-[44px] items-center justify-center p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#12101c]" aria-label="Collapse sidebar" title="Collapse sidebar">
+                    <button type="button" id="sidebar-toggle" class="hidden md:flex min-h-[44px] min-w-[44px] items-center justify-center p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#0f0a1e]" aria-label="Collapse sidebar" title="Collapse sidebar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="sidebar-toggle-icon-collapse" title="Collapse"><path d="m15 18-6-6 6-6"/></svg>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="sidebar-toggle-icon-expand" class="hidden" title="Expand"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
-                    <button type="button" onclick="closeSidebar()" class="md:hidden min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#12101c]" aria-label="Close menu">
+                    <button type="button" onclick="closeSidebar()" class="md:hidden min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#0f0a1e]" aria-label="Close menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
                         </svg>
@@ -459,6 +460,47 @@
                         </svg>
                     </div>
                     <span class="font-medium text-xs">Waiters & Staff</span>
+                </a>
+
+                <a href="{{ route('manager.roster.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.roster.*') ? 'sidebar-link-active' : 'text-white/55' }}">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-teal-500/20 to-emerald-500/20 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.roster.*') ? 'text-teal-400' : 'text-white/50' }}">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-xs">Waiter Roster</span>
+                </a>
+
+                <a href="{{ route('manager.menu-engagement.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.menu-engagement.*') ? 'sidebar-link-active' : 'text-white/55' }}">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center shrink-0 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.menu-engagement.*') ? 'text-amber-400' : 'text-white/50' }}">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                        </svg>
+                        @if(($menuEngagementUnread ?? 0) > 0)
+                            <span class="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-amber-400 text-[9px] font-bold text-black flex items-center justify-center">{{ $menuEngagementUnread > 9 ? '9+' : $menuEngagementUnread }}</span>
+                        @endif
+                    </div>
+                    <span class="font-medium text-xs">Customer Engagement</span>
+                </a>
+
+                @if(auth()->user()?->isBranchManager())
+                <a href="{{ route('manager.branches.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.branches.*') ? 'sidebar-link-active' : 'text-white/55' }}">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.branches.*') ? 'text-cyan-400' : 'text-white/50' }}">
+                            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-xs">My Branches</span>
+                </a>
+                @endif
+
+                <a href="{{ route('manager.floor-supervisors.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.floor-supervisors.*') ? 'sidebar-link-active' : 'text-white/55' }}">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-indigo-500/20 to-violet-500/20 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.floor-supervisors.*') ? 'text-indigo-400' : 'text-white/50' }}">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-xs">Floor Supervisors</span>
                 </a>
 
                 <a href="{{ route('manager.tables.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.tables.index') ? 'sidebar-link-active' : 'text-white/55' }}">
@@ -541,6 +583,24 @@
                     <span class="font-medium text-xs">API Settings</span>
                 </a>
 
+                <a href="{{ route('manager.tips.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.tips.index') ? 'sidebar-link-active' : 'text-white/55' }}">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-yellow-500/20 to-amber-500/20 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.tips.index') ? 'text-yellow-400' : 'text-white/50' }}">
+                            <circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-xs">Tips</span>
+                </a>
+
+                <a href="{{ route('manager.reports.performance') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.reports.*') ? 'sidebar-link-active' : 'text-white/55' }}">
+                    <div class="w-7 h-7 rounded-md bg-gradient-to-br from-indigo-500/20 to-violet-500/20 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.reports.*') ? 'text-indigo-400' : 'text-white/50' }}">
+                            <path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>
+                        </svg>
+                    </div>
+                    <span class="font-medium text-xs">Reports</span>
+                </a>
+
                 <a href="{{ route('manager.help.index') }}" onclick="closeSidebar()" class="sidebar-link flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg {{ request()->routeIs('manager.help.index') ? 'sidebar-link-active' : 'text-white/55' }}">
                     <div class="w-7 h-7 rounded-md bg-gradient-to-br from-sky-500/20 to-blue-500/20 flex items-center justify-center shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ request()->routeIs('manager.help.index') ? 'text-sky-400' : 'text-white/50' }}">
@@ -589,7 +649,7 @@
                         @csrf
                         <button
                             type="submit"
-                            class="sidebar-profile-logout min-h-[40px] min-w-[40px] inline-flex items-center justify-center rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:ring-offset-2 focus:ring-offset-[#12101c]"
+                            class="sidebar-profile-logout min-h-[40px] min-w-[40px] inline-flex items-center justify-center rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:ring-offset-2 focus:ring-offset-[#0f0a1e]"
                             aria-label="Log out"
                             title="Log out"
                         >
@@ -608,7 +668,7 @@
         <main id="main-content" class="flex-1 min-h-screen flex flex-col w-full relative z-0 transition-[margin] duration-300 md:ml-48 portal-ambient" tabindex="-1">
             <!-- Mobile Header -->
             <div class="md:hidden glass sticky top-0 z-30 px-4 py-3 flex items-center gap-3 min-w-0">
-                <button type="button" onclick="openSidebar()" class="shrink-0 min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2.5 bg-gradient-to-r from-fin-primary to-fin-primary-dark text-white rounded-xl shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#12101c]" aria-label="Open menu">
+                <button type="button" onclick="openSidebar()" class="shrink-0 min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2.5 bg-gradient-to-r from-violet-600 to-cyan-600 text-white rounded-xl shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-[#0f0a1e]" aria-label="Open menu">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
                     </svg>
@@ -617,6 +677,7 @@
                     <p class="text-[10px] font-semibold text-violet-400 uppercase tracking-wide mb-0.5">Manager Portal</p>
                     <h1 class="font-bold text-white tracking-tight break-words">{{ $header ?? 'Dashboard' }}</h1>
                 </div>
+                <x-branch-switcher />
             </div>
 
             <!-- Desktop Header & Content -->
@@ -629,6 +690,7 @@
                     </div>
 
                     <div class="flex items-center gap-5 shrink-0">
+                        <x-branch-switcher />
                         <div class="glass px-4 py-2.5 rounded-xl flex items-center gap-3">
                             <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
                             <span class="text-[11px] font-semibold text-white/80 uppercase tracking-wider">System Live</span>
@@ -877,5 +939,6 @@
             }
         });
     </script>
+    @stack('scripts')
 </body>
 </html>
