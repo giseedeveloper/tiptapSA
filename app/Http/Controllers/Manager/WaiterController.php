@@ -17,9 +17,10 @@ class WaiterController extends Controller
     public function index()
     {
         $restaurantId = Auth::user()->restaurant_id;
-        $waiters = User::role('waiter')
+        $waiters = User::role(['waiter', 'barista'])
             ->activeAtRestaurant($restaurantId)
             ->withCount('orders')
+            ->withSum('tips', 'amount')
             ->get();
 
         $waiterIdsWithOrderPortal = OrderPortalPassword::query()
@@ -172,6 +173,8 @@ class WaiterController extends Controller
         $waiter->linked_until = $request->validated('employment_type') === 'temporary'
             ? $request->validated('linked_until')
             : null;
+        // New staff start with tips off — manager enables for specific baristas/waiters.
+        $waiter->digital_tips_enabled = false;
         $waiter->save();
 
         WaiterRestaurantAssignment::create([
@@ -207,6 +210,7 @@ class WaiterController extends Controller
         $waiter->waiter_code = null;
         $waiter->employment_type = null;
         $waiter->linked_until = null;
+        $waiter->digital_tips_enabled = false;
         $waiter->save();
 
         $updated = WaiterRestaurantAssignment::query()
@@ -233,6 +237,28 @@ class WaiterController extends Controller
             ->update(['revoked_at' => now()]);
 
         return back()->with('success', "{$name} has been unlinked from your restaurant. Their history (orders, ratings) is preserved. They can be linked to another restaurant.");
+    }
+
+    /**
+     * Enable or disable digital tipping for a linked waiter/barista.
+     */
+    public function updateDigitalTips(Request $request, User $waiter): RedirectResponse
+    {
+        if ($waiter->restaurant_id !== Auth::user()->restaurant_id
+            || ! $waiter->hasAnyRole(['waiter', 'barista'])) {
+            return back()->with('error', 'Unauthorized.');
+        }
+
+        $request->validate([
+            'digital_tips_enabled' => 'required|boolean',
+        ]);
+
+        $enabled = $request->boolean('digital_tips_enabled');
+        $waiter->forceFill(['digital_tips_enabled' => $enabled])->save();
+
+        $label = $enabled ? 'enabled' : 'disabled';
+
+        return back()->with('success', "Digital tipping {$label} for {$waiter->name}.");
     }
 
     /**

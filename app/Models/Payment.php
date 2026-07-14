@@ -11,6 +11,7 @@ class Payment extends Model
         'order_id',
         'restaurant_id',
         'waiter_id',
+        'tip_pool_id',
         'customer_phone',
         'amount',
         'method',

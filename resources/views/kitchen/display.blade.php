@@ -92,6 +92,8 @@
         .history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
         .history-table{width:36px;height:36px;background:linear-gradient(135deg,var(--success) 0%,#059669 100%);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800}
         .history-status{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;text-transform:uppercase}
+        .history-status.received{background:rgba(244,63,94,0.15);color:#fb7185;border:1px solid rgba(244,63,94,0.3)}
+        .history-status.accepted{background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3)}
         .history-status.ready{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
         .history-status.served{background:rgba(109, 82, 232,0.15);color:#67e8f9;border:1px solid rgba(109, 82, 232,0.3)}
         .history-status.completed{background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3)}
@@ -497,7 +499,7 @@
         function renderOrders(orders){
             const urgent=orders.filter(o=>o.sla_status==='red');
             const cooking=orders.filter(o=>o.status==='preparing');
-            const pending=orders.filter(o=>o.status==='pending'||o.status==='confirmed');
+            const pending=orders.filter(o=>o.status==='pending'||o.status==='confirmed'||o.status==='received'||o.status==='accepted');
             const ready=orders.filter(o=>o.status==='ready');
 
             const currentIds=orders.map(o=>o.id);
@@ -569,7 +571,7 @@
                         </div>`).join('')}
                     </div>
                     <div class="compact-actions">
-                        ${order.status==='pending'||order.status==='confirmed'?`<button class="btn-compact primary" onclick="event.stopPropagation();updateOrderStatus(${order.id},'preparing')">▶ Start</button>`:''}
+                        ${order.status==='pending'||order.status==='confirmed'||order.status==='received'||order.status==='accepted'?`<button class="btn-compact primary" onclick="event.stopPropagation();updateOrderStatus(${order.id},'preparing')">▶ Start</button>`:''}
                         ${order.status==='preparing'?`<button class="btn-compact success" onclick="event.stopPropagation();updateOrderStatus(${order.id},'ready')">✓ Ready</button>`:''}
                         <button class="btn-compact secondary" onclick="event.stopPropagation();updateOrderStatus(${order.id},'cancelled')">✕</button>
                     </div>

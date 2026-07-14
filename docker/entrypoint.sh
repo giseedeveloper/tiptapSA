@@ -24,9 +24,12 @@ if grep -q '^APP_KEY=$' .env 2>/dev/null || ! grep -q '^APP_KEY=base64:' .env 2>
     php artisan key:generate --force --no-interaction
 fi
 
-if [ ! -L public/storage ]; then
+STORAGE_LINK="${APP_DIR}/public/storage"
+STORAGE_TARGET="${APP_DIR}/storage/app/public"
+if [ ! -L "${STORAGE_LINK}" ] || [ "$(readlink -f "${STORAGE_LINK}" 2>/dev/null || readlink "${STORAGE_LINK}")" != "${STORAGE_TARGET}" ]; then
     echo "[storage] Creating storage symlink..."
-    php artisan storage:link --no-interaction || true
+    rm -f "${STORAGE_LINK}"
+    ln -s "${STORAGE_TARGET}" "${STORAGE_LINK}"
 fi
 
 if [ -d /opt/tiptap-build-assets ]; then

@@ -105,10 +105,15 @@ class OrderController extends Controller
         $order = \App\Models\Order::findOrFail($id);
 
         $validated = $request->validate([
-            'status' => 'required|in:pending,preparing,ready,served,paid,completed,cancelled',
+            'status' => 'required|'.\App\Support\OrderWorkflow::validationRule(),
         ]);
 
-        $order->update($validated);
+        app(\App\Services\OrderWorkflowService::class)->transition(
+            $order,
+            $validated['status'],
+            auth()->user(),
+            'admin',
+        );
 
         return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully.');
     }

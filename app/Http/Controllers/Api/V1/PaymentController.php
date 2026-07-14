@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Services\OrderWorkflowService;
 use App\Services\SelcomService;
 use App\Support\Money;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class PaymentController extends Controller
 {
     protected SelcomService $selcom;
 
-    public function __construct(SelcomService $selcom)
+    public function __construct(SelcomService $selcom, private OrderWorkflowService $workflow)
     {
         $this->selcom = $selcom;
     }
@@ -129,7 +130,7 @@ class PaymentController extends Controller
             'transaction_reference' => 'CASH-'.strtoupper(uniqid()),
         ]);
 
-        $order->update(['status' => 'paid']);
+        $this->workflow->completeFromPayment($order, 'cash');
 
         $response = [
             'success' => true,
@@ -168,7 +169,7 @@ class PaymentController extends Controller
 
                 if ($paymentStatus === 'paid') {
                     $payment->update(['status' => 'paid']);
-                    $order->update(['status' => 'paid']);
+                    $this->workflow->completeFromPayment($order, 'ussd');
                 } elseif ($paymentStatus === 'failed') {
                     $payment->update(['status' => 'failed']);
                 }
@@ -179,6 +180,7 @@ class PaymentController extends Controller
             'success' => true,
             'status' => $payment ? $payment->status : 'unpaid',
             'payment' => $payment,
+            'order_status' => $order->fresh()->status,
         ]);
     }
 }

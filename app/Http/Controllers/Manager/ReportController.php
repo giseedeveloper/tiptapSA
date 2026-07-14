@@ -6,11 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\User;
+use App\Services\WaitTimeAnalyticsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
+    public function __construct(private WaitTimeAnalyticsService $waitTimes)
+    {
+    }
+
     public function performance(Request $request)
     {
         $restaurantId = auth()->user()->restaurant_id;
@@ -26,7 +31,7 @@ class ReportController extends Controller
             ->count();
 
         $totalRevenue = Payment::where('restaurant_id', $restaurantId)
-            ->where('status', 'completed')
+            ->whereIn('status', ['paid', 'completed'])
             ->whereBetween('created_at', [$start, $end])
             ->sum('amount');
 
@@ -40,6 +45,9 @@ class ReportController extends Controller
             ? round($ordersWithRating->avg('feedback.rating'), 2)
             : 0;
 
+        $speedByWaiter = collect($this->waitTimes->waiterSpeedMetrics($restaurantId, $start, $end))
+            ->keyBy('waiter_id');
+
         $waiterStats = User::role('waiter')
             ->where('restaurant_id', $restaurantId)
             ->with(['orders' => function ($q) use ($start, $end) {
@@ -48,9 +56,10 @@ class ReportController extends Controller
                 $q->whereBetween('created_at', [$start, $end]);
             }])
             ->get()
-            ->map(function ($waiter) {
+            ->map(function ($waiter) use ($speedByWaiter) {
                 $orders = $waiter->orders;
                 $tips = $waiter->tips;
+                $speed = $speedByWaiter->get($waiter->id);
 
                 $ordersWithFeedback = $orders->filter(function ($order) {
                     return $order->feedback !== null;
@@ -66,11 +75,17 @@ class ReportController extends Controller
                     'orders_count' => $orders->count(),
                     'tips_earned' => $tips->sum('amount'),
                     'avg_rating' => $avgRating,
+                    'avg_to_ready_minutes' => $speed['avg_to_ready_minutes'] ?? null,
+                    'avg_to_served_minutes' => $speed['avg_to_served_minutes'] ?? null,
+                    'sample_to_served' => $speed['sample_to_served'] ?? 0,
                 ];
             })
-            ->sortByDesc('orders_count');
+            ->sortByDesc('orders_count')
+            ->values();
 
         $topPerformer = $waiterStats->first();
+        $waitTime = $this->waitTimes->summarize($restaurantId, $start, $end);
+        $waitTrend = $this->waitTimes->dailyTrend($restaurantId, $start->copy()->startOfDay(), $end);
 
         return view('manager.reports.performance', compact(
             'totalOrders',
@@ -78,6 +93,8 @@ class ReportController extends Controller
             'avgRating',
             'waiterStats',
             'topPerformer',
+            'waitTime',
+            'waitTrend',
             'period',
             'startDate',
             'endDate'
@@ -94,6 +111,9 @@ class ReportController extends Controller
 
         [$start, $end] = $this->getDateRange($period, $startDate, $endDate);
 
+        $speedByWaiter = collect($this->waitTimes->waiterSpeedMetrics($restaurantId, $start, $end))
+            ->keyBy('waiter_id');
+
         $waiterStats = User::role('waiter')
             ->where('restaurant_id', $restaurantId)
             ->with(['orders' => function ($q) use ($start, $end) {
@@ -102,9 +122,10 @@ class ReportController extends Controller
                 $q->whereBetween('created_at', [$start, $end]);
             }])
             ->get()
-            ->map(function ($waiter) {
+            ->map(function ($waiter) use ($speedByWaiter) {
                 $orders = $waiter->orders;
                 $tips = $waiter->tips;
+                $speed = $speedByWaiter->get($waiter->id);
 
                 $ordersWithFeedback = $orders->filter(function ($order) {
                     return $order->feedback !== null;
@@ -119,6 +140,8 @@ class ReportController extends Controller
                     'orders_count' => $orders->count(),
                     'tips_earned' => $tips->sum('amount'),
                     'avg_rating' => $avgRating,
+                    'avg_to_ready_minutes' => $speed['avg_to_ready_minutes'] ?? null,
+                    'avg_to_served_minutes' => $speed['avg_to_served_minutes'] ?? null,
                 ];
             });
 
@@ -131,7 +154,14 @@ class ReportController extends Controller
 
         $callback = function () use ($waiterStats) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, ['Waiter Name', 'Orders Handled', 'Tips Earned ('.config('tiptap.currency_symbol').')', 'Average Rating']);
+            fputcsv($file, [
+                'Waiter Name',
+                'Orders Handled',
+                'Tips Earned ('.config('tiptap.currency_symbol').')',
+                'Average Rating',
+                'Avg Wait to Ready (min)',
+                'Avg Customer Wait to Served (min)',
+            ]);
 
             foreach ($waiterStats as $stat) {
                 fputcsv($file, [
@@ -139,6 +169,8 @@ class ReportController extends Controller
                     $stat['orders_count'],
                     number_format($stat['tips_earned'], 2),
                     $stat['avg_rating'],
+                    $stat['avg_to_ready_minutes'] ?? '',
+                    $stat['avg_to_served_minutes'] ?? '',
                 ]);
             }
 

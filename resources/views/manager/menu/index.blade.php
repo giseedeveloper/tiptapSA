@@ -25,6 +25,43 @@
             </div>
         </div>
 
+        @if(session('success'))
+            <div class="mb-6 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-200">{{ session('success') }}</div>
+        @endif
+
+        <!-- Busy mode / ETA override -->
+        @php $isBusy = $restaurant?->isBusy(); $busyMult = $restaurant?->busyEtaMultiplier() ?? 1.5; @endphp
+        <div class="glass-card rounded-2xl p-5 mb-8 border {{ $isBusy ? 'border-amber-500/40 bg-amber-500/5' : 'border-white/10' }}">
+            <form action="{{ route('manager.menu.busy-mode') }}" method="POST" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                @csrf
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center {{ $isBusy ? 'bg-amber-500/20 text-amber-300' : 'bg-white/5 text-white/40' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-white">Busy mode (ETA override)</p>
+                        <p class="text-[11px] text-white/45 max-w-md">When ON, customer waiting times shown on WhatsApp are extended by the multiplier below. Use during rush hours.</p>
+                        <p class="mt-1 text-[11px] font-semibold {{ $isBusy ? 'text-amber-300' : 'text-white/40' }}">
+                            Status: {{ $isBusy ? 'ON · ETAs ×'.rtrim(rtrim(number_format($busyMult,1),'0'),'.') : 'OFF · normal ETAs' }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-1 block">Multiplier</label>
+                        <input type="number" name="busy_eta_multiplier" step="0.1" min="1" max="5" value="{{ $busyMult }}"
+                               class="w-24 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm">
+                    </div>
+                    <label class="flex items-center gap-2 cursor-pointer pt-5">
+                        <input type="hidden" name="busy_mode" value="0">
+                        <input type="checkbox" name="busy_mode" value="1" class="w-5 h-5 rounded border-white/20 bg-white/5 text-amber-500 focus:ring-amber-500" @checked($isBusy)>
+                        <span class="text-xs text-white/70">Enable</span>
+                    </label>
+                    <button type="submit" class="px-5 py-2.5 mt-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold">Save</button>
+                </div>
+            </form>
+        </div>
+
         <!-- Categories Tabs -->
         <div class="flex gap-3 mb-8 overflow-x-auto pb-2 hide-scrollbar">
             <button @click="selectedCategory = 'all'" :class="selectedCategory === 'all' ? 'bg-linear-to-r from-fin-primary to-fin-primary-dark text-white shadow-lg shadow-fin-primary/20' : 'glass text-white/60 hover:text-white hover:bg-white/10'" class="px-5 py-2.5 rounded-xl font-semibold transition-all">All Items</button>
@@ -84,7 +121,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/40">
                                 <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                             </svg>
-                            <span class="text-[11px] font-medium text-white/40">{{ $item->preparation_time ?? '15' }} min</span>
+                            <span class="text-[11px] font-medium text-white/40">ETA {{ $item->preparation_time ?? 15 }} min</span>
                         </div>
                     </div>
                 </div>
@@ -153,9 +190,10 @@
                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-fin-primary focus:border-transparent transition-all">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Prep Time (min)</label>
-                            <input type="number" name="preparation_time" id="menuPrepTime" placeholder="e.g. 15" 
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 block">Estimated prep time (min)</label>
+                            <input type="number" name="preparation_time" id="menuPrepTime" min="1" max="240" placeholder="e.g. 15"
                                    class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl font-medium text-white placeholder-white/30 focus:ring-2 focus:ring-fin-primary focus:border-transparent transition-all">
+                            <p class="mt-1.5 text-[11px] text-white/35">Customers see this ETA on WhatsApp before they order. Leave blank to use default 15 min.</p>
                         </div>
                     </div>
 

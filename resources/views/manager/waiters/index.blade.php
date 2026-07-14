@@ -91,6 +91,14 @@
                 <input type="radio" name="statusFilter" value="temporary" onchange="filterWaiters()" class="text-violet-600 focus:ring-fin-primary">
                 <span class="text-sm text-white/60">Temporary</span>
             </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="statusFilter" value="tips_on" onchange="filterWaiters()" class="text-violet-600 focus:ring-fin-primary">
+                <span class="text-sm text-white/60">Digital tips ON</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="statusFilter" value="tips_off" onchange="filterWaiters()" class="text-violet-600 focus:ring-fin-primary">
+                <span class="text-sm text-white/60">Digital tips OFF</span>
+            </label>
         </div>
     </div>
 
@@ -105,7 +113,8 @@
                  data-code="{{ strtolower($waiter->global_waiter_number ?? '') }}" 
                  data-status="{{ $waiter->is_online ? 'online' : 'offline' }}" 
                  data-employment="{{ $waiter->employment_type }}" 
-                 data-orders="{{ $waiter->orders_count }}">
+                 data-orders="{{ $waiter->orders_count }}"
+                 data-tips="{{ $waiter->digital_tips_enabled ? 'on' : 'off' }}">
                 <!-- Avatar & Name -->
                 <div class="flex items-center gap-3 mb-3">
                     @php 
@@ -150,7 +159,29 @@
                             @if($waiter->employment_type === 'temporary')
                                 <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-amber-500/20 text-amber-600 border border-amber-500/30">Temp</span>
                             @endif
+                            @if($waiter->digital_tips_enabled)
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/25">Tips ON</span>
+                            @endif
                         </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 px-3 py-2.5 rounded-xl border {{ $waiter->digital_tips_enabled ? 'bg-amber-500/10 border-amber-500/25' : 'bg-white/5 border-white/10' }}">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-[11px] font-bold text-white">Digital tipping</p>
+                            <p class="text-[10px] text-white/45 leading-snug">Allow customers to tip this barista/staff on WhatsApp</p>
+                        </div>
+                        <form action="{{ route('manager.waiters.digital-tips', $waiter) }}" method="POST" class="shrink-0">
+                            @csrf
+                            <input type="hidden" name="digital_tips_enabled" value="{{ $waiter->digital_tips_enabled ? 0 : 1 }}">
+                            <button type="submit"
+                                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors {{ $waiter->digital_tips_enabled ? 'bg-amber-500' : 'bg-white/15' }}"
+                                    title="{{ $waiter->digital_tips_enabled ? 'Disable digital tips' : 'Enable digital tips' }}"
+                                    aria-pressed="{{ $waiter->digital_tips_enabled ? 'true' : 'false' }}">
+                                <span class="inline-block h-4 w-4 transform rounded-full bg-white transition {{ $waiter->digital_tips_enabled ? 'translate-x-6' : 'translate-x-1' }}"></span>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -505,13 +536,16 @@
                 const code = card.dataset.code || '';
                 const status = card.dataset.status || '';
                 const employment = card.dataset.employment || '';
+                const tips = card.dataset.tips || '';
                 
                 let matchesSearch = !searchTerm || name.includes(searchTerm) || code.includes(searchTerm);
                 let matchesStatus = statusFilter === 'all' || 
                     (statusFilter === 'online' && status === 'online') ||
                     (statusFilter === 'offline' && status === 'offline') ||
                     (statusFilter === 'permanent' && employment === 'permanent') ||
-                    (statusFilter === 'temporary' && employment === 'temporary');
+                    (statusFilter === 'temporary' && employment === 'temporary') ||
+                    (statusFilter === 'tips_on' && tips === 'on') ||
+                    (statusFilter === 'tips_off' && tips === 'off');
                 
                 if (matchesSearch && matchesStatus) {
                     card.style.display = '';

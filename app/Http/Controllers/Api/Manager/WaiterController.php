@@ -31,6 +31,7 @@ class WaiterController extends Controller
                 'employment_type' => $w->employment_type,
                 'linked_until' => $w->linked_until?->format('Y-m-d'),
                 'orders_count' => $w->orders_count,
+                'digital_tips_enabled' => (bool) $w->digital_tips_enabled,
                 'profile_photo_url' => $w->profilePhotoUrl(),
             ]);
 
@@ -144,6 +145,7 @@ class WaiterController extends Controller
         $waiter->linked_until = $request->validated('employment_type') === 'temporary'
             ? $request->validated('linked_until')
             : null;
+        $waiter->digital_tips_enabled = false;
         $waiter->save();
 
         WaiterRestaurantAssignment::create([
@@ -158,6 +160,7 @@ class WaiterController extends Controller
         if ($waiter->employment_type === 'temporary' && $waiter->linked_until) {
             $message .= ' (until '.$waiter->linked_until->format('d/m/Y').')';
         }
+        $message .= ' Enable digital tipping from Waiters & Staff when ready.';
 
         return response()->json([
             'success' => true,
@@ -168,8 +171,36 @@ class WaiterController extends Controller
                 'waiter_code' => $waiter->waiter_code,
                 'employment_type' => $waiter->employment_type,
                 'linked_until' => $waiter->linked_until?->format('Y-m-d'),
+                'digital_tips_enabled' => false,
             ],
         ], 201);
+    }
+
+    /**
+     * Enable or disable digital tipping for a linked waiter/barista.
+     */
+    public function updateDigitalTips(Request $request, User $waiter): JsonResponse
+    {
+        if ($waiter->restaurant_id !== Auth::user()->restaurant_id
+            || ! $waiter->hasAnyRole(['waiter', 'barista'])) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 403);
+        }
+
+        $request->validate([
+            'digital_tips_enabled' => 'required|boolean',
+        ]);
+
+        $enabled = $request->boolean('digital_tips_enabled');
+        $waiter->forceFill(['digital_tips_enabled' => $enabled])->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Digital tipping '.($enabled ? 'enabled' : 'disabled').' for '.$waiter->name.'.',
+            'data' => [
+                'waiter_id' => $waiter->id,
+                'digital_tips_enabled' => $enabled,
+            ],
+        ]);
     }
 
     /**
@@ -189,6 +220,7 @@ class WaiterController extends Controller
         $waiter->waiter_code = null;
         $waiter->employment_type = null;
         $waiter->linked_until = null;
+        $waiter->digital_tips_enabled = false;
         $waiter->save();
 
         $updated = WaiterRestaurantAssignment::query()
